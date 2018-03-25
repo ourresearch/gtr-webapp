@@ -28,7 +28,7 @@
                 </ul>
                 <div class="page-bottom">
                     <a :href="apiUrl">
-                        View in API
+                        View in API.
                     </a>
                 </div>
             </div>
