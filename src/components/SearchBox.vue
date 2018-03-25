@@ -1,10 +1,11 @@
 <template>
     <div class="search-box">
     <md-field>
-        <md-input v-model="query"></md-input>
-        <router-link :to="serpUrlWithQuery">
+        <md-input v-model="query" @keyup.enter="goSearch"></md-input>
+        <div class="icon" @click="goSearch">
             <md-icon>search</md-icon>
-        </router-link>
+
+        </div>
     </md-field>
 
 
@@ -18,8 +19,18 @@
             query:""
         }),
         computed: {
-            serpUrlWithQuery(){
-                return "/search/" + this.query
+        },
+        methods: {
+            goSearch(){
+                let cleanQuery = this.query  // todo clean
+
+                this.$router.push({
+                    name: "search",
+                    params: {
+                        q: cleanQuery
+                    }
+                })
+
             }
         }
     }
