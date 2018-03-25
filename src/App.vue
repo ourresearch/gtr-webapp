@@ -21,6 +21,7 @@
 <script>
   import MainHeader from './components/MainHeader'
   import MainFooter from './components/MainFooter'
+  import _ from 'lodash'
 
   export default {
       name: 'App',

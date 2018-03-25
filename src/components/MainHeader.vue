@@ -20,6 +20,13 @@
     }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+    h1 {
+        width: 140px;
+        margin:0;
+        display:block;
+        font-size: 20px;
+        text-align: center;
+    }
 
 </style>

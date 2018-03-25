@@ -18,7 +18,7 @@
         }),
         computed: {
             cleanQuery(){
-                return this.query.replace(" ", "_")
+                return _.snakeCase(this.query)
             }
         },
         methods: {
@@ -40,7 +40,7 @@
     div.search-box {
         width: 100%;
         max-width: 500px;
-        padding: 20px;
+        padding: 20px 0;
         border: none !important;
         display:flex;
         input {
