@@ -5,10 +5,12 @@
   "scripts": {
     "serve": "vue-cli-service serve --open",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "start": "node server.js"
   },
   "dependencies": {
     "axios": "^0.18.0",
+    "express": "^4.16.3",
     "lodash": "^4.17.5",
     "vue": "^2.5.13",
     "vue-material": "^1.0.0-beta-7",
