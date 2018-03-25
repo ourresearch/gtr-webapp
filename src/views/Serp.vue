@@ -1,14 +1,21 @@
 <template>
     <div class="root">
-        <ul>
-            <li v-for="result of results">
-                {{result.title}}
-            </li>
-        </ul>
-        <div class="page-bottom">
-            <a :href="apiUrl">
-                View in API
-            </a>
+
+        <div class="loaded" v-if="!loading">
+            <ul>
+                <li v-for="result of results">
+                    {{result.title}}
+                </li>
+            </ul>
+            <div class="page-bottom">
+                <a :href="apiUrl">
+                    View in API
+                </a>
+            </div>
+        </div>
+
+        <div class="loading" v-if="loading">
+            <md-progress-bar md-mode="indeterminate"></md-progress-bar>
         </div>
     </div>
 
@@ -21,27 +28,30 @@
     export default {
         name: "Serp",
         data: () => ({
-            foo: "bar",
+            loading: true,
             results: []
         }),
         computed: {
-          apiUrl(){
-            let searchTerm = this.$route.params.q
-            let url = "https://api.unpaywall.org/search/" + searchTerm
-            return url
-          }
+            apiUrl(){
+                let searchTerm = this.$route.params.q
+                let url = "https://api.unpaywall.org/search/" + searchTerm
+                return url
+            }
         },
         methods: {
-          doQuery(){
-            console.log("doing query")
-            axios.get(this.apiUrl)
-                .then(resp => {
-                    this.results = resp.data.results
-                })
-                .catch(e => {
-                    console.log("error from server", e)
-                })
-          }
+            doQuery(){
+                console.log("doing query")
+                this.loading = true
+                axios.get(this.apiUrl)
+                    .then(resp => {
+                        this.results = resp.data.results
+                        this.loading = false
+                    })
+                    .catch(e => {
+                        console.log("error from server", e)
+                        this.loading = false
+                    })
+            }
         },
         mounted() {
             this.doQuery()

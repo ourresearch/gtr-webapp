@@ -2,6 +2,7 @@
   <div id="app" class="container">
 
     <main-header/>
+
     <div class="container-wrapper md-layout-row">
       <router-view/>
     </div>
@@ -31,6 +32,7 @@
 </script>
 
 <style lang="scss">
+
   body {
     font-size: 16px;
   }
