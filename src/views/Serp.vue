@@ -98,6 +98,15 @@
                     return r
                 })
 
+                ret = ret.sort((a, b) => {
+                    if (a.displayAbstract) {
+                        return -1
+                    }
+                    else {
+                        return 1
+                    }
+                })
+
                 return ret
 
 
