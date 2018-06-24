@@ -1,13 +1,9 @@
 <template>
   <div id="app" class="container">
 
-    <main-header/>
-
     <div class="container-wrapper md-layout-row">
       <router-view/>
     </div>
-    <main-footer/>
-
 
   </div>
 
@@ -19,34 +15,41 @@
 </template>
 
 <script>
-  import MainHeader from './components/MainHeader'
-  import MainFooter from './components/MainFooter'
-  import _ from 'lodash'
 
   export default {
-      name: 'App',
-      components: {
-          MainHeader,
-          MainFooter
-      }
+      name: 'App'
   }
 </script>
 
 <style lang="scss">
 
+  @import url("https://use.fontawesome.com/releases/v5.0.10/css/all.css");
+
+    $screen-xsmall: 600px;
+    $screen-small: 960px;
+
   body {
-    font-size: 16px;
-  }
-
-
-  #nav {
-  padding: 30px;
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-    &.router-link-exact-active {
-      color: #42b983;
+    background: #fff;
+    code {
+      padding: 2px 5px;
+      border: 1px solid #ddd;
+      border-radius: 3px;
+      font-size: 90%;
+    }
+    h1 {
+      margin-top: 50px;
+    }
+    h2 {
+      margin-top: 50px;
     }
   }
-}
+  div.page {
+    font-size: 18px;
+    line-height: 1.5;
+    max-width: 800px;
+    margin: 0 auto;
+    padding-bottom: 100px;
+    min-height: 80vh;
+  }
+
 </style>

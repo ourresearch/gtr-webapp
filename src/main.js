@@ -12,6 +12,7 @@ import 'vue-material/dist/theme/default.css'
 import VueScrollTo from 'vue-scrollto'
 import VueAnalytics from 'vue-analytics'
 import VueMoment from 'vue-moment'
+import VueTyperPlugin from 'vue-typer'
 
 Vue.use(VueMaterial)
 Vue.use(VueScrollTo)
@@ -20,6 +21,8 @@ Vue.use(VueAnalytics, {
   router
 })
 Vue.use(VueMoment);
+Vue.use(VueTyperPlugin)
+
 
 
 
