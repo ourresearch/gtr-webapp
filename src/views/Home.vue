@@ -37,7 +37,7 @@
   div.banner {
     /*background: url("../assets/stars.jpg") no-repeat;*/
     background: url("../assets/books.jpg") no-repeat;
-    background-color: #111;
+    background-color: #fff;
     background-size: cover;
     background-position: 50% 50%;
     height: 100vh;
