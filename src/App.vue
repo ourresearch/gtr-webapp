@@ -64,7 +64,7 @@
 
   .vue-typer {
     .custom.char {
-      color: #fff;
+      /*color: #fff;*/
     }
   }
 
