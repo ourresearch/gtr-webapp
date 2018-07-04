@@ -5,6 +5,9 @@
       <router-view/>
     </div>
 
+    <main-footer />
+
+
   </div>
 
 
@@ -15,9 +18,14 @@
 </template>
 
 <script>
-
+  import MainHeader from './components/MainHeader'
+  import MainFooter from './components/MainFooter'
   export default {
       name: 'App',
+      components: {
+          MainHeader,
+          MainFooter
+      },
       metaInfo: {
         // if no subcomponents specify a metaInfo.title, this title will be used
         title: 'FindScience.org',
@@ -39,6 +47,7 @@
 
   body {
     background: #fff;
+    font-size: 16px;
     code {
       padding: 2px 5px;
       border: 1px solid #ddd;

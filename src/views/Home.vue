@@ -3,8 +3,13 @@
     <div class="banner">
       <div class="banner-content">
         <div class="headline">
-          Get the peer-reviewed research about
-          <vue-typer :text='["climate change.", "self-driving cars.", "probiotics.", "life on Mars.", "gene therapy.", "low-carb diets.", "clean energy.", "head trauma.", "quantum computing.", "caffeine.", "CRISPR.", "vikings.", "medical marijuana.", "diabetes." ]'></vue-typer>
+          <div class="static">
+            Get the peer-reviewed research about
+          </div>
+          <div class="active">
+            <vue-typer :text='["climate change.", "self-driving cars.", "probiotics.", "life on Mars.", "gene therapy.", "low-carb diets.", "clean energy.", "head trauma.", "quantum computing.", "caffeine.", "CRISPR.", "vikings.", "medical marijuana.", "diabetes." ]'></vue-typer>
+
+          </div>
         </div>
 
         <div class="subheadline">
@@ -12,14 +17,14 @@
 
           <!--Find scholarly papers on any topic, read them for free, and understand them with an AI-powered research assistant.-->
 
-          We're the personal research assistant for regular people, powered by AI and 20 million free-to-read scholarly articles.
+Discover 20 million free-to-read scholarly papers. Understand them with our AI-powered tutor.
 
 
 
         </div>
         <div class="cta">
-          <md-button class="md-raised md-accent main" href="#" >
-            Get advance access
+          <md-button class="md-raised md-accent main" v-on:click="signup">
+            Get early access
           </md-button>
 
           <md-button v-scroll-to="'#about'">
@@ -34,6 +39,10 @@
     <div id="about" class="landing-section">
 
       <div class="content">
+        <div class="under-construction">
+          The section below will be completed July 7th.
+        </div>
+
         <p>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent quis lobortis leo, ut lacinia lacus. Fusce hendrerit est tortor, nec vulputate elit rhoncus vel. Fusce varius imperdiet mauris quis feugiat. Duis lorem lorem, dapibus vitae scelerisque a, bibendum eu turpis. Etiam eu pulvinar orci. Mauris quis sapien eget sapien pulvinar ultrices. Phasellus eu dignissim felis. Fusce nec ligula eros. Donec at velit et nulla suscipit hendrerit. Phasellus maximus lobortis sapien, eget placerat enim. In non metus felis. Proin varius vehicula tempus. Suspendisse turpis erat, dignissim id venenatis eu, sagittis ac erat.
 
@@ -60,12 +69,23 @@
 
     <div class="landing-section" id="partners">
       <div class="content">
+        <div class="under-construction">
+          The section below will be completed July 7th.
+        </div>
         <div class="core-partners">
           <h2>Core partners</h2>
+          <ul>
+            <li>Internet Archive</li>
+            <li>British Library</li>
+          </ul>
         </div>
 
         <div class="supporting-partners">
           <h2>supporting partners</h2>
+          <ul>
+            <li><a href="https://openknowledgemaps.org/">Open Knowledge Maps</a></li>
+            <li><a href="https://iqaluitactionlab.com/">Iqaluit Action Lab</a></li>
+          </ul>
         </div>
 
 
@@ -86,7 +106,13 @@
 
 
   export default {
-    name: 'home'
+    name: 'home',
+      methods:{
+        signup() {
+            console.log("signup!")
+            alert("signup opens July 7th!")
+        }
+      }
   }
 </script>
 
@@ -108,14 +134,10 @@
     text-align: left;
 
     .banner-content {
-      background: rgba(0,0,0,.7);
       background: rgba(255,255,255,.9);
       color: #333;
-      /*border: 5px solid #FF3658;*/
-      // margin-top: -20vh;
-      // margin-left: 10vh;
-      max-width: 820px;
       padding:  30px 70px;
+      max-width: 550px;
       @media (max-width: 600px) {
         margin: 10px;
         padding: 10px;
@@ -127,14 +149,20 @@
           font-size: 30px;
         }
         line-height: 1.3;
-        padding: 20px 0;
-        /*text-shadow: 1px 1px 50px #000;*/
+        padding: 20px 0 30px;
         font-weight: 100;
-        .vue-typer {
-          font-weight: bold;
-          @media (max-width: 600px) {
-            display: block;
-          }
+        .static {
+
+        }
+        .active {
+          border-bottom: 3px solid;
+          .vue-typer {
+            font-weight: bold;
+            @media (max-width: 600px) {
+              display: block;
+            }
+
+        }
         }
 
 
@@ -146,40 +174,38 @@
         /*}      */
         max-width: 655px;
         padding: 0;
-        /*text-shadow: 0 0 30px #000, 1px 1px 50px #000;*/
         line-height: 1.3;
       }
 
       div.cta {
-        padding: 20px ;
+        padding: 20px 0;
         div {
           display:inline;
           @media (max-width: 600px) {
             display:block;
           }
         }
-        .md-button {
-          /*background: rgba(255,255,255, .2);*/
-          /*background: rgba(0,0,0, .4);*/
-          color: #fff;
-          margin:10px 20px 0 0;
-          min-width: 150px;
-          /*font-size: 120%;*/
-          /*padding: 15px 8px;*/
-          /*height: auto;*/
-        }
-        a.secondary {
-          text-shadow: 0 0 30px #000, 1px 1px 50px #000;
-          color: #fff;
-          text-transform: uppercase;
-          padding: 18px 0;
-          display: inline-block;
-          font-size: 15px;
-        }
       }
 
     }
 
+  }
+
+  .landing-section {
+    font-size: 16px;
+    padding: 10px;
+    margin-top: 30px;
+    .content {
+      max-width: 800px;
+      margin: 0 auto;
+
+    }
+  }
+
+  .under-construction {
+    text-style: italic;
+    background: #eee;
+    padding: 20px;
   }
 
 
