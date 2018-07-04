@@ -137,7 +137,7 @@ Discover 20 million free-to-read scholarly papers. Understand them with our AI-p
       background: rgba(255,255,255,.9);
       color: #333;
       padding:  30px 70px;
-      max-width: 550px;
+      max-width: 700px;
       @media (max-width: 600px) {
         margin: 10px;
         padding: 10px;
@@ -152,15 +152,18 @@ Discover 20 million free-to-read scholarly papers. Understand them with our AI-p
         padding: 20px 0 30px;
         font-weight: 100;
         .static {
-
+          display:inline;
         }
         .active {
           border-bottom: 3px solid;
+            display: inline-block;
+          min-width: 8em;
+          line-height: .9;
           .vue-typer {
             font-weight: bold;
-            @media (max-width: 600px) {
-              display: block;
-            }
+            /*@media (max-width: 600px) {*/
+              /*display: block;*/
+            /*}*/
 
         }
         }
