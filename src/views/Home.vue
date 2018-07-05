@@ -17,7 +17,7 @@
 
           <!--Find scholarly papers on any topic, read them for free, and understand them with an AI-powered research assistant.-->
 
-Access 20 million free scholarly papers, and understand them with an AI-powered support system.
+Discover 20 million free-to-read scholarly papers, and understand them with our AI-powered Explanation Engine.
 
 
 
