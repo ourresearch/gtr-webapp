@@ -95,21 +95,21 @@ Discover 20 million free-to-read scholarly papers, and understand them with our 
     <div class="landing-section" id="partners">
       <div class="content">
         <div class="core-partners">
-          <h2>Partners</h2>
-          <div class="core-partner">
-            <h4>Internet Archive</h4>
-            <div class="text">
-              <div class="quote">"The Internet Archive shares Impactstory's mission of enabling open access to research outputs. Pairing our capacity for archiving at scale with Impactstory's fantastic discovery and OA services such as Unpaywall promises to enable free, easy access to published knowledge."
-              </div>
-              <div class="attr">
-                &mdash;Jefferson Bailey, Director of Web Archiving & Data Services
-              </div>
+          <h1>Our Partners</h1>
+          <p class="subhead">
+            We're working with some great partners for this project. Want to join in? <a
+                  href="mailto:team@impactstory.org">Drop us a line!</a> Here's the team so far:
+          </p>
+
+
+          <div class="partner core-partner">
+            <h3>The British Library</h3>
+            <div class="linkout">
+              <a href="https://www.bl.uk/">
+                https://www.bl.uk
+                <i class="fas fa-external-link-alt"></i>
+              </a>
             </div>
-          </div>
-
-
-          <div class="core-partner">
-            <h4>The British Library</h4>
             <div class="text">
               <div class="quote">"At the British Library we believe in making the world’s knowledge available to people from all backgrounds. We are excited to work with Impactstory to make scholarly publications more accessible."
               </div>
@@ -118,10 +118,45 @@ Discover 20 million free-to-read scholarly papers, and understand them with our 
               </div>
             </div>
           </div>
+
+          <div class="partner core-partner">
+            <h3>Internet Archive</h3>
+            <div class="linkout">
+              <a href="https://www.bl.uk/">
+                https://www.bl.uk
+                <i class="fas fa-external-link-alt"></i>
+              </a>
+            </div>
+            <div class="text">
+              <div class="quote">"The Internet Archive shares Impactstory's mission of enabling open access to research outputs. Pairing our capacity for archiving at scale with Impactstory's fantastic discovery and OA services such as Unpaywall promises to enable free, easy access to published knowledge."
+              </div>
+              <div class="attr">
+                &mdash;Jefferson Bailey, Director of Web Archiving & Data Services
+              </div>
+            </div>
+          </div>
         </div>
-        <h4>Open Knowledge Maps</h4>
-        <h4>Iqaluit Action Lab</h4>
-        <p><em>More coming soon&hellip;</em></p>
+
+        <div class="partner">
+          <h3>Open Knowledge Maps</h3>
+          <div class="linkout">
+            <a href="https://www.bl.uk/">
+              https://www.bl.uk
+              <i class="fas fa-external-link-alt"></i>
+            </a>
+          </div>
+        </div>
+
+        <div class="partner">
+          <h3>Iqaluit Action Lab</h3>
+          <div class="linkout">
+            <a href="https://www.bl.uk/">
+              https://www.bl.uk
+              <i class="fas fa-external-link-alt"></i>
+            </a>
+          </div>
+        </div>
+
 
 
 
@@ -244,14 +279,37 @@ Discover 20 million free-to-read scholarly papers, and understand them with our 
     }
 
     &#partners {
-      margin-bottom: 100px;
-      h4 {
-
+      padding: 50px 0 100px;
+      margin: 50px 0 0;
+      background: #eee;
+      h1 {
         margin-bottom: 0;
+        padding-bottom: 0;
+      }
+      h2 {
+        margin: 0;
+      }
+      .partner {
+        margin: 20px 0;
+        padding: 20px 0;
+        border-bottom: 1px solid #ccc;
+      }
+      p.subhead {
+        margin-top: 0;
+      }
+      .quote {
+        font-size: 80%;
+      }
+      h3 {
+        margin: 0;
+      }
+      .linkout {
+        font-size: 80%;
       }
       .attr {
         font-style: italic;
         margin-left: 10px;
+        font-size: 80%;
       }
     }
   }
