@@ -85,4 +85,10 @@
     }
   }
 
+  div.mc-banner {
+    bottom: 0 !important;
+    background: rgba(255,255,255, .95);
+    top: auto;
+  }
+
 </style>

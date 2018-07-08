@@ -68,7 +68,7 @@
     .site-footer {
         background: #333;
         display: flex;
-        padding: 0 40px 40px 40px;
+        padding: 0 40px 100px 40px;
         font-size: 14px;
 
         .content {

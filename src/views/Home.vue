@@ -23,13 +23,21 @@ Discover 20 million free-to-read scholarly papers, and understand them with our 
 
         </div>
         <div class="cta">
-          <md-button class="md-raised md-primary main" v-on:click="signup">
-            Get early access
-          </md-button>
 
-          <md-button v-scroll-to="'#about'">
-            learn more
-          </md-button>
+          <!--<div class="input">-->
+            <!--<input type="text" placeholder="Your email" v-model="email" />-->
+
+          <!--</div>-->
+          <!--<md-button class="md-raised md-primary main" v-on:click="signup">-->
+            <!--Get early access-->
+          <!--</md-button>-->
+
+
+
+          <!---->
+          <!--<md-button v-scroll-to="'#about'">-->
+            <!--learn more-->
+          <!--</md-button>-->
 
         </div>
       </div>
@@ -255,6 +263,7 @@ Discover 20 million free-to-read scholarly papers, and understand them with our 
 
     .banner-content {
       background: rgba(255,255,255,.99);
+      margin-top: -20vh;
       /*border: 3px solid #333;*/
       box-shadow: 0 0 50px rgba(0,0,0,.3);
       color: #333;
@@ -302,18 +311,27 @@ Discover 20 million free-to-read scholarly papers, and understand them with our 
         line-height: 1.3;
       }
 
-      div.cta {
-        padding: 20px 0;
-        button.md-button.md-primary {
-          background-color: $primary-color;
-        }
-        div {
-          display:inline;
-          @media (max-width: 600px) {
-            display:block;
+      .cta {
+        .input {
+          flex:2;
+          input {
+            font-size: 22px;
+            border: 2px solid #ddd;
+            border-radius: 3px;
+            padding: 4px;
+            width: 100%;
+            margin: 5px 0;
+
           }
         }
+        display: flex;
+        button.md-button.md-primary {
+          flex: 1;
+          margin: 5px 10px;
+          background-color: $primary-color;
+        }
       }
+
 
     }
 
@@ -385,6 +403,8 @@ Discover 20 million free-to-read scholarly papers, and understand them with our 
     background: #eee;
     padding: 20px;
   }
+
+
 
 
 
