@@ -34,10 +34,10 @@ Discover 20 million free-to-read scholarly papers, and understand them with our 
 
 
 
-          <!---->
-          <!--<md-button v-scroll-to="'#about'">-->
-            <!--learn more-->
-          <!--</md-button>-->
+
+          <md-button class="md-raised learn-more" v-scroll-to="'#about'">
+            learn more
+          </md-button>
 
         </div>
       </div>
@@ -312,6 +312,12 @@ Discover 20 million free-to-read scholarly papers, and understand them with our 
       }
 
       .cta {
+
+        .learn-more {
+          margin: 10px 0 10px 0;
+        }
+
+
         .input {
           flex:2;
           input {
