@@ -69,24 +69,34 @@ Discover 20 million free-to-read scholarly papers, and understand them with our 
 
     <div class="landing-section" id="partners">
       <div class="content">
-        <div class="under-construction">
-          The section below will be completed July 7th.
-        </div>
         <div class="core-partners">
-          <h2>Core partners</h2>
-          <ul>
-            <li>Internet Archive</li>
-            <li>British Library</li>
-          </ul>
-        </div>
+          <h2>Partners</h2>
+          <div class="core-partner">
+            <h4>Internet Archive</h4>
+            <div class="text">
+              <div class="quote">"The Internet Archive shares Impactstory's mission of enabling open access to research outputs. Pairing our capacity for archiving at scale with Impactstory's fantastic discovery and OA services such as Unpaywall promises to enable free, easy access to published knowledge."
+              </div>
+              <div class="attr">
+                &mdash;Jefferson Bailey, Director of Web Archiving & Data Services
+              </div>
+            </div>
+          </div>
 
-        <div class="supporting-partners">
-          <h2>supporting partners</h2>
-          <ul>
-            <li><a href="https://openknowledgemaps.org/">Open Knowledge Maps</a></li>
-            <li><a href="https://iqaluitactionlab.com/">Iqaluit Action Lab</a></li>
-          </ul>
+
+          <div class="core-partner">
+            <h4>The British Library</h4>
+            <div class="text">
+              <div class="quote">"At the British Library we believe in making the world’s knowledge available to people from all backgrounds. We are excited to work with Impactstory to make scholarly publications more accessible."
+              </div>
+              <div class="attr">
+                &mdash;Torsten Reimer, Head of Research Services.
+              </div>
+            </div>
+          </div>
         </div>
+        <h4>Open Knowledge Maps</h4>
+        <h4>Iqaluit Action Lab</h4>
+        <p><em>More coming soon&hellip;</em></p>
 
 
 
@@ -202,6 +212,17 @@ Discover 20 million free-to-read scholarly papers, and understand them with our 
       max-width: 800px;
       margin: 0 auto;
 
+    }
+
+    &#partners {
+      margin-bottom: 100px;
+      h4 {
+        margin-bottom: 0;
+      }
+      .attr {
+        font-style: italic;
+        margin-left: 10px;
+      }
     }
   }
 
