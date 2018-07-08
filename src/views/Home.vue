@@ -23,7 +23,7 @@ Discover 20 million free-to-read scholarly papers, and understand them with our 
 
         </div>
         <div class="cta">
-          <md-button class="md-raised md-accent main" v-on:click="signup">
+          <md-button class="md-raised md-primary main" v-on:click="signup">
             Get early access
           </md-button>
 
@@ -40,28 +40,52 @@ Discover 20 million free-to-read scholarly papers, and understand them with our 
 
       <div class="content">
 
-        <h3>🤔 Another search engine? Really?</h3>
+        <h3>
+          <span class="icon">🤔</span>
+          <span class="text">
+          Another search engine? Really?
+
+          </span>
+        </h3>
         <p>
-          Really. But this one's a little different: there are already a lot of ways for <em>academic researchers</em> to find academic literature&hellip;we’re building one for <em>everyone else.</em>
+          Yep. But this one's a little different: there are already a lot of ways for <em>academic researchers</em> to find academic literature&hellip;we’re building one for <em>everyone else.</em>
         </p>
 
         <p>
           We're aiming to meet the information needs of citizen scientists, patients, K-12 teachers, medical practitioners, social workers, community college students, policy makers, and millions more. What they all have in common: they're folks who'd benefit from access to the scholarly record, but they've historically been locked out. They've had no access to the <strong>content</strong> or the <strong>context</strong> of the scholarly conversation.
         </p>
 
-        <h3>📑 Access to <em>content</em></h3>
+        <h3>
+          <span class="icon">📑</span>
+          <span class="text">
+          Problem: it's hard to access to <em>content</em>
+
+          </span>
+        </h3>
 
         <p>
-          Traditionaly, the scholarly literature was paywalled, cutting off access to the content. The Open Access movement is on the way to solving this: <a href="https://peerj.com/articles/4375/">Half of new articles</a> are now free to read somewhere, and that number is growing. The only catch is that there are more than 50,000 different "somewheres" on web servers around the world, so we need a central index to find it. No one's done a good job of this yet (Google Scholar gets close, but it's aimed at specialists, not regular people. It's also 100% proprietary, closed-source, closed-data, and
+          Traditionaly, the scholarly literature was paywalled, cutting off access to the content. The Open Access movement is on the way to solving this: <a href="https://peerj.com/articles/4375/">Half of new articles</a> are now free to read somewhere, and that number is growing. The catch is that there are more than 50,000 different "somewheres" on web servers around the world, so we need a central index to find it. No one's done a good job of this yet (Google Scholar gets close, but it's aimed at specialists, not regular people. It's also 100% proprietary, closed-source, closed-data, and
           <a href="https://www.wordstream.com/articles/retired-google-projects">subject to disappearing at Google’s whim.</a>)
         </p>
 
-        <h3>🌍 Access to <em>context</em></h3>
+        <h3>
+          <span class="icon">🌍</span>
+          <span class="text">
+          Problem: it's hard to access to <em>context</em>
+
+          </span>
+        </h3>
         <p>
-          We're further from solving access to <em>context</em>: the stuff that makes an article comprehensible for a specialist, but gobbledegook for everyone else. So that includes everything from field-specific jargon, to strategies for on how to skimming to find key findings, to knowledge of key concepts like p-values. We like to use the example of Hamlet: easy for an educated 16-century English speaker to understand and enjoy, but much harder for us these days. We don’t have the context.
+          <em>Context</em> is the stuff that makes an article understandable for a specialist, but gobbledegook to the rest of us. So that includes everything from field-specific jargon, to strategies for on how to skim to the key findings, to knowledge of core concepts like p-values. Specialists have access to context. Regular folks don't. This makes reading the scholarly literature like reading Shakespeare without notes: you get glimmers of beauty, but without some help it's mostly just frustrating.
         </p>
 
-        <h3>💡 The solution </h3>
+        <h3>
+          <span class="icon">💡</span>
+          <span class="text">
+          Solution: easy access to the <em>content</em> and <em>context</em> of research literature.
+
+          </span>
+        </h3>
 
         <p>
             Our plan: provide access to both <em>content</em> and <em>context,</em> for free, in one place. To do that, we’re going to bring together an open a database of OA papers with a suite AI-powered support tools we're calling an Explanation Engine.
@@ -77,7 +101,13 @@ Discover 20 million free-to-read scholarly papers, and understand them with our 
           <a href="https://simple.wikipedia.org/wiki/Main_Page">Simple Wikipedia</a>), structured abstracts, topic guides, and more. Thanks to recent progress in AI, all this can be automated, so we can do it at scale. That’s new. And it's big.
         </p>
 
-        <h3>🙌 The payoff</h3>
+        <h3>
+          <span class="icon">🙌</span>
+          <span class="text">
+          The payoff
+
+          </span>
+        </h3>
 
         <p>
           When Microsoft launched <a href="https://en.wikipedia.org/wiki/Altair_BASIC?oldformat=true">Altair BASIC</a> for the new "personal computers," there were already plenty of programming environments for experts. But here was one accessible to <em>everyone else</em>. That was new. And ultimately it launched the PC revolution, bringing computing  the lives of regular folks. We think it's time that same kind of movement happened in the world of knowledge.
@@ -85,7 +115,17 @@ Discover 20 million free-to-read scholarly papers, and understand them with our 
 
           <p>
           From a business perspective, you might call this a <a
-                href="https://en.wikipedia.org/wiki/Blue_Ocean_Strategy?oldformat=true">blue ocean strategy.</a> From a social perspective (ours), this is a chance to finally cash the cheques written by the Open Access movement. It’s a chance to open up access to the cutting edge of human knowledge to <em>all humans.</em> 🔓😀
+                href="https://en.wikipedia.org/wiki/Blue_Ocean_Strategy?oldformat=true">blue ocean strategy.</a> From a social perspective (ours), this is a chance to finally cash the cheques written by the Open Access movement. It’s a chance to truly open up access to the frontiers of human knowledge to <em>all humans.</em>  🔓😀
+        </p>
+        <p>
+          If that sounds like your jam, we'd love your support: tell your friends, sign up for early access, and <a
+                href="https://twitter.com/gettheresearch">follow us</a> for updates. It's gonna be quite an adventure.
+        </p>
+        <p>
+          &mdash;
+          <span class="icon">❤️</span>,
+          <a href="https://twitter.com/researchremix">Heather</a> and
+          <a href="https://twitter.com/jasonpriem">Jason</a>
         </p>
 
       </div>
@@ -189,6 +229,16 @@ Discover 20 million free-to-read scholarly papers, and understand them with our 
 
 <style scoped lang="scss">
 
+  @import "~vue-material/dist/theme/engine";
+  @include md-register-theme("default", (
+    primary: md-get-palette-color(deeporange, A400),
+    accent: md-get-palette-color(blue, A400)
+  ));
+  @import "~vue-material/dist/theme/all";
+
+  $primary-color: #FF3D00;
+
+
   div.banner {
     /*background: url("../assets/stars.jpg") no-repeat;*/
     background: url("../assets/books.jpg") no-repeat;
@@ -204,7 +254,9 @@ Discover 20 million free-to-read scholarly papers, and understand them with our 
     text-align: left;
 
     .banner-content {
-      background: rgba(255,255,255,.9);
+      background: rgba(255,255,255,.95);
+      /*border: 3px solid #333;*/
+      box-shadow: 0 0 50px rgba(0,0,0,.3);
       color: #333;
       padding:  30px 70px;
       max-width: 700px;
@@ -241,7 +293,7 @@ Discover 20 million free-to-read scholarly papers, and understand them with our 
 
       }
       div.subheadline {
-        font-size: 20px;
+        font-size: 22px;
         /*@media (max-width: 600px) {*/
           /*font-size: 30px;*/
         /*}      */
@@ -252,6 +304,9 @@ Discover 20 million free-to-read scholarly papers, and understand them with our 
 
       div.cta {
         padding: 20px 0;
+        button.md-button.md-primary {
+          background-color: $primary-color;
+        }
         div {
           display:inline;
           @media (max-width: 600px) {
@@ -265,12 +320,22 @@ Discover 20 million free-to-read scholarly papers, and understand them with our 
   }
 
   .landing-section {
+    /*border-top: 3px solid #333;*/
     font-size: 20px;
     line-height: 1.5;
     padding: 10px;
-    margin-top: 30px;
+
+    span.icon {
+      font-size: 75%;
+      vertical-align: 5px;
+      margin-right: 5px;
+    }
     h3 {
       margin: 70px 0 10px;
+      display: flex;
+      span.text {
+
+      }
     }
     .content {
       max-width: 800px;
@@ -279,9 +344,10 @@ Discover 20 million free-to-read scholarly papers, and understand them with our 
     }
 
     &#partners {
-      padding: 50px 0 100px;
+      padding-top: 50px;
+      padding-bottom: 100px;
       margin: 50px 0 0;
-      background: #eee;
+      background: #fafafa;
       h1 {
         margin-bottom: 0;
         padding-bottom: 0;

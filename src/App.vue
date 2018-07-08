@@ -37,12 +37,25 @@
 
   @import url("https://use.fontawesome.com/releases/v5.0.10/css/all.css");
 
-    $screen-xsmall: 600px;
-    $screen-small: 960px;
+
+  @import "~vue-material/dist/theme/engine";
+  @include md-register-theme("default", (
+    primary: md-get-palette-color(deeporange, A400),
+    accent: md-get-palette-color(blue, A400)
+  ));
+  @import "~vue-material/dist/theme/all";
+
+  $primary-color: #FF3D00;
+
+  $screen-xsmall: 600px;
+  $screen-small: 960px;
 
   body {
     background: #fff;
     font-size: 16px;
+    hr {
+      opacity: .1;
+    }
     code {
       padding: 2px 5px;
       border: 1px solid #ddd;
