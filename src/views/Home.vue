@@ -254,7 +254,7 @@ Discover 20 million free-to-read scholarly papers, and understand them with our 
     text-align: left;
 
     .banner-content {
-      background: rgba(255,255,255,.95);
+      background: rgba(255,255,255,.99);
       /*border: 3px solid #333;*/
       box-shadow: 0 0 50px rgba(0,0,0,.3);
       color: #333;
