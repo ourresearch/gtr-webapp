@@ -39,28 +39,53 @@ Discover 20 million free-to-read scholarly papers, and understand them with our 
     <div id="about" class="landing-section">
 
       <div class="content">
-        <div class="under-construction">
-          The section below will be completed July 7th.
-        </div>
 
+        <h3>🤔 Another search engine? Really?</h3>
         <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent quis lobortis leo, ut lacinia lacus. Fusce hendrerit est tortor, nec vulputate elit rhoncus vel. Fusce varius imperdiet mauris quis feugiat. Duis lorem lorem, dapibus vitae scelerisque a, bibendum eu turpis. Etiam eu pulvinar orci. Mauris quis sapien eget sapien pulvinar ultrices. Phasellus eu dignissim felis. Fusce nec ligula eros. Donec at velit et nulla suscipit hendrerit. Phasellus maximus lobortis sapien, eget placerat enim. In non metus felis. Proin varius vehicula tempus. Suspendisse turpis erat, dignissim id venenatis eu, sagittis ac erat.
-
+          Really. But this one's a little different: there are already a lot of ways for <em>academic researchers</em> to find academic literature&hellip;we’re building one for <em>everyone else.</em>
         </p>
 
         <p>
-          Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Aenean in nibh erat. Nunc suscipit accumsan posuere. Nam tincidunt tempus elit eu ornare. Phasellus pretium eleifend viverra. In ullamcorper leo sed nunc ultricies dignissim. Sed sodales ante at gravida tristique. Donec molestie dui in facilisis tristique. Curabitur eu gravida lorem.
+          We're aiming to meet the information needs of citizen scientists, patients, K-12 teachers, medical practitioners, social workers, community college students, policy makers, and millions more. What they all have in common: they're folks who'd benefit from access to the scholarly record, but they've historically been locked out. They've had no access to the <strong>content</strong> or the <strong>context</strong> of the scholarly conversation.
+        </p>
 
+        <h3>📑 Access to <em>content</em></h3>
+
+        <p>
+          Traditionaly, the scholarly literature was paywalled, cutting off access to the content. The Open Access movement is on the way to solving this: <a href="https://peerj.com/articles/4375/">Half of new articles</a> are now free to read somewhere, and that number is growing. The only catch is that there are more than 50,000 different "somewheres" on web servers around the world, so we need a central index to find it. No one's done a good job of this yet (Google Scholar gets close, but it's aimed at specialists, not regular people. It's also 100% proprietary, closed-source, closed-data, and
+          <a href="https://www.wordstream.com/articles/retired-google-projects">subject to disappearing at Google’s whim.</a>)
+        </p>
+
+        <h3>🌍 Access to <em>context</em></h3>
+        <p>
+          We're further from solving access to <em>context</em>: the stuff that makes an article comprehensible for a specialist, but gobbledegook for everyone else. So that includes everything from field-specific jargon, to strategies for on how to skimming to find key findings, to knowledge of key concepts like p-values. We like to use the example of Hamlet: easy for an educated 16-century English speaker to understand and enjoy, but much harder for us these days. We don’t have the context.
+        </p>
+
+        <h3>💡 The solution </h3>
+
+        <p>
+            Our plan: provide access to both <em>content</em> and <em>context,</em> for free, in one place. To do that, we’re going to bring together an open a database of OA papers with a suite AI-powered support tools we're calling an Explanation Engine.
         </p>
 
         <p>
-          Nullam blandit libero ante, at imperdiet enim dapibus imperdiet. Etiam aliquam pharetra eleifend. Cras efficitur ante egestas dapibus pellentesque. Vestibulum tincidunt magna sed dui sagittis, nec eleifend elit convallis. Nulla tincidunt erat vitae faucibus convallis. Suspendisse iaculis dictum tempus. Vivamus auctor dictum orci sit amet lobortis. Sed id ante dui. Phasellus tempor placerat erat at vestibulum. Morbi ut fermentum nibh. Cras dignissim ornare neque, non venenatis nunc faucibus sit amet. Fusce lectus risus, vulputate vulputate convallis quis, faucibus quis erat.
-
+          We’ve already finished the database of OA papers. So that's good. With the free <a href="https://unpaywall.org">Unpaywall</a> database, we’ve now got 20 million OA articles from 50k sources, built on
+          <a href="https://github.com/Impactstory">open source</a>, available as open data, and with a working nonprofit sustainability model.
         </p>
 
         <p>
-            In mollis varius felis nec ultricies. Ut fringilla volutpat leo vel tristique. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. In venenatis cursus velit non tincidunt. Nunc tristique vulputate risus sit amet vehicula. Vivamus vel mauris magna. Cras semper gravida ligula a dapibus. Aenean tincidunt lacus pretium elit pulvinar vulputate.
+          We’re building the "AI-powered support tools" now. What kind of tools? Well, let’s go back to the Hamlet example...today, publishers solve the context problem for readers of Shakespeare by adding notes to the text that define and explain difficult words and phrases. We're gonna do the same thing for 20 million scholarly articles. And that’s just the start&hellip;we're also working on concept maps, automated plain-language translations (think automatic
+          <a href="https://simple.wikipedia.org/wiki/Main_Page">Simple Wikipedia</a>), structured abstracts, topic guides, and more. Thanks to recent progress in AI, all this can be automated, so we can do it at scale. That’s new. And it's big.
+        </p>
 
+        <h3>🙌 The payoff</h3>
+
+        <p>
+          When Microsoft launched <a href="https://en.wikipedia.org/wiki/Altair_BASIC?oldformat=true">Altair BASIC</a> for the new "personal computers," there were already plenty of programming environments for experts. But here was one accessible to <em>everyone else</em>. That was new. And ultimately it launched the PC revolution, bringing computing  the lives of regular folks. We think it's time that same kind of movement happened in the world of knowledge.
+        </p>
+
+          <p>
+          From a business perspective, you might call this a <a
+                href="https://en.wikipedia.org/wiki/Blue_Ocean_Strategy?oldformat=true">blue ocean strategy.</a> From a social perspective (ours), this is a chance to finally cash the cheques written by the Open Access movement. It’s a chance to open up access to the cutting edge of human knowledge to <em>all humans.</em> 🔓😀
         </p>
 
       </div>
@@ -205,9 +230,13 @@ Discover 20 million free-to-read scholarly papers, and understand them with our 
   }
 
   .landing-section {
-    font-size: 16px;
+    font-size: 20px;
+    line-height: 1.5;
     padding: 10px;
     margin-top: 30px;
+    h3 {
+      margin: 70px 0 10px;
+    }
     .content {
       max-width: 800px;
       margin: 0 auto;
@@ -217,6 +246,7 @@ Discover 20 million free-to-read scholarly papers, and understand them with our 
     &#partners {
       margin-bottom: 100px;
       h4 {
+
         margin-bottom: 0;
       }
       .attr {
