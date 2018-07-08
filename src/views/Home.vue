@@ -180,7 +180,7 @@ Discover 20 million free-to-read scholarly papers, and understand them with our 
       methods:{
         signup() {
             console.log("signup!")
-            alert("signup opens July 7th!")
+            alert("signup opens July 9th!")
         }
       }
   }
