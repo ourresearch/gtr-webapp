@@ -28,12 +28,7 @@
       },
       metaInfo: {
         // if no subcomponents specify a metaInfo.title, this title will be used
-        title: 'FindScience.org',
-        // all titles will be injected into this template
-        titleTemplate: '%s | FindScience.org',
-          link: [
-            { rel: 'favicon', href: 'favicon.png' }
-          ]
+        title: 'Get the research'
       }
   }
 </script>
