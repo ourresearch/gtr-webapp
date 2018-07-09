@@ -28,9 +28,10 @@ Discover 20 million free-to-read scholarly papers, and understand them with our 
             <!--<input type="text" placeholder="Your email" v-model="email" />-->
 
           <!--</div>-->
-          <!--<md-button class="md-raised md-primary main" v-on:click="signup">-->
-            <!--Get early access-->
-          <!--</md-button>-->
+
+          <md-button class="md-raised md-primary main" target="_blank" href="http://eepurl.com/dAtthz">
+            Get early access
+          </md-button>
 
 
 
@@ -51,7 +52,7 @@ Discover 20 million free-to-read scholarly papers, and understand them with our 
         <h3>
           <span class="icon">🤔</span>
           <span class="text">
-          Another search engine? Really?
+          Aren't there already lots of scholarly search tools?
 
           </span>
         </h3>
@@ -264,6 +265,10 @@ Discover 20 million free-to-read scholarly papers, and understand them with our 
     .banner-content {
       background: rgba(255,255,255,.99);
       margin-top: -20vh;
+      @media (max-width: 600px) {
+        margin-top: -40vh;
+      }
+
       /*border: 3px solid #333;*/
       box-shadow: 0 0 50px rgba(0,0,0,.3);
       color: #333;
@@ -306,18 +311,24 @@ Discover 20 million free-to-read scholarly papers, and understand them with our 
         /*@media (max-width: 600px) {*/
           /*font-size: 30px;*/
         /*}      */
-        max-width: 655px;
+        max-width: 500px;
         padding: 0;
         line-height: 1.3;
+        margin-bottom: 20px;
       }
 
       .cta {
 
-        .learn-more {
-          margin: 10px 0 10px 0;
+        .md-button {
+          margin: 10px 10px 10px 0;
+          &.md-primary {
+            background-color: $primary-color;
+          }
         }
 
 
+
+        /*
         .input {
           flex:2;
           input {
@@ -336,6 +347,7 @@ Discover 20 million free-to-read scholarly papers, and understand them with our 
           margin: 5px 10px;
           background-color: $primary-color;
         }
+        */
       }
 
 
@@ -348,6 +360,7 @@ Discover 20 million free-to-read scholarly papers, and understand them with our 
     font-size: 20px;
     line-height: 1.5;
     padding: 10px;
+    background: #fff;
 
     span.icon {
       font-size: 75%;

@@ -68,6 +68,9 @@
     h2 {
       margin-top: 50px;
     }
+    .md-button.md-primary {
+        background-color: $primary-color !important;
+    }
   }
   div.page {
     font-size: 18px;
