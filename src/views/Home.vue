@@ -57,7 +57,7 @@ Discover 20 million free-to-read scholarly papers, and understand them with our 
           </span>
         </h3>
         <p>
-          Yep. But this one's a little different: there are already a lot of ways for <em>academic researchers</em> to find academic literature&hellip;we’re building one for <em>everyone else.</em>
+          Yep. But this one's a little different: there are already plenty of ways for <em>academic researchers</em> to find academic literature&hellip;we’re building one for <em>everyone else.</em>
         </p>
 
         <p>
@@ -131,7 +131,6 @@ Discover 20 million free-to-read scholarly papers, and understand them with our 
                 href="https://twitter.com/gettheresearch">follow us</a> for updates. It's gonna be quite an adventure.
         </p>
         <p>
-          &mdash;
           <span class="icon">❤️</span>,
           <a href="https://twitter.com/researchremix">Heather</a> and
           <a href="https://twitter.com/jasonpriem">Jason</a>
