@@ -135,6 +135,12 @@ Discover 20 million free-to-read scholarly papers, and understand them with our 
           <a href="https://twitter.com/researchremix">Heather</a> and
           <a href="https://twitter.com/jasonpriem">Jason</a>
         </p>
+        <p>
+          View the press release:
+          <strong>
+            <a href="https://docs.google.com/document/d/e/2PACX-1vSMb-rt7ieIuJr9uvnTAIJUhOzhqGo06bC6nf6dvKdgmBPE9TGp5ttvqPyNuU2f55q6SdSXjjp6jBRL/pub">Impactstory awarded $850k to build open-access, AI-powered scholarly search engine, aims to help public find and understand research</a>
+          </strong>
+        </p>
 
       </div>
     </div>
