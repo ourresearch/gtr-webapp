@@ -176,8 +176,8 @@ Discover 20 million free-to-read scholarly papers, and understand them with our 
           <div class="partner core-partner">
             <h3>Internet Archive</h3>
             <div class="linkout">
-              <a href="https://www.bl.uk/">
-                https://www.bl.uk
+              <a href="https://archive.org/">
+                https://archive.org
                 <i class="fas fa-external-link-alt"></i>
               </a>
             </div>
@@ -194,8 +194,8 @@ Discover 20 million free-to-read scholarly papers, and understand them with our 
         <div class="partner">
           <h3>Open Knowledge Maps</h3>
           <div class="linkout">
-            <a href="https://www.bl.uk/">
-              https://www.bl.uk
+            <a href="https://openknowledgemaps.org/">
+              https://openknowledgemaps.org
               <i class="fas fa-external-link-alt"></i>
             </a>
           </div>
@@ -204,8 +204,8 @@ Discover 20 million free-to-read scholarly papers, and understand them with our 
         <div class="partner">
           <h3>Iqaluit Action Lab</h3>
           <div class="linkout">
-            <a href="https://www.bl.uk/">
-              https://www.bl.uk
+            <a href="https://iqaluitactionlab.com/">
+              https://iqaluitactionlab.com
               <i class="fas fa-external-link-alt"></i>
             </a>
           </div>
