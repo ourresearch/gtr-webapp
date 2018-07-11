@@ -67,13 +67,13 @@ Discover 20 million free-to-read scholarly papers, and understand them with our 
         <h3>
           <span class="icon">📑</span>
           <span class="text">
-          Problem: it's hard to access to <em>content</em>
+          Problem: it's hard to access <em>content</em>
 
           </span>
         </h3>
 
         <p>
-          Traditionaly, the scholarly literature was paywalled, cutting off access to the content. The Open Access movement is on the way to solving this: <a href="https://peerj.com/articles/4375/">Half of new articles</a> are now free to read somewhere, and that number is growing. The catch is that there are more than 50,000 different "somewheres" on web servers around the world, so we need a central index to find it. No one's done a good job of this yet (Google Scholar gets close, but it's aimed at specialists, not regular people. It's also 100% proprietary, closed-source, closed-data, and
+          Traditionally, the scholarly literature was paywalled, cutting off access to the content. The Open Access movement is on the way to solving this: <a href="https://peerj.com/articles/4375/">Half of new articles</a> are now free to read somewhere, and that number is growing. The catch is that there are more than 50,000 different "somewheres" on web servers around the world, so we need a central index to find it. No one's done a good job of this yet (Google Scholar gets close, but it's aimed at specialists, not regular people. It's also 100% proprietary, closed-source, closed-data, and
           <a href="https://www.wordstream.com/articles/retired-google-projects">subject to disappearing at Google’s whim.</a>)
         </p>
 
