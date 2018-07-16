@@ -80,7 +80,7 @@ Discover 20 million free-to-read scholarly papers, and understand them with our 
         <h3>
           <span class="icon">🌍</span>
           <span class="text">
-          Problem: it's hard to access to <em>context</em>
+          Problem: it's hard to access <em>context</em>
 
           </span>
         </h3>
@@ -97,7 +97,7 @@ Discover 20 million free-to-read scholarly papers, and understand them with our 
         </h3>
 
         <p>
-            Our plan: provide access to both <em>content</em> and <em>context,</em> for free, in one place. To do that, we’re going to bring together an open a database of OA papers with a suite AI-powered support tools we're calling an Explanation Engine.
+            Our plan: provide access to both <em>content</em> and <em>context,</em> for free, in one place. To do that, we’re going to bring together an open database of OA papers with a suite of AI-powered support tools we're calling an Explanation Engine.
         </p>
 
         <p>
