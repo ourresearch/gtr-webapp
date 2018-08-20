@@ -85,7 +85,7 @@ Discover 20 million free-to-read scholarly papers, and understand them with our 
           </span>
         </h3>
         <p>
-          <em>Context</em> is the stuff that makes an article understandable for a specialist, but gobbledegook to the rest of us. So that includes everything from field-specific jargon, to strategies for on how to skim to the key findings, to knowledge of core concepts like p-values. Specialists have access to context. Regular folks don't. This makes reading the scholarly literature like reading Shakespeare without notes: you get glimmers of beauty, but without some help it's mostly just frustrating.
+          <em>Context</em> is the stuff that makes an article understandable for a specialist, but gobbledegook to the rest of us. So that includes everything from field-specific jargon, to strategies for skimming to key findings, to knowledge of core concepts like p-values. Specialists have access to context. Regular folks don't. This makes reading the scholarly literature like reading Shakespeare without notes: you get glimmers of beauty, but without some help it's mostly just frustrating.
         </p>
 
         <h3>
@@ -119,7 +119,7 @@ Discover 20 million free-to-read scholarly papers, and understand them with our 
         </h3>
 
         <p>
-          When Microsoft launched <a href="https://en.wikipedia.org/wiki/Altair_BASIC?oldformat=true">Altair BASIC</a> for the new "personal computers," there were already plenty of programming environments for experts. But here was one accessible to <em>everyone else</em>. That was new. And ultimately it launched the PC revolution, bringing computing  the lives of regular folks. We think it's time that same kind of movement happened in the world of knowledge.
+          When Microsoft launched <a href="https://en.wikipedia.org/wiki/Altair_BASIC?oldformat=true">Altair BASIC</a> for the new "personal computers," there were already plenty of programming environments for experts. But here was one accessible to <em>everyone else</em>. That was new. And ultimately it launched the PC revolution, bringing computing to everyone's lives. We think it's time that same kind of movement happened in the world of knowledge.
         </p>
 
           <p>
