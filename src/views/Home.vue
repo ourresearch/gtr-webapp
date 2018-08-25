@@ -149,12 +149,7 @@ Discover 20 million free-to-read scholarly papers, and understand them with our 
     <div class="landing-section" id="partners">
       <div class="content">
         <div class="core-partners">
-          <h1>Our Partners</h1>
-          <p class="subhead">
-            We're working with some great partners for this project. Want to join in? <a
-                  href="mailto:team@impactstory.org">Drop us a line!</a> Here's the team so far:
-          </p>
-
+          <h1>Core Partners</h1>
 
           <div class="partner core-partner">
             <h3>The British Library</h3>
@@ -191,6 +186,22 @@ Discover 20 million free-to-read scholarly papers, and understand them with our 
           </div>
         </div>
 
+
+        <div class="assoc-partners">
+          <h1>Associated Partners</h1>
+          <p class="subhead">
+            We're sharing ideas and having conversations a fantastic community of allied organizations. Want to join in? <a
+                  href="mailto:team@impactstory.org">Drop us a line!</a>
+          </p>
+
+
+
+
+
+
+        </div>
+
+
         <div class="partner">
           <h3>Open Knowledge Maps</h3>
           <div class="linkout">
@@ -199,6 +210,13 @@ Discover 20 million free-to-read scholarly papers, and understand them with our 
               <i class="fas fa-external-link-alt"></i>
             </a>
           </div>
+            <div class="text">
+              <div class="quote">"At Open Knowledge Maps, our mission is to enable everyone in society to discover and benefit from scientific knowledge. This is why we are excited to support this effort and work together with ImpactStory towards reusing their powerful data and retrieval services in our visual discovery service."
+              </div>
+              <div class="attr">
+                &mdash;Peter Kraker, Founder and Chairman
+              </div>
+            </div>
         </div>
 
         <div class="partner">
@@ -206,6 +224,16 @@ Discover 20 million free-to-read scholarly papers, and understand them with our 
           <div class="linkout">
             <a href="https://iqaluitactionlab.com/">
               https://iqaluitactionlab.com
+              <i class="fas fa-external-link-alt"></i>
+            </a>
+          </div>
+        </div>
+
+        <div class="partner">
+          <h3>SPARC</h3>
+          <div class="linkout">
+            <a href="https://sparcopen.org/">
+              https://sparcopen.org/
               <i class="fas fa-external-link-alt"></i>
             </a>
           </div>
