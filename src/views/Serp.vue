@@ -62,7 +62,7 @@
                 let ret
                 ret = this.results.map(result => {
                     if (result.title === result.title.toUpperCase()) {
-                        result.title = _.capitalize(result.title)
+                        // result.title = _.capitalize(result.title)
                     }
                     return result
                 })
@@ -75,13 +75,15 @@
                 ret = ret.map(r => {
                     if (r.abstracts.length){
                         let abs = r.abstracts[0].abstract
-                        r.displayAbstract = _.truncate(
-                            r.abstracts[0].abstract,
-                            {
-                                length: 250,
-                                separator: /,? +/
-                            }
-                        )
+
+                        r.displayAbstract = r.abstracts[0].abstract
+                        // r.displayAbstract = _.truncate(
+                        //     r.abstracts[0].abstract,
+                        //     {
+                        //         length: 250,
+                        //         separator: /,? +/
+                        //     }
+                        // )
                     }
                     return r
                 })
