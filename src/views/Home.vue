@@ -281,6 +281,7 @@ Discover 20 million free-to-read scholarly papers, and understand them with our 
   $primary-color: #FF3D00;
 
 
+
   div.banner {
     /*background: url("../assets/stars.jpg") no-repeat;*/
     background: url("../assets/books.jpg") no-repeat;

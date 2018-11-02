@@ -1,5 +1,5 @@
 <template>
-    <md-toolbar class="main-header">
+    <md-toolbar class="main-header" v-if="!isOnBasepage">
         <div class="md-toolbar-row">
                 <h1>
                     OpenAlex
@@ -16,7 +16,12 @@
     import SearchBox from "./SearchBox";
     export default {
         components: {SearchBox},
-        name: 'MainHeader'
+        name: 'MainHeader',
+        computed: {
+          isOnBasepage(){
+              return window.location.pathname == "/"
+          }
+        }
     }
 </script>
 

@@ -1,6 +1,8 @@
 <template>
   <div id="app" class="container">
 
+    <main-header />
+
     <div class="container-wrapper md-layout-row">
       <router-view/>
     </div>
