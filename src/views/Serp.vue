@@ -146,9 +146,14 @@
 </script>
 
 <style scoped lang="scss">
+    .root {
+        min-height: 90vh;
+    }
+
     .main-col {
         max-width: 632px;
         margin-left: 150px;
+
         .results-descr {
             padding: 20px 0;
             font-size: 14px;
