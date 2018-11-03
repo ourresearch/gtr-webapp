@@ -4,7 +4,7 @@
         <div class="loaded" v-if="!loading">
             <div class="main-col">
                 <div class="results-descr">
-                    About {{ results.length }} results ({{ queryElapsed }} seconds)
+                    About {{ cleanResults.length }} results ({{ queryElapsed }} seconds)
                 </div>
                 <ul class="results-list">
                     <li v-for="result of cleanResults">
@@ -56,7 +56,8 @@
         computed: {
             apiUrl(){
                 let searchTerm = this.$route.params.q
-                let url = "https://api.unpaywall.org/search/" + searchTerm
+                // let url = "https://api.unpaywall.org/search/" + searchTerm
+                let url = "https://gtr-api.herokuapp.com/search/" + searchTerm
                 return url
             },
             cleanResults() {
@@ -74,18 +75,15 @@
                 })
 
                 ret = ret.map(r => {
-                    if (r.abstracts.length){
-                        let abs = r.abstracts[0].abstract
+                    r.displayAbstract = r.abstract
 
-                        r.displayAbstract = r.abstracts[0].abstract
-                        // r.displayAbstract = _.truncate(
-                        //     r.abstracts[0].abstract,
-                        //     {
-                        //         length: 250,
-                        //         separator: /,? +/
-                        //     }
-                        // )
-                    }
+                    // r.displayAbstract = _.truncate(
+                    //     r.abstracts[0].abstract,
+                    //     {
+                    //         length: 250,
+                    //         separator: /,? +/
+                    //     }
+                    // )
                     return r
                 })
 
@@ -122,6 +120,7 @@
                 this.loading = true
                 axios.get(this.apiUrl)
                     .then(resp => {
+                        console.log("got resuls back", resp.data.results)
                         this.results = resp.data.results
                         this.queryElapsed = resp.data.elapsed_seconds
                         this.loading = false

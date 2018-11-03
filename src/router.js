@@ -11,28 +11,31 @@ Vue.use(Router)
 Vue.use(Meta)
 
 
-
 export default new Router({
-  mode: "history",
-  routes: [
-    {
-      path: '/welcome',
-      component: Welcome
-    },
-      {
-      path: '/early-access',
-      component: EarlyAccess
-    },
-      {
-      path: '/',
-      // redirect: "/search"
-      component: Home
-    },
+    mode: "history",
+    routes: [
+        {
+            path: '/welcome',
+            component: Welcome
+        },
+        {
+            path: '/early-access',
+            component: EarlyAccess
+        },
+        {
+            path: '/',
+            // redirect: "/search"
+            component: Home
+        },
+        // {
+        //     path: '/paper/:doi',
+        //     component: Home
+        // },
 
-    {
-      path: '/search/:q',
-        name: 'search',
-      component: Serp
-    }
-  ]
+        {
+            path: '/search/:q',
+            name: 'search',
+            component: Serp
+        }
+    ]
 })
