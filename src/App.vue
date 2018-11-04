@@ -55,6 +55,12 @@
   body {
     background: #fff;
     font-size: 16px;
+    .container {
+      line-height: 1.3;
+      font-size: 16px;
+
+    }
+
     hr {
       opacity: .1;
     }

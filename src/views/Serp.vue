@@ -9,7 +9,7 @@
                 <ul class="results-list">
                     <li v-for="result of cleanResults">
                         <div class="line title">
-                            <a :href="result.doi_url" class="title">
+                            <a :href="'/paper/pmid/' + result.pmid" class="title">
                                 {{result.title}}
                             </a>
                         </div>
