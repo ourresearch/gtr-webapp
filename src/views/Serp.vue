@@ -4,7 +4,18 @@
         <div class="loaded" v-if="!loading">
             <div class="main-col">
                 <div class="results-descr">
-                    About {{ cleanResults.length }} results ({{ queryElapsed }} seconds)
+                    <span class="info">
+                        Showing {{ cleanResults.length }}
+                        <span v-if="showOnlyOa" class="filter">free-to-read</span>
+                        papers
+                    </span>
+                    <a class="show-oa-only" href="" v-if="!showOnlyOa" @click.prevent="showOnlyOa=true">
+                        (<i class="fas fa-unlock-alt"></i>
+                        Show only free-to-read papers)
+                    </a>
+                    <a class="show-everything" href="" v-if="showOnlyOa" @click.prevent="showOnlyOa=false">
+                        (Show all papers)
+                    </a>
                 </div>
                 <ul class="results-list">
                     <li v-for="result of cleanResults">
@@ -51,7 +62,8 @@
         data: () => ({
             loading: true,
             results: [],
-            queryElapsed: 0.0
+            queryElapsed: 0.0,
+            showOnlyOa: false
         }),
         computed: {
             apiUrl(){
@@ -61,8 +73,16 @@
                 return url
             },
             cleanResults() {
-                let ret
-                ret = this.results.map(result => {
+                let ret = this.results
+
+                if (this.showOnlyOa){
+                    ret = ret.filter(myResult => {
+                        return myResult.is_oa
+                    })
+                }
+
+
+                ret = ret.map(result => {
                     if (result.title === result.title.toUpperCase()) {
                         // result.title = _.capitalize(result.title)
                     }
@@ -75,15 +95,14 @@
                 })
 
                 ret = ret.map(r => {
-                    r.displayAbstract = r.abstract
 
-                    // r.displayAbstract = _.truncate(
-                    //     r.abstracts[0].abstract,
-                    //     {
-                    //         length: 250,
-                    //         separator: /,? +/
-                    //     }
-                    // )
+                    r.displayAbstract = _.truncate(
+                        r.abstract,
+                        {
+                            length: 250,
+                            separator: /,? +/
+                        }
+                    )
                     return r
                 })
 
@@ -154,9 +173,15 @@
         margin-left: 150px;
 
         .results-descr {
-            padding: 20px 0;
-            font-size: 14px;
+            padding: 30px 0;
             color: #666;
+            .info {
+                margin-right: 10px;
+                font-size: 120%;
+            }
+            a {
+                font-size: 14px;
+            }
 
         }
         ul.results-list {
