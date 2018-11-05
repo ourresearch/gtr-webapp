@@ -2,34 +2,46 @@
     <div class="root">
 
         <div class="loaded" v-if="!loading">
-            <div class="main-col">
-                <div class="paper-meta">
-                    <h1>{{paper.title}}</h1>
-                    <div class="metdata-row publication">
-                        <span class="year">{{paper.year}}</span> in
-                        <span class="journal-name">{{paper.journal_name}}</span>
-                    </div>
-                    <div class="metadata-row authors">
-                        By <span class="author-lastnames">{{paper.author_lastnames.join(", ")}}</span>
-                    </div>
-                    <div class="metadata-row access">
-
-                    </div>
+            <div class="paper-meta">
+                <h1>{{paper.title}}</h1>
+                <div class="metdata-row publication">
+                    <span class="year">{{paper.year}}</span> in
+                    <span class="journal-name">{{paper.journal_name}}</span>
+                </div>
+                <div class="metadata-row authors">
+                    By <span class="author-lastnames">{{paper.author_lastnames.join(", ")}}</span>
+                </div>
+                <div class="metadata-row access">
 
                 </div>
-                <div class="abstract">
-                    <span class="abstract-chunk-container" v-for="chunk in abstractChunks">
-                        <a class="chunk entity" v-html="chunk.rawName" v-if="chunk.nerd_selection_score > 0.5" href=""></a>
-                        <span class="chunk plaintext" v-html="chunk.rawName" v-if="chunk.nerd_selection_score <= 0.5"></span>
-                    </span>
-                </div>
 
-                <div class="page-bottom">
-                    <a :href="apiUrl">
-                        View in API.
-                    </a>
-                </div>
             </div>
+
+
+            <div class="paper-content">
+                <div class="main-col">
+                    <div class="abstract">
+                        <span class="abstract-chunk-container" v-for="chunk in abstractChunks">
+                            <a class="chunk entity" v-html="chunk.rawName" v-if="chunk.nerd_selection_score > 0.5" href="" :click="selectEntity(chunk)"></a>
+                            <span class="chunk plaintext" v-html="chunk.rawName" v-if="chunk.nerd_selection_score <= 0.5"></span>
+                        </span>
+                    </div>
+
+                </div>
+
+                <div class="selected-entity">
+                    {{selectedEntity}}
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="page-bottom">
+            <a :href="apiUrl">
+                View in API.
+            </a>
         </div>
 
         <div class="loading" v-if="loading">
@@ -48,7 +60,8 @@
         name: "Paper",
         data: () => ({
             loading: true,
-            paper: {}
+            paper: {},
+            selectedEntity: {}
         }),
         computed: {
             apiUrl(){
@@ -76,6 +89,8 @@
                 let chunks = []
                 let cursorIndex = 0
                 entities.forEach(function(entity, index){
+
+                    // between-entity chunks
                     if (entity.offsetStart > 0) {
                         let plaintextChunk = {
                             rawName: abstract.slice(cursorIndex, entity.offsetStart),
@@ -83,7 +98,24 @@
                         }
                         chunks.push(plaintextChunk)
                     }
-                    chunks.push(entity)
+
+                    // hydrate and save the entity chunks
+                    // todo: centralize the > 0.5 stuff which is currently both here an in the templates
+                    if (entity.nerd_selection_score > .5){
+                        let nerdUrl = "http://cloud.science-miner.com/nerd/service/kb/concept/" + entity.wikipediaExternalRef + "?lang=en"
+                        axios.get(nerdUrl)
+                            .then(resp => {
+                                console.log("got NERD entity response back", resp)
+                                entity.about = resp.data
+                            })
+                            .catch(e => {
+                                console.log("error from NERD server", e)
+                            })
+
+                        chunks.push(entity)
+                    }
+
+                    // update the cursor
                     cursorIndex = entity.offsetEnd
                 })
 
@@ -98,6 +130,11 @@
             }
         },
         methods: {
+            selectEntity(entity){
+                console.log("selecting entity", entity)
+                this.selectedEntity = entity
+                return false
+            },
             doQuery(){
                 console.log("doing query")
                 this.loading = true

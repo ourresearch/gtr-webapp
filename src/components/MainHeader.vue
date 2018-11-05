@@ -1,9 +1,9 @@
 <template>
     <md-toolbar class="main-header" v-if="!isOnBasepage">
         <div class="md-toolbar-row">
-                <h1>
-                    OpenAlex
-                </h1>
+                <a class="site-logo" href="/search">
+                    <img src="../assets/get-the-research-logo.png" alt="">
+                </a>
                 <search-box/>
         </div>
     </md-toolbar>
@@ -26,12 +26,9 @@
 </script>
 
 <style scoped lang="scss">
-    h1 {
-        width: 140px;
-        margin:0;
+    a.site-logo {
+        margin:0 20px 0;
         display:block;
-        font-size: 20px;
-        text-align: center;
     }
 
 </style>
