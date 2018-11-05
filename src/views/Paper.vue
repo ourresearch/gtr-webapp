@@ -19,30 +19,40 @@
 
 
             <div class="paper-content">
-                <div class="main-col">
-                    <div class="abstract">
-                        <span class="abstract-chunk-container" v-for="chunk in abstractChunks">
-                            <a class="chunk entity" v-html="chunk.rawName" v-if="chunk.nerd_selection_score > 0.5" href="" :click="selectEntity(chunk)"></a>
-                            <span class="chunk plaintext" v-html="chunk.rawName" v-if="chunk.nerd_selection_score <= 0.5"></span>
+                <div class="abstract">
+                    <span class="abstract-chunk-container" v-for="chunk in abstractChunks">
+                        <a class="chunk entity" v-html="chunk.rawName" v-if="chunk.nerd_selection_score > 0.5" href="" @click.prevent="selectEntity(chunk)"></a>
+                        <span class="chunk plaintext" v-html="chunk.rawName" v-if="chunk.nerd_selection_score <= 0.5"></span>
+                    </span>
+                </div>
+
+
+                <div class="selected-entity" v-if="selectedEntity">
+                    <div class="header">
+                        <span class="term">
+                            {{selectedEntity.preferredTerm}}
+                        </span>
+                    </div>
+                    <div class="body">
+                        <img :src="selectedEntity.imgUrl" alt="">
+                        <span class="definition" v-html="selectedEntity.definition">
                         </span>
                     </div>
 
-                </div>
 
-                <div class="selected-entity">
-                    {{selectedEntity}}
+                    <!--<span class="long">{{selectedEntity.longDefinition}}</span>-->
                 </div>
 
             </div>
 
+            <div class="page-bottom">
+                <a :href="apiUrl">
+                    View in API.
+                </a>
+            </div>
         </div>
 
 
-        <div class="page-bottom">
-            <a :href="apiUrl">
-                View in API.
-            </a>
-        </div>
 
         <div class="loading" v-if="loading">
             <md-progress-bar md-mode="indeterminate"></md-progress-bar>
@@ -106,11 +116,53 @@
                         axios.get(nerdUrl)
                             .then(resp => {
                                 console.log("got NERD entity response back", resp)
-                                entity.about = resp.data
+                                let def = resp.data.definitions[0].definition
+
+                                // first we handle links where wiki markup is showing one thing
+                                // but linking to another. they do that like this [[link_to_this|show_this]]
+                                let re = /\[\[([^\]]+)\|([^\]]+)\]\]/gi
+                                def = def.replace(
+                                    re,
+                                    "<a href='https://en.wikipedia.org/wiki/$1'>$2</a>"
+                                )
+
+                                // then we handle the simpler kind of link where the thing inside the
+                                // square brackets is both what we show and what we link to
+
+                                let reSimple = /\[\[([^\]]+)\]\]/gi
+                                def = def.replace(
+                                    reSimple,
+                                    "<a href='https://en.wikipedia.org/wiki/$1'>$1</a>"
+                                )
+                                entity.definition = def
+
+                                // for debugging
+                                entity.longDefinition = resp.data.definitions[0].definition
+
+                                // take note of the preferred term, we'll use this in the display.
+                                entity.preferredTerm = resp.data.preferredTerm
                             })
                             .catch(e => {
                                 console.log("error from NERD server", e)
                             })
+
+                        let wikiImgUrl = "https://en.wikipedia.org/w/api.php?action=query&prop=pageimages&format=json&origin=*&pithumbsize=200&pageids=" + entity.wikipediaExternalRef
+                        axios.get(wikiImgUrl)
+                            .then(resp => {
+                                console.log("got wikipedia image URL back", resp)
+                                let page = Object.values(resp.data.query.pages)[0] // there should only ever be one page
+                                console.log("got this wiki page response:", page)
+
+
+                                if (page.thumbnail){
+                                    entity.imgUrl = page.thumbnail.source
+                                }
+                            })
+                            .catch(e => {
+                                console.log("error from wikipedia api", e)
+                            })
+
+
 
                         chunks.push(entity)
                     }
@@ -173,29 +225,41 @@
         min-height: 90vh;
     }
 
-    .main-col {
-        max-width: 632px;
-        margin-left: 150px;
+    .paper-meta {
 
-        .paper-meta {
-
-            h1 {
-                margin: 50px 0 0;
-            }
-
-        }
-
-        .abstract {
-            .chunk {
-                &.entity {
-                    text-decoration: underline;
-                }
-            }
+        h1 {
+            margin: 50px 0 0;
         }
 
     }
-</style>
+    .paper-content {
+        display: flex;
+        .abstract {
+            max-width: 600px;
+            margin: 0 20px;
+        }
+        .selected-entity {
+            max-width: 400px;
+            .header {
+                font-weight: bold;
+                font-size: 120%;
+                color: #fff;
+                background: #555;
+                padding: 10px 20px;
+            }
+            .body {
+                padding: 10px 20px;
+                img {
+                    float: right;
+                    margin: 10px;
+                }
+            }
 
+            margin: 0 20px;
+            border: 1px solid #333;
+        }
+    }
+</style>
 
 
 
