@@ -12,9 +12,35 @@
                     By <span class="author-lastnames">{{paper.author_lastnames.join(", ")}}</span>
                 </div>
                 <div class="metadata-row access">
+                    <div class="paywalled linkout" v-if="!paper.best_version">
+                        {{paper.doi_url}}
 
+                        <a :href="paper.doi_url">
+                            <i class="fas fa-lock"></i>
+                            Full article on publisher site (paywalled)
+                        </a>
+                    </div>
+                    <div class="oa linkout" v-if="paper.best_version">
+
+                        <a :href="paper.doi_url" v-if="paper.best_host=='publisher'">
+                            <i class="fas fa-unlock-alt"></i>
+                            Full article on publisher site (open access)
+                        </a>
+
+                        <a :href="paper.doi_url" v-if="paper.best_host=='repository'">
+                            <i class="fas fa-unlock-alt"></i>
+                            Full article shared by author (open access)
+                        </a>
+
+                    </div>
+
+                    <div class="extra">
+                        <a :href="apiUrl">
+                            <i class="fa fa-cogs"></i>
+                            API
+                        </a>
+                    </div>
                 </div>
-
             </div>
 
 
@@ -32,6 +58,7 @@
                         <span class="term">
                             {{selectedEntity.preferredTerm}}
                         </span>
+                        <span class="close" @click="selectedEntity=false">&times;</span>
                     </div>
                     <div class="body">
                         <img :src="selectedEntity.imgUrl" alt="">
@@ -45,11 +72,6 @@
 
             </div>
 
-            <div class="page-bottom">
-                <a :href="apiUrl">
-                    View in API.
-                </a>
-            </div>
         </div>
 
 
@@ -71,7 +93,7 @@
         data: () => ({
             loading: true,
             paper: {},
-            selectedEntity: {}
+            selectedEntity: false
         }),
         computed: {
             apiUrl(){
@@ -222,43 +244,74 @@
 
 <style scoped lang="scss">
     .root {
-        min-height: 90vh;
+        min-height: 100vh;
     }
 
-    .paper-meta {
+    .loaded {
+        margin-left: 150px;
+        margin-bottom: 100px;
+        max-width: 1100px;
+        font-size: 16px;
+        .paper-meta {
+            margin-bottom: 50px;
+            line-height: 1.5;
 
-        h1 {
-            margin: 50px 0 0;
-        }
-
-    }
-    .paper-content {
-        display: flex;
-        .abstract {
-            max-width: 600px;
-            margin: 0 20px;
-        }
-        .selected-entity {
-            max-width: 400px;
-            .header {
-                font-weight: bold;
-                font-size: 120%;
-                color: #fff;
-                background: #555;
-                padding: 10px 20px;
+            h1 {
+                margin: 50px 0 0;
             }
-            .body {
-                padding: 10px 20px;
-                img {
-                    float: right;
-                    margin: 10px;
+            .publication {
+                color: #1B5E20;
+            }
+            .metadata-row.access {
+                display: flex;
+                justify-content: space-between;
+
+                .extra {
+                    margin-right: 50px;
+                    a {
+                        color: #999;
+                    }
                 }
             }
 
-            margin: 0 20px;
-            border: 1px solid #333;
         }
+        .paper-content {
+            display: flex;
+            line-height: 1.5;
+            font-size: 17px;
+            .abstract {
+                max-width: 600px;
+                margin-right: 20px;
+            }
+            .selected-entity {
+                max-width: 400px;
+                .header {
+                    font-weight: bold;
+                    font-size: 120%;
+                    color: #fff;
+                    background: #555;
+                    padding: 10px 20px;
+                    display: flex;
+                    justify-content: space-between;
+                    .close {
+                        cursor: pointer;
+                    }
+                }
+                .body {
+                    padding: 10px 20px;
+                    img {
+                        float: right;
+                        margin: 10px;
+                    }
+                }
+
+                margin: 0 20px;
+                border: 1px solid #333;
+            }
+        }
+
     }
+
 </style>
 
 
