@@ -217,10 +217,6 @@
                         console.log("got paper back", resp.data)
                         this.paper = resp.data
                         this.loading = false
-
-                        // temp hack while we wait for author names to come back from server.
-                        this.paper.author_lastnames = ["Piwowar", "Priem", "Campbell"]
-
                     })
                     .catch(e => {
                         console.log("error from server", e)
