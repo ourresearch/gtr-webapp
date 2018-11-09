@@ -22,12 +22,12 @@
                     </div>
                     <div class="oa linkout" v-if="paper.best_version">
 
-                        <a :href="paper.doi_url" v-if="paper.best_host=='publisher'">
+                        <a :href="paper.oa_url" v-if="paper.best_host=='publisher'">
                             <i class="fas fa-unlock-alt"></i>
                             Full article on publisher site (open access)
                         </a>
 
-                        <a :href="paper.doi_url" v-if="paper.best_host=='repository'">
+                        <a :href="paper.oa_url" v-if="paper.best_host=='repository'">
                             <i class="fas fa-unlock-alt"></i>
                             Full article shared by author (open access)
                         </a>
