@@ -99,7 +99,7 @@
                 ret = ret.map(r => {
 
                     r.displayAbstract = _.truncate(
-                        r.abstract,
+                        r.short_abstract,
                         {
                             length: 500,
                             separator: /,? +/
