@@ -30,7 +30,9 @@
                             <span class="journal">{{ result.journal_name }}</span>
                         </div>
                         <div class="line authors">
+                            <!-- HAP see what it looks like with no authors
                             {{ result.displayAuthors }}
+                            -->
                         </div>
                         <div class="line abstract" v-if="result.displayAbstract">
                             {{ result.displayAbstract }}
@@ -118,14 +120,16 @@
                     return r
                 })
 
-                ret = ret.sort((a, b) => {
-                    if (a.displayAbstract) {
-                        return -1
-                    }
-                    else {
-                        return 1
-                    }
-                })
+                // HAP taking this out, i think it messes up the sorting, and
+                // now the backend only returns things with abstracts
+                // ret = ret.sort((a, b) => {
+                //     if (a.displayAbstract) {
+                //         return -1
+                //     }
+                //     else {
+                //         return 1
+                //     }
+                // })
 
                 return ret
 
