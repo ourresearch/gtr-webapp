@@ -101,7 +101,7 @@
                     r.displayAbstract = _.truncate(
                         r.abstract,
                         {
-                            length: 250,
+                            length: 500,
                             separator: /,? +/
                         }
                     )
@@ -196,6 +196,7 @@
                 margin-bottom: 50px;
                 .line {
                     &.title {
+                        color: #1B5E20;
                         font-size: 18px;
                         line-height: 1.3;
                     }
@@ -212,6 +213,7 @@
                     }
                     &.abstract {
                         font-size: 14px;
+                        margin-top: 7px;
                     }
                 }
             }
