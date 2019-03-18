@@ -48,7 +48,7 @@
                 <div class="abstract">
                     <span class="abstract-chunk-container" v-for="chunk in abstractChunks">
                         <a class="chunk entity" v-html="chunk.rawName" v-if="chunk.nerd_selection_score > 0.5" href="" @click.prevent="selectEntity(chunk)"></a>
-                        <span class="chunk plaintext" v-html="chunk.rawName" v-if="chunk.nerd_selection_score <= 0.5"></span>
+                        <span class="chunk plaintext" v-if="chunk.nerd_selection_score <= 0.5">{{chunk.rawName}}</span>
                     </span>
                 </div>
 

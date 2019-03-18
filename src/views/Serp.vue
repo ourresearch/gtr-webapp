@@ -30,7 +30,9 @@
                             <span class="journal">{{ result.journal_name }}</span>
                         </div>
                         <div class="line authors">
+                            <!-- HAP see what it looks like with no authors
                             {{ result.displayAuthors }}
+                            -->
                         </div>
                         <div class="line abstract" v-if="result.displayAbstract">
                             {{ result.displayAbstract }}
@@ -97,9 +99,9 @@
                 ret = ret.map(r => {
 
                     r.displayAbstract = _.truncate(
-                        r.abstract,
+                        r.short_abstract,
                         {
-                            length: 250,
+                            length: 500,
                             separator: /,? +/
                         }
                     )
@@ -118,14 +120,16 @@
                     return r
                 })
 
-                ret = ret.sort((a, b) => {
-                    if (a.displayAbstract) {
-                        return -1
-                    }
-                    else {
-                        return 1
-                    }
-                })
+                // HAP taking this out, i think it messes up the sorting, and
+                // now the backend only returns things with abstracts
+                // ret = ret.sort((a, b) => {
+                //     if (a.displayAbstract) {
+                //         return -1
+                //     }
+                //     else {
+                //         return 1
+                //     }
+                // })
 
                 return ret
 
@@ -195,6 +199,7 @@
                 margin-bottom: 50px;
                 .line {
                     &.title {
+                        color: #1B5E20;
                         font-size: 18px;
                         line-height: 1.3;
                     }
@@ -211,6 +216,7 @@
                     }
                     &.abstract {
                         font-size: 14px;
+                        margin-top: 7px;
                     }
                 }
             }
