@@ -279,12 +279,24 @@
             display: flex;
             line-height: 1.5;
             font-size: 17px;
+
+
             .abstract {
-                max-width: 600px;
+                max-width: 500px;
                 margin-right: 20px;
             }
             .selected-entity {
-                max-width: 400px;
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: #fff;
+                z-index: 9999;
+                @media (min-width: 600px){
+                    position: static;
+                    max-width: 500px;
+                }
                 .header {
                     font-weight: bold;
                     font-size: 120%;
@@ -302,10 +314,10 @@
                     img {
                         float: right;
                         margin: 10px;
+                        max-width: 150px;
                     }
                 }
 
-                margin: 0 20px;
                 border: 1px solid #333;
             }
         }
