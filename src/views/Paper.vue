@@ -244,7 +244,11 @@
     }
 
     .loaded {
-        margin-left: 150px;
+        margin: 10px 10px 100px;
+        @media (min-width: 600px) {
+            margin-left: 150px;
+          }
+        /*margin-left: 150px;*/
         margin-bottom: 100px;
         max-width: 1100px;
         font-size: 16px;

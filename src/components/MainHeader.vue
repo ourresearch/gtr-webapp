@@ -1,11 +1,11 @@
 <template>
     <md-toolbar class="main-header" v-if="!isOnBasepage">
-        <div class="md-toolbar-row">
+        <div class="logo">
                 <a class="site-logo" href="/search">
                     <img src="../assets/get-the-research-logo.png" alt="">
                 </a>
-                <search-box/>
         </div>
+        <search-box/>
     </md-toolbar>
 
 
@@ -26,10 +26,13 @@
 </script>
 
 <style scoped lang="scss">
-    a.site-logo {
-        margin:0 20px 0;
-        display:block;
+    .main-header {
+        padding: 10px;
+        .logo {
+            margin-right: 20px;
+        }
     }
+
 
 </style>
 

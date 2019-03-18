@@ -170,7 +170,10 @@
 
     .main-col {
         max-width: 632px;
-        margin-left: 150px;
+        margin: 10px 10px 100px;
+        @media (min-width: 600px) {
+            margin-left: 150px;
+        }
 
         .results-descr {
             padding: 30px 0;

@@ -39,15 +39,16 @@
 
 <style scoped lang="scss">
     div.search-box {
-        width: 100%;
         max-width: 500px;
         padding: 20px 0;
         border: none !important;
         display:flex;
+        width: 100%;
         input {
+            width: 100%;
             height: inherit;
             outline:none; // clear browser styles
-            width: 500px;
+            max-width: 500px;
             font-size: 18px;
             padding: 10px 20px;
             border: 1px solid #aaa;
