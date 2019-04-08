@@ -50,10 +50,10 @@
             outline:none; // clear browser styles
             max-width: 500px;
             font-size: 18px;
-            padding: 10px 20px;
+            padding: 15px 25px;
             border: 1px solid #aaa;
-            border-radius: 2px;
-            box-shadow: 0px 2px 2px rgba(0,0,0,.2);
+            border-radius: 50px;
+            box-shadow: 0px 2px 2px rgba(0,0,0,.05);
             transition: box-shadow 0.3s;
             &:hover {
                 box-shadow: 0px 2px 6px rgba(0,0,0,.4);
