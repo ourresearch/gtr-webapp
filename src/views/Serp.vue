@@ -54,7 +54,26 @@
                                 <!--{{ result.displayAbstract }}-->
                             <!--</div>-->
                         <div class="zoom" v-if="zoomedResult && result.insertZoomAfterMe">
-                            <h1>zoom: {{zoomedResult.title}}</h1>
+                            <div class="col about">
+                                <h1>{{zoomedResult.title}}</h1>
+                                <div class="line authors" v-show="zoomedResult.displayAuthors">
+                                    {{zoomedResult.displayAuthors}}
+                                </div>
+                                <div class="line source">
+                                    <span class="date">{{ zoomedResult.year }}</span>
+                                    <span class="journal">{{ zoomedResult.journal_name }}</span>
+                                </div>
+                                <div class="abstract">
+                                    {{ zoomedResult.displayAbstract }}
+                                </div>
+
+
+                            </div>
+                            <div class="col anno">
+                                <div class="instructions">
+                                    Click underlined words to learn more.
+                                </div>
+                            </div>
 
                         </div>
 
@@ -279,6 +298,14 @@
             .zoom {
                 width: 100%;
                 background: #ddd;
+                padding: 20px;
+                display: flex;
+                h1 {
+                    margin: 0;
+                }
+                .col {
+                    flex: 1;
+                }
             }
 
 
