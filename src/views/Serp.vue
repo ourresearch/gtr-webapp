@@ -20,24 +20,25 @@
                 <div class="results-list">
 
                     <template v-for="(result, index) of cleanResults">
-                        <div class="result">
-                            <div class="card" @click="articleZoom(result)">
-                                <div class="img">
-                                    <img src="https://picsum.photos/300/200?random" alt="">
+                        <div class="card"
+                             :style="{width: cardWidth+'px'}"
+                             @click="articleZoom(result)">
+                            <div class="img">
+                                <img src="https://picsum.photos/300/200?random" alt="">
+                            </div>
+                            <div class="content">
+                                <div class="line title">
+                                    {{result.title}}
                                 </div>
-                                <div class="content">
-                                    <div class="line title">
-                                        {{result.title}}
-                                    </div>
-                                    <div class="line source">
-                                        <span class="date">{{ result.year }}</span>
+                                <div class="line source">
+                                    <span class="date">{{ result.year }}</span>
 
-                                        <span class="journal">{{ result.journal_name }}</span>
-                                    </div>
-
+                                    <span class="journal">{{ result.journal_name }}</span>
                                 </div>
 
                             </div>
+
+                        </div>
 
 
 
@@ -52,8 +53,7 @@
                             <!--<div class="line abstract" v-if="result.displayAbstract">-->
                                 <!--{{ result.displayAbstract }}-->
                             <!--</div>-->
-                        </div>
-                        <div class="zoom" v-if="zoomedResult && insertZoomAfterIndex(index)">
+                        <div class="zoom" v-if="zoomedResult && result.insertZoomAfterMe">
                             <h1>zoom: {{zoomedResult.title}}</h1>
 
                         </div>
@@ -84,6 +84,7 @@
 <script>
     import axios from 'axios'
     import _ from 'lodash'
+    import {searchResp} from "../searchResp";
 
     export default {
         name: "Serp",
@@ -92,7 +93,9 @@
             results: [],
             queryElapsed: 0.0,
             showOnlyOa: false,
-            zoomedResult: null
+            zoomedResult: null,
+            cardWidth: 260,
+            rowWidth: null
         }),
         computed: {
             apiUrl(){
@@ -167,30 +170,51 @@
         methods: {
             articleZoom(resultToZoomOn) {
                 this.zoomedResult = resultToZoomOn
-                this.zoomedResult.index = 2
+                this.zoomedResult.index = this.results.findIndex(result => {
+                    return result.doi == resultToZoomOn.doi
+                })
 
                 console.log("zoom!", resultToZoomOn)
-            },
-            insertZoomAfterIndex(indexToTest){
-              if (indexToTest == 3) {
-                  return true
-              }
+
+                let cardsPerRow = 4
+                this.results.forEach(result => {
+                    result.insertZoomAfterMe = false
+                })
+
+                for (let i=0; i<this.results.length; i++){
+                    console.log("checking result")
+                    let cardNumber = i + 1
+                    if (cardNumber % cardsPerRow === 0 && i >= this.zoomedResult.index){
+                        this.results[i].insertZoomAfterMe = true
+                        break
+                    }
+                }
+
+
+
             },
             doQuery(){
-                console.log("doing query")
-                this.loading = true
-                axios.get(this.apiUrl)
-                    .then(resp => {
-                        console.log("got resuls back", resp.data.results)
-                        this.results = resp.data.results
-                        this.queryElapsed = resp.data.elapsed_seconds
-                        this.loading = false
-                    })
-                    .catch(e => {
-                        console.log("error from server", e)
-                        this.loading = false
-                        this.queryElapsed = resp.data.elapsed_seconds
-                    })
+
+                // mocking this out for now because API too slow
+                this.results = searchResp.results
+                this.loading  = false
+
+                console.log("results", this.results)
+
+
+                // this.loading = true
+                // axios.get(this.apiUrl)
+                //     .then(resp => {
+                //         console.log("got resuls back", resp.data.results)
+                //         this.results = resp.data.results
+                //         this.queryElapsed = resp.data.elapsed_seconds
+                //         this.loading = false
+                //     })
+                //     .catch(e => {
+                //         console.log("error from server", e)
+                //         this.loading = false
+                //         this.queryElapsed = resp.data.elapsed_seconds
+                //     })
             }
         },
         mounted() {
@@ -234,62 +258,54 @@
             margin: 10px 0 0;
             display: flex;
             flex-wrap: wrap;
-            div.result{
-                list-style-type: none;
-                margin: 10px;
-                padding: 10px;
+            div.card {
+                padding: 20px;
+                .img {
 
-
-
-                div.card {
-                    width: 200px;
-                    .img {
-
-                    }
-                    .content {
-                        margin-top: 10px;
-                        .source {
-                            color: #999;
-                            font-size: 12px;
-                            .journal {
-                                margin-left: 3px;
-                                font-style: italic;
-                            }
+                }
+                .content {
+                    margin-top: 10px;
+                    .source {
+                        color: #999;
+                        font-size: 12px;
+                        .journal {
+                            margin-left: 3px;
+                            font-style: italic;
                         }
                     }
-
-                }
-                .zoom {
-                    width: 100%;
-                    background: #ddd;
                 }
 
+            }
+            .zoom {
+                width: 100%;
+                background: #ddd;
+            }
 
 
-                /*margin-bottom: 50px;*/
-                /*.line {*/
-                    /*&.title {*/
-                        /*color: #1B5E20;*/
-                        /*font-size: 18px;*/
-                        /*line-height: 1.3;*/
-                    /*}*/
-                    /*&.source {*/
-                        /*color: #1B5E20;*/
-                        /*font-size: 14px;*/
-                        /*span.date {*/
-                            /*margin-right: 5px;*/
-                        /*}*/
-                    /*}*/
-                    /*&.authors {*/
-                        /*font-size: 14px;*/
-                        /*color: #666;*/
-                    /*}*/
-                    /*&.abstract {*/
-                        /*font-size: 14px;*/
-                        /*margin-top: 7px;*/
+
+            /*margin-bottom: 50px;*/
+            /*.line {*/
+                /*&.title {*/
+                    /*color: #1B5E20;*/
+                    /*font-size: 18px;*/
+                    /*line-height: 1.3;*/
+                /*}*/
+                /*&.source {*/
+                    /*color: #1B5E20;*/
+                    /*font-size: 14px;*/
+                    /*span.date {*/
+                        /*margin-right: 5px;*/
                     /*}*/
                 /*}*/
-            }
+                /*&.authors {*/
+                    /*font-size: 14px;*/
+                    /*color: #666;*/
+                /*}*/
+                /*&.abstract {*/
+                    /*font-size: 14px;*/
+                    /*margin-top: 7px;*/
+                /*}*/
+            /*}*/
         }
     }
 </style>
