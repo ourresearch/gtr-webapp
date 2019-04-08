@@ -17,40 +17,54 @@
                         (Show all papers)
                     </a>
                 </div>
-                <ul class="results-list">
-                    <li v-for="result of cleanResults">
-                        <div class="card">
-                            <div class="img">
-                                <img src="https://picsum.photos/300/200?random" alt="">
-                            </div>
-                            <div class="content">
-                                <div class="line title">
-                                    {{result.title}}
-                                </div>
-                                <div class="line source">
-                                    <span class="date">{{ result.year }}</span>
+                <div class="results-list">
 
-                                    <span class="journal">{{ result.journal_name }}</span>
+                    <template v-for="(result, index) of cleanResults">
+                        <div class="result">
+                            <div class="card" @click="articleZoom(result)">
+                                <div class="img">
+                                    <img src="https://picsum.photos/300/200?random" alt="">
+                                </div>
+                                <div class="content">
+                                    <div class="line title">
+                                        {{result.title}}
+                                    </div>
+                                    <div class="line source">
+                                        <span class="date">{{ result.year }}</span>
+
+                                        <span class="journal">{{ result.journal_name }}</span>
+                                    </div>
+
                                 </div>
 
                             </div>
+
+
+
+
+
+
+                            <!--<div class="line authors">-->
+                                <!--&lt;!&ndash; HAP see what it looks like with no authors-->
+                                <!--{{ result.displayAuthors }}-->
+                                <!--&ndash;&gt;-->
+                            <!--</div>-->
+                            <!--<div class="line abstract" v-if="result.displayAbstract">-->
+                                <!--{{ result.displayAbstract }}-->
+                            <!--</div>-->
+                        </div>
+                        <div class="zoom" v-if="zoomedResult && insertZoomAfterIndex(index)">
+                            <h1>zoom: {{zoomedResult.title}}</h1>
 
                         </div>
 
 
 
 
+                    </template>
 
-                        <!--<div class="line authors">-->
-                            <!--&lt;!&ndash; HAP see what it looks like with no authors-->
-                            <!--{{ result.displayAuthors }}-->
-                            <!--&ndash;&gt;-->
-                        <!--</div>-->
-                        <!--<div class="line abstract" v-if="result.displayAbstract">-->
-                            <!--{{ result.displayAbstract }}-->
-                        <!--</div>-->
-                    </li>
-                </ul>
+
+                </div>
                 <div class="page-bottom">
                     <a :href="apiUrl">
                         View in API.
@@ -77,7 +91,8 @@
             loading: true,
             results: [],
             queryElapsed: 0.0,
-            showOnlyOa: false
+            showOnlyOa: false,
+            zoomedResult: null
         }),
         computed: {
             apiUrl(){
@@ -150,6 +165,17 @@
             }
         },
         methods: {
+            articleZoom(resultToZoomOn) {
+                this.zoomedResult = resultToZoomOn
+                this.zoomedResult.index = 2
+
+                console.log("zoom!", resultToZoomOn)
+            },
+            insertZoomAfterIndex(indexToTest){
+              if (indexToTest == 3) {
+                  return true
+              }
+            },
             doQuery(){
                 console.log("doing query")
                 this.loading = true
@@ -203,15 +229,16 @@
             }
 
         }
-        ul.results-list {
+        div.results-list {
             padding: 0;
             margin: 10px 0 0;
             display: flex;
             flex-wrap: wrap;
-            li{
+            div.result{
                 list-style-type: none;
                 margin: 10px;
                 padding: 10px;
+
 
 
                 div.card {
@@ -220,11 +247,22 @@
 
                     }
                     .content {
-
+                        margin-top: 10px;
+                        .source {
+                            color: #999;
+                            font-size: 12px;
+                            .journal {
+                                margin-left: 3px;
+                                font-style: italic;
+                            }
+                        }
                     }
 
                 }
-
+                .zoom {
+                    width: 100%;
+                    background: #ddd;
+                }
 
 
 
