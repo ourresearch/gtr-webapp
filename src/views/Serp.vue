@@ -19,24 +19,36 @@
                 </div>
                 <ul class="results-list">
                     <li v-for="result of cleanResults">
-                        <div class="line title">
-                            <a :href="'/paper/pmid/' + result.pmid" class="title">
-                                {{result.title}}
-                            </a>
-                        </div>
-                        <div class="line source">
-                            <span class="date">{{ result.year }}</span>
+                        <div class="card">
+                            <div class="img">
+                                <img src="https://picsum.photos/300/200?random" alt="">
+                            </div>
+                            <div class="content">
+                                <div class="line title">
+                                    {{result.title}}
+                                </div>
+                                <div class="line source">
+                                    <span class="date">{{ result.year }}</span>
 
-                            <span class="journal">{{ result.journal_name }}</span>
+                                    <span class="journal">{{ result.journal_name }}</span>
+                                </div>
+
+                            </div>
+
                         </div>
-                        <div class="line authors">
-                            <!-- HAP see what it looks like with no authors
-                            {{ result.displayAuthors }}
-                            -->
-                        </div>
-                        <div class="line abstract" v-if="result.displayAbstract">
-                            {{ result.displayAbstract }}
-                        </div>
+
+
+
+
+
+                        <!--<div class="line authors">-->
+                            <!--&lt;!&ndash; HAP see what it looks like with no authors-->
+                            <!--{{ result.displayAuthors }}-->
+                            <!--&ndash;&gt;-->
+                        <!--</div>-->
+                        <!--<div class="line abstract" v-if="result.displayAbstract">-->
+                            <!--{{ result.displayAbstract }}-->
+                        <!--</div>-->
                     </li>
                 </ul>
                 <div class="page-bottom">
@@ -173,7 +185,7 @@
     }
 
     .main-col {
-        max-width: 632px;
+        max-width: 1100px;
         margin: 10px 10px 100px;
         @media (min-width: 600px) {
             margin-left: 150px;
@@ -194,31 +206,51 @@
         ul.results-list {
             padding: 0;
             margin: 10px 0 0;
+            display: flex;
+            flex-wrap: wrap;
             li{
                 list-style-type: none;
-                margin-bottom: 50px;
-                .line {
-                    &.title {
-                        color: #1B5E20;
-                        font-size: 18px;
-                        line-height: 1.3;
+                margin: 10px;
+                padding: 10px;
+
+
+                div.card {
+                    width: 200px;
+                    .img {
+
                     }
-                    &.source {
-                        color: #1B5E20;
-                        font-size: 14px;
-                        span.date {
-                            margin-right: 5px;
-                        }
+                    .content {
+
                     }
-                    &.authors {
-                        font-size: 14px;
-                        color: #666;
-                    }
-                    &.abstract {
-                        font-size: 14px;
-                        margin-top: 7px;
-                    }
+
                 }
+
+
+
+
+                /*margin-bottom: 50px;*/
+                /*.line {*/
+                    /*&.title {*/
+                        /*color: #1B5E20;*/
+                        /*font-size: 18px;*/
+                        /*line-height: 1.3;*/
+                    /*}*/
+                    /*&.source {*/
+                        /*color: #1B5E20;*/
+                        /*font-size: 14px;*/
+                        /*span.date {*/
+                            /*margin-right: 5px;*/
+                        /*}*/
+                    /*}*/
+                    /*&.authors {*/
+                        /*font-size: 14px;*/
+                        /*color: #666;*/
+                    /*}*/
+                    /*&.abstract {*/
+                        /*font-size: 14px;*/
+                        /*margin-top: 7px;*/
+                    /*}*/
+                /*}*/
             }
         }
     }
