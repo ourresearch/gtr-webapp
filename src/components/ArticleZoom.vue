@@ -1,83 +1,44 @@
 <template>
-    <div class="root">
-
-        <div class="loaded" v-if="!loading">
-            <div class="paper-meta">
-                <h1>{{paper.title}}</h1>
-                <div class="metdata-row publication">
-                    <span class="year">{{paper.year}}</span> in
-                    <span class="journal-name">{{paper.journal_name}}</span>
-                </div>
-                <div class="metadata-row authors">
-                    By <span class="author-lastnames">{{paper.author_lastnames.join(", ")}}</span>
-                </div>
-                <div class="metadata-row access">
-                    <div class="paywalled linkout" v-if="!paper.best_version">
-                        {{paper.doi_url}}
-
-                        <a :href="paper.doi_url">
-                            <i class="fas fa-lock"></i>
-                            Full article on publisher site (paywalled)
-                        </a>
-                    </div>
-                    <div class="oa linkout" v-if="paper.best_version">
-
-                        <a :href="paper.oa_url" v-if="paper.best_host=='publisher'">
-                            <i class="fas fa-unlock-alt"></i>
-                            Full article on publisher site (open access)
-                        </a>
-
-                        <a :href="paper.oa_url" v-if="paper.best_host=='repository'">
-                            <i class="fas fa-unlock-alt"></i>
-                            Full article shared by author (open access)
-                        </a>
-
-                    </div>
-
-                    <div class="extra">
-                        <a :href="apiUrl">
-                            <i class="fa fa-cogs"></i>
-                            API
-                        </a>
-                    </div>
-                </div>
+    <div class="article-zoom">
+        <div class="col about">
+            <h1>{{paper.title}}</h1>
+            <div class="line source">
+                Published
+                <span class="date">{{ paper.year }}</span>
+                in
+                <span class="journal">{{ paper.journal_name }}</span>
             </div>
-
-
-            <div class="paper-content">
-                <div class="abstract">
-                    <span class="abstract-chunk-container" v-for="chunk in abstractChunks">
-                        <a class="chunk entity" v-html="chunk.rawName" v-if="chunk.nerd_selection_score > 0.5" href="" @click.prevent="selectEntity(chunk)"></a>
+            <div class="line authors" v-show="paper.displayAuthors">
+                By {{paper.displayAuthors}}
+            </div>
+            <div class="abstract">
+                <span class="abstract-chunk-container" v-for="chunk in abstractChunks">
+                        <a class="chunk entity" v-html="chunk.rawName" v-if="chunk.nerd_selection_score > 0.5" href=""
+                           @click.prevent="selectEntity(chunk)"></a>
                         <span class="chunk plaintext" v-if="chunk.nerd_selection_score <= 0.5">{{chunk.rawName}}</span>
                     </span>
-                </div>
+            </div>
+        </div>
 
+        <div class="col anno">
+            <div class="anno-empty" v-if="!selectedEntity">
+                Click underlined words to learn more.
+            </div>
 
-                <div class="selected-entity" v-if="selectedEntity">
-                    <div class="header">
+            <div class="anno-full" v-if="selectedEntity">
+                <div class="header">
                         <span class="term">
                             {{selectedEntity.preferredTerm}}
                         </span>
-                        <span class="close" @click="selectedEntity=false">&times;</span>
-                    </div>
-                    <div class="body">
-                        <img :src="selectedEntity.imgUrl" alt="">
-                        <span class="definition" v-html="selectedEntity.definition">
+                    <span class="close" @click="selectedEntity=false">&times;</span>
+                </div>
+                <div class="body">
+                    <img :src="selectedEntity.imgUrl" alt="">
+                    <span class="definition" v-html="selectedEntity.definition">
                         </span>
-                    </div>
-
-
-                    <!--<span class="long">{{selectedEntity.longDefinition}}</span>-->
                 </div>
 
             </div>
-
-        </div>
-
-
-
-        <div class="loading" v-if="loading">
-            <md-progress-bar md-mode="indeterminate"></md-progress-bar>
         </div>
     </div>
 
@@ -89,19 +50,13 @@
     import _ from 'lodash'
 
     export default {
-        name: "Paper",
+        name: "ArticleZoom",
+        props: ["paper"],
         data: () => ({
             loading: true,
-            paper: {},
             selectedEntity: false
         }),
         computed: {
-            apiUrl(){
-                let namespace = this.$route.params.namespace
-                let id = this.$route.params.id
-                let url = "https://gtr-api.herokuapp.com/paper/" + namespace + "/" + id
-                return url
-            },
             abstractChunks() {
 
                 // make sure we have an abstract
@@ -120,7 +75,7 @@
                 // the other chunks are the text in between entities.
                 let chunks = []
                 let cursorIndex = 0
-                entities.forEach(function(entity, index){
+                entities.forEach(function (entity, index) {
 
                     // between-entity chunks
                     if (entity.offsetStart > 0) {
@@ -133,7 +88,7 @@
 
                     // hydrate and save the entity chunks
                     // todo: centralize the > 0.5 stuff which is currently both here an in the templates
-                    if (entity.nerd_selection_score > .5){
+                    if (entity.nerd_selection_score > .5) {
                         let nerdUrl = "http://cloud.science-miner.com/nerd/service/kb/concept/" + entity.wikipediaExternalRef + "?lang=en"
                         axios.get(nerdUrl)
                             .then(resp => {
@@ -176,14 +131,13 @@
                                 console.log("got this wiki page response:", page)
 
 
-                                if (page.thumbnail){
+                                if (page.thumbnail) {
                                     entity.imgUrl = page.thumbnail.source
                                 }
                             })
                             .catch(e => {
                                 console.log("error from wikipedia api", e)
                             })
-
 
 
                         chunks.push(entity)
@@ -193,7 +147,7 @@
                     cursorIndex = entity.offsetEnd
                 })
 
-                if (cursorIndex < abstract.length){
+                if (cursorIndex < abstract.length) {
                     chunks.push({
                         rawName: abstract.slice(cursorIndex, abstract.length),
                         nerd_selection_score: 0
@@ -204,96 +158,52 @@
             }
         },
         methods: {
-            selectEntity(entity){
+            selectEntity(entity) {
                 console.log("selecting entity", entity)
                 this.selectedEntity = entity
                 return false
             },
-            doQuery(){
-                console.log("doing query")
-                this.loading = true
-                axios.get(this.apiUrl)
-                    .then(resp => {
-                        console.log("got paper back", resp.data)
-                        this.paper = resp.data
-                        this.loading = false
-                    })
-                    .catch(e => {
-                        console.log("error from server", e)
-                        this.loading = false
-                    })
-            }
-        },
-        mounted() {
-            this.doQuery()
-
-
-        },
-        watch: {
-            "$route"(to, from){
-                console.log("route change", to, from)
-                this.doQuery()
-            }
         }
     }
 </script>
 
 <style scoped lang="scss">
-    .root {
-        min-height: 100vh;
-    }
+    .article-zoom {
+        display: flex;
 
-    .loaded {
-        margin: 10px 10px 100px;
-        @media (min-width: 600px) {
-            margin-left: 150px;
-          }
-        /*margin-left: 150px;*/
-        margin-bottom: 100px;
-        max-width: 1100px;
-        font-size: 16px;
-        .paper-meta {
-            margin-bottom: 50px;
-            line-height: 1.5;
 
-            h1 {
-                margin: 50px 0 0;
-            }
-            .publication {
-                color: #1B5E20;
-            }
-            .metadata-row.access {
-                display: flex;
-                justify-content: space-between;
-
-                .extra {
-                    margin-right: 50px;
-                    a {
-                        color: #999;
+        background: #ddd;
+        padding: 20px;
+        .col {
+            flex: 1;
+            &.about {
+                h1 {
+                    margin: 0;
+                }
+                .authors {
+                }
+                .source {
+                    .date {
                     }
+                    .journal {
+                        font-style: italic;
+                    }
+                }
+                .abstract {
+                    margin-top: 10px;
                 }
             }
 
-        }
-        .paper-content {
-            display: flex;
-            line-height: 1.5;
-            font-size: 17px;
-
-
-            .abstract {
-                max-width: 500px;
-                margin-right: 20px;
-            }
-            .selected-entity {
-                position: fixed;
-                top: 0;
-                left: 0;
-                right: 0;
-                bottom: 0;
-                background: #fff;
-                z-index: 9999;
-                @media (min-width: 600px){
+            &.anno {
+                /*position: fixed;*/
+                /*top: 0;*/
+                /*left: 0;*/
+                /*right: 0;*/
+                /*bottom: 0;*/
+                /*background: #fff;*/
+                /*z-index: 9999;*/
+                /*border: 1px solid #333;*/
+                @media (min-width: 600px) {
                     position: static;
                     max-width: 500px;
                 }
@@ -318,11 +228,17 @@
                     }
                 }
 
-                border: 1px solid #333;
             }
+
+
+
+
+
+
         }
 
     }
+
 
 </style>
 

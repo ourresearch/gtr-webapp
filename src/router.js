@@ -4,7 +4,6 @@ import Serp from './views/Serp'
 import Home from './views/Home'
 import Welcome from './views/Welcome'
 import EarlyAccess from './views/EarlyAccess'
-import Paper from './views/Paper'
 import Meta from 'vue-meta'
 
 
@@ -27,10 +26,6 @@ export default new Router({
             path: '/',
             // redirect: "/search"
             component: Home
-        },
-        {
-            path: '/paper/:namespace/:id',
-            component: Paper
         },
 
         {

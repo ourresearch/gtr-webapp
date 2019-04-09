@@ -25,7 +25,7 @@
                          :style="{width: cardWidth+'px'}"
                          @click="setArticleZoom(result.doi)">
                         <div class="img">
-                            <img src="https://picsum.photos/300/200?random" alt="">
+                            <img :src="result.image.url" alt="">
                         </div>
                         <div class="content">
                             <div class="line title">
@@ -42,37 +42,13 @@
                     </div>
 
 
-                    <!--<div class="line authors">-->
-                    <!--&lt;!&ndash; HAP see what it looks like with no authors-->
-                    <!--{{ result.displayAuthors }}-->
-                    <!--&ndash;&gt;-->
-                    <!--</div>-->
-                    <!--<div class="line abstract" v-if="result.displayAbstract">-->
-                    <!--{{ result.displayAbstract }}-->
-                    <!--</div>-->
-                    <div class="zoom" v-if="zoomedResult && result.insertZoomAfterMe">
-                        <div class="col about">
-                            <h1>{{zoomedResult.title}}</h1>
-                            <div class="line authors" v-show="zoomedResult.displayAuthors">
-                                {{zoomedResult.displayAuthors}}
-                            </div>
-                            <div class="line source">
-                                <span class="date">{{ zoomedResult.year }}</span>
-                                <span class="journal">{{ zoomedResult.journal_name }}</span>
-                            </div>
-                            <div class="abstract">
-                                {{ zoomedResult.displayAbstract }}
-                            </div>
+                    <article-zoom
+                            :paper="zoomedResult"
+                            v-if="result.insertZoomAfterMe">
+                    </article-zoom>
 
 
-                        </div>
-                        <div class="col anno">
-                            <div class="instructions">
-                                Click underlined words to learn more.
-                            </div>
-                        </div>
 
-                    </div>
 
 
                 </template>
@@ -97,7 +73,7 @@
 <script>
     import axios from 'axios'
     import _ from 'lodash'
-    import {searchResp} from "../searchResp";
+    import ArticleZoom from '../components/ArticleZoom'
 
     export default {
         name: "Serp",
@@ -110,6 +86,9 @@
             cardWidth: 260,
             rowWidth: null
         }),
+        components: {
+            ArticleZoom
+        },
         computed: {
             apiUrl() {
                 let searchTerm = this.$route.params.q
@@ -296,17 +275,9 @@
             }
 
         }
-        .zoom {
+        .article-zoom {
             width: 100%;
-            background: #ddd;
-            padding: 20px;
-            display: flex;
-            h1 {
-                margin: 0;
-            }
-            .col {
-                flex: 1;
-            }
+
         }
 
         /*margin-bottom: 50px;*/
