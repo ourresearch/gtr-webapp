@@ -36,7 +36,8 @@ export default new Router({
         {
             path: '/search/:q',
             name: 'search',
-            component: Serp
+            component: Serp,
+            reloadOnSearch: false
         }
     ]
 })

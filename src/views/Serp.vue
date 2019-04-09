@@ -4,7 +4,7 @@
         <div class="loaded" v-if="!loading">
             <div class="results-descr">
                     <span class="info">
-                        Showing {{ cleanResults.length }}
+                        Showing {{ displayResults.length }}
                         <span v-if="showOnlyOa" class="filter">free-to-read</span>
                         papers
                     </span>
@@ -20,7 +20,7 @@
 
             <div class="results-list">
 
-                <template v-for="(result, index) of cleanResults">
+                <template v-for="(result, index) of displayResults">
                     <div class="card"
                          :style="{width: cardWidth+'px'}"
                          @click="setArticleZoom(result.doi)">
@@ -117,10 +117,7 @@
                 let url = "https://gtr-api.herokuapp.com/search/" + searchTerm
                 return url
             },
-            zoomDoiFromUrl(){
-                return this.$route.query.zoom
-            },
-            cleanResults() {
+            displayResults() {
                 let ret = this.results
 
                 if (this.showOnlyOa) {
@@ -129,12 +126,6 @@
                     })
                 }
 
-                // set variables used in the zooming process
-                ret = ret.map((result, index) => {
-                    result.position = index + 1
-                    result.insertZoomAfterMe = false
-                    return result
-                })
 
 
                 ret = ret.map(result => {
@@ -182,7 +173,7 @@
         methods: {
 
             setArticleZoom(doi){
-                if (doi == this.zoomDoiFromUrl) {
+                if (doi == this.$route.query.zoom) {
                     console.log("remove doi from URL")
                     this.$router.push({query: {}})
                 }
@@ -192,28 +183,33 @@
 
             },
 
-            setArticleZoomFromUrl() {
-                if (!this.results.length){
+            zoomArticle() {
+                // get rid of existing zooms
+                this.results.forEach(r => {
+                    r.insertZoomAfterMe = false
+                })
+
+
+                let doi = this.$route.query.zoom
+                if (!doi){
                     return
                 }
-                console.log("setting article zoom", this.zoomDoiFromUrl)
+
+
+                console.log("setting article zoom", doi)
                 this.zoomedResult = this.results.find(result => {
-                    return result.doi === this.zoomDoiFromUrl
+                    return result.doi === doi
+                })
+                this.zoomedResult.myIndex = this.results.findIndex(result => {
+                    return result.doi === doi
                 })
 
                 console.log("gonna zoom in on this article:", this.zoomedResult)
 
-
-
                 let cardsPerRow = 4
-
-                this.results.forEach(result => {
-                    result.insertZoomAfterMe = false
-                })
-
-                for (let i = 1; i < this.cleanResults.length; i++) {
+                for (let i = 1; i < this.results.length; i++) {
                     console.log("checking result")
-                    if (i % cardsPerRow === 0 && i >= this.zoomedResult.position) {
+                    if (i % cardsPerRow === 0 && i > this.zoomedResult.myIndex) {
                         this.results[i-1].insertZoomAfterMe = true
                         console.log("found the place to put the zoomed article", i)
                         break
@@ -221,38 +217,29 @@
                 }
             },
 
-            doQuery() {
-
-                // mocking this out for now because API too slow
-                this.results = searchResp.results
-                this.loading = false
-                this.setArticleZoomFromUrl()
-
-                console.log("results", this.results)
-
-
-                // this.loading = true
-                // axios.get(this.apiUrl)
-                //     .then(resp => {
-                //         console.log("got resuls back", resp.data.results)
-                //         this.results = resp.data.results
-                //         this.queryElapsed = resp.data.elapsed_seconds
-                //         this.loading = false
-                //     })
-                //     .catch(e => {
-                //         console.log("error from server", e)
-                //         this.loading = false
-                //         this.queryElapsed = resp.data.elapsed_seconds
-                //     })
+            doSearch() {
+                this.loading = true
+                axios.get(this.apiUrl)
+                    .then(resp => {
+                        console.log("got resuls back", resp.data.results)
+                        this.results = resp.data.results
+                        this.queryElapsed = resp.data.elapsed_seconds
+                        this.loading = false
+                        this.zoomArticle()
+                    })
+                    .catch(e => {
+                        console.log("error from server", e)
+                        this.loading = false
+                    })
             }
         },
         mounted() {
-            this.doQuery()
+            this.doSearch()
         },
         watch: {
             "$route"(to, from) {
                 console.log("route change", to, from)
-                this.doQuery()
+                this.zoomArticle()
             }
         }
     }
