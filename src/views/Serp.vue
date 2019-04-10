@@ -1,7 +1,7 @@
 <template>
     <div class="root">
 
-        <div class="loaded" v-if="!loading">
+        <div class="loaded" v-if="results.length">
             <div class="results-descr">
                     <span class="info">
                         Showing {{ displayResults.length }}
@@ -62,7 +62,7 @@
             </div>
         </div>
 
-        <div class="loading" v-if="loading">
+        <div class="loading" v-if="!results.length">
             <md-progress-bar md-mode="indeterminate"></md-progress-bar>
         </div>
     </div>
@@ -78,14 +78,13 @@
     export default {
         name: "Serp",
         data: () => ({
-            loading: true,
             results: [],
             queryElapsed: 0.0,
             showOnlyOa: false,
             zoomedResult: null,
             cardWidth: 260,
             rowWidth: null,
-            currentPage: 1
+            currentPage: 0
         }),
         components: {
             ArticleZoom
@@ -105,6 +104,23 @@
                     })
                 }
 
+
+                // handle the article zooming
+                ret.forEach(r => {
+                    r.insertZoomAfterMe = false
+                })
+                if (this.zoomedResult){
+                    let zoomedResultIndex = ret.findIndex(r => {
+                        return r.doi === this.zoomedResult.doi
+                    })
+                    let cardsPerRow = 3
+                    for (let i = 1; i < ret.length; i++) {
+                        if (i % cardsPerRow === 0 && i > zoomedResultIndex) {
+                            ret[i-1].insertZoomAfterMe = true
+                            break
+                        }
+                    }
+                }
 
 
                 ret = ret.map(result => {
@@ -155,7 +171,7 @@
                 if (doi == this.$route.query.zoom) {
                     console.log("remove doi from URL")
                     this.$router.push({query: {}})
-                    this.clearZoomArticle()
+                    this.zoomedResult = null
                 }
                 else {
                     this.$router.push({query: {zoom: doi}})
@@ -163,51 +179,21 @@
                 }
 
             },
-            clearZoomArticle(){
-                this.results.forEach(r => {
-                    r.insertZoomAfterMe = false
-                })
-
-            },
-
-
 
             zoomArticle(doi) {
                 this.zoomedResult = this.results.find(result => {
                     return result.doi === doi
                 })
-                this.zoomedResult.myIndex = this.results.findIndex(result => {
-                    return result.doi === doi
-                })
-
-                if (!this.zoomedResult){
-                    return false
-                }
-                else {
-                    // insert the zoomed article in the results list.
-                    // @todo this should be in the displayResults computed property
-
-                    this.clearZoomArticle()
-                    let cardsPerRow = 4
-                    for (let i = 1; i < this.results.length; i++) {
-                        if (i % cardsPerRow === 0 && i > this.zoomedResult.myIndex) {
-                            this.results[i-1].insertZoomAfterMe = true
-                            break
-                        }
-                    }
-                    return true
-
-                }
-
-
+                return !!this.zoomedResult
             },
 
             loadPage(){
                 let zoomToThisDoi = this.$route.query.zoom
                 let zoomSuccess = false
+                let that = this
 
                 this.fetchNextPageOfResults()
-                    .then(function(success){
+                    .then(success => {
                         console.log("i finished fetching next page of results!", success)
                         if (zoomToThisDoi){
                             zoomSuccess = this.zoomArticle(zoomToThisDoi)
@@ -220,8 +206,6 @@
 
 
             fetchNextPageOfResults() {
-                this.loading = true
-
                 let pageToFetch = this.currentPage + 1
                 let urlWithPage = this.apiUrl + "?page=" + pageToFetch
 
@@ -234,14 +218,11 @@
                         // rather than a single array https://stackoverflow.com/a/1374131/226013
                         this.results.push(...resp.data.results)
 
-
-                        this.loading = false
                         this.currentPage = pageToFetch // update the current page
                         return true
                     })
                     .catch(e => {
                         console.log("error from server", e)
-                        this.loading = false
                         return false
                     })
             }
@@ -280,11 +261,11 @@
     }
 
     div.results-list {
+        max-width: 800px;
         padding: 0;
         margin: 10px 0 0;
         display: flex;
         flex-wrap: wrap;
-        max-width: 1100px;
         margin: 10px 10px 100px;
 
 

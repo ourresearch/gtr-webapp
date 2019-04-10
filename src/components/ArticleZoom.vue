@@ -58,6 +58,7 @@
         }),
         computed: {
             abstractChunks() {
+                return ""
 
                 // make sure we have an abstract
                 if (!this.paper || !this.paper.abstract) {
