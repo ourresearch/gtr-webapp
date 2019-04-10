@@ -188,20 +188,60 @@
             },
 
             loadPage(){
-                let zoomToThisDoi = this.$route.query.zoom
-                let zoomSuccess = false
                 let that = this
+                load()
 
-                this.fetchNextPageOfResults()
-                    .then(success => {
-                        console.log("i finished fetching next page of results!", success)
-                        if (zoomToThisDoi){
-                            zoomSuccess = this.zoomArticle(zoomToThisDoi)
+                function load() {
+                    console.log("load() starting")
+
+                    // try to set the zoomedResult
+                    that.zoomArticle(that.$route.query.zoom)
+                    console.log("load(): zoomedResult is", that.zoomedResult)
+
+
+                    // halt if we're too deep
+                    if (that.page > 5) {
+                        console.log("load() halting: we're too deep.")
+                        return false
+                    }
+
+                    // halt if we've got everything we need
+                    if (that.results.length) {
+                        // great, we've got results to show
+
+                        if (that.$route.query.zoom) {
+                            // but looks like we also need a zoomedResult.
+
+                            if (that.zoomedResult) {
+                                console.log("load() halting: we've got results AND zoomedResult.")
+                                return true
+                            }
+                            else {
+                                // we still need a zoomedResult
+                            }
                         }
                         else {
-                            zoomSuccess = true
+                            // we've got results, and don't need a zoomedResult. halt.
+                            console.log("load() halting: we've got our results and that's all we needed.")
+                            return true
                         }
-                    })
+                    }
+                    else {
+                        // we still need to get results
+                    }
+
+                    // get some more results
+                    console.log("load(): fetching a page of results")
+                    that.fetchNextPageOfResults()
+                        .then(success => {
+                            console.log(
+                                "load(): fetched a page of results!",
+                                that.zoomedResult,
+                                that.currentPage
+                            )
+                            return load()
+                        })
+                }
             },
 
 
@@ -209,7 +249,7 @@
                 let pageToFetch = this.currentPage + 1
                 let urlWithPage = this.apiUrl + "?page=" + pageToFetch
 
-                console.log("fetching the next page of results")
+                console.log("fetchNextPageOfResults()", pageToFetch)
                 return axios.get(urlWithPage)
                     .then(resp => {
                         console.log("got search results back", resp.data.results)
