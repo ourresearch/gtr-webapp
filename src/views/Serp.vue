@@ -199,12 +199,6 @@
                     console.log("load(): zoomedResult is", that.zoomedResult)
 
 
-                    // halt if we're too deep
-                    if (that.page > 5) {
-                        console.log("load() halting: we're too deep.")
-                        return false
-                    }
-
                     // halt if we've got everything we need
                     if (that.results.length) {
                         // great, we've got results to show
@@ -239,7 +233,13 @@
                                 that.zoomedResult,
                                 that.currentPage
                             )
-                            return load()
+                            if (success){
+                                return load()
+                            }
+                            else {
+                                console.log("load(): we can't fetch more results, halting")
+                                return false
+                            }
                         })
                 }
             },
