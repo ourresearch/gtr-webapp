@@ -56,9 +56,9 @@
 
             </div>
             <div class="page-bottom">
-                <a :href="apiUrl">
-                    View in API.
-                </a>
+                <md-button class="md-raised md-primary" @click="fetchNextPageOfResults">
+                    See more results
+                </md-button>
             </div>
         </div>
 
@@ -84,7 +84,8 @@
             showOnlyOa: false,
             zoomedResult: null,
             cardWidth: 260,
-            rowWidth: null
+            rowWidth: null,
+            currentPage: 1
         }),
         components: {
             ArticleZoom
@@ -92,7 +93,6 @@
         computed: {
             apiUrl() {
                 let searchTerm = this.$route.params.q
-                // let url = "https://api.unpaywall.org/search/" + searchTerm
                 let url = "https://gtr-api.herokuapp.com/search/" + searchTerm
                 return url
             },
@@ -155,27 +155,24 @@
                 if (doi == this.$route.query.zoom) {
                     console.log("remove doi from URL")
                     this.$router.push({query: {}})
+                    this.clearZoomArticle()
                 }
                 else {
                     this.$router.push({query: {zoom: doi}})
+                    this.zoomArticle(doi)
                 }
 
             },
-
-            zoomArticle() {
-                // get rid of existing zooms
+            clearZoomArticle(){
                 this.results.forEach(r => {
                     r.insertZoomAfterMe = false
                 })
 
-
-                let doi = this.$route.query.zoom
-                if (!doi){
-                    return
-                }
+            },
 
 
-                console.log("setting article zoom", doi)
+
+            zoomArticle(doi) {
                 this.zoomedResult = this.results.find(result => {
                     return result.doi === doi
                 })
@@ -183,42 +180,77 @@
                     return result.doi === doi
                 })
 
-                console.log("gonna zoom in on this article:", this.zoomedResult)
-
-                let cardsPerRow = 4
-                for (let i = 1; i < this.results.length; i++) {
-                    console.log("checking result")
-                    if (i % cardsPerRow === 0 && i > this.zoomedResult.myIndex) {
-                        this.results[i-1].insertZoomAfterMe = true
-                        console.log("found the place to put the zoomed article", i)
-                        break
-                    }
+                if (!this.zoomedResult){
+                    return false
                 }
+                else {
+                    // insert the zoomed article in the results list.
+                    // @todo this should be in the displayResults computed property
+
+                    this.clearZoomArticle()
+                    let cardsPerRow = 4
+                    for (let i = 1; i < this.results.length; i++) {
+                        if (i % cardsPerRow === 0 && i > this.zoomedResult.myIndex) {
+                            this.results[i-1].insertZoomAfterMe = true
+                            break
+                        }
+                    }
+                    return true
+
+                }
+
+
             },
 
-            doSearch() {
+            loadPage(){
+                let zoomToThisDoi = this.$route.query.zoom
+                let zoomSuccess = false
+
+                this.fetchNextPageOfResults()
+                    .then(function(success){
+                        console.log("i finished fetching next page of results!", success)
+                        if (zoomToThisDoi){
+                            zoomSuccess = this.zoomArticle(zoomToThisDoi)
+                        }
+                        else {
+                            zoomSuccess = true
+                        }
+                    })
+            },
+
+
+            fetchNextPageOfResults() {
                 this.loading = true
-                axios.get(this.apiUrl)
+
+                let pageToFetch = this.currentPage + 1
+                let urlWithPage = this.apiUrl + "?page=" + pageToFetch
+
+                console.log("fetching the next page of results")
+                return axios.get(urlWithPage)
                     .then(resp => {
-                        console.log("got resuls back", resp.data.results)
-                        this.results = resp.data.results
-                        this.queryElapsed = resp.data.elapsed_seconds
+                        console.log("got search results back", resp.data.results)
+
+                        // use the nifty spread operator since push() requires multiple args
+                        // rather than a single array https://stackoverflow.com/a/1374131/226013
+                        this.results.push(...resp.data.results)
+
+
                         this.loading = false
-                        this.zoomArticle()
+                        this.currentPage = pageToFetch // update the current page
+                        return true
                     })
                     .catch(e => {
                         console.log("error from server", e)
                         this.loading = false
+                        return false
                     })
             }
         },
         mounted() {
-            this.doSearch()
+            this.loadPage()
         },
         watch: {
             "$route"(to, from) {
-                console.log("route change", to, from)
-                this.zoomArticle()
             }
         }
     }
@@ -280,30 +312,16 @@
 
         }
 
-        /*margin-bottom: 50px;*/
-        /*.line {*/
-        /*&.title {*/
-        /*color: #1B5E20;*/
-        /*font-size: 18px;*/
-        /*line-height: 1.3;*/
-        /*}*/
-        /*&.source {*/
-        /*color: #1B5E20;*/
-        /*font-size: 14px;*/
-        /*span.date {*/
-        /*margin-right: 5px;*/
-        /*}*/
-        /*}*/
-        /*&.authors {*/
-        /*font-size: 14px;*/
-        /*color: #666;*/
-        /*}*/
-        /*&.abstract {*/
-        /*font-size: 14px;*/
-        /*margin-top: 7px;*/
-        /*}*/
-        /*}*/
     }
+    .page-bottom {
+        margin: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+    }
+
+
 </style>
 
 
