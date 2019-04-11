@@ -25,7 +25,6 @@ Vue.use(VueTyperPlugin)
 
 
 
-
 Vue.config.productionTip = false
 new Vue({
   router,

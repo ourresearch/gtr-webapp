@@ -27,7 +27,7 @@
                          :style="{width: cardWidth+'px'}"
                          @click="setArticleZoom(result.doi)">
                         <div class="img">
-                            <img :src="result.image.url" alt="">
+                            <img :src="result.image.url" alt="" class="card-image">
                             <div class="label">
                                 {{result.image.title}}
                             </div>
@@ -80,7 +80,9 @@
 <script>
     import axios from 'axios'
     import _ from 'lodash'
+    import smartcrop from 'smartcrop'
     import ArticleZoom from '../components/ArticleZoom'
+
 
     export default {
         name: "Serp",
@@ -94,7 +96,8 @@
             currentPage: 0
         }),
         components: {
-            ArticleZoom
+            ArticleZoom,
+            smartcrop
         },
         computed: {
             apiUrl() {
@@ -321,6 +324,10 @@
         div.card {
             padding: 20px;
             .img {
+                overflow: hidden;
+                max-height: 150px;
+                img {
+                }
                 .label {
                     /*color: #fff;*/
                     /*background: rgba(0,0,0,.6);*/
