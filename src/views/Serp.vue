@@ -15,6 +15,8 @@
                 <a class="show-everything" href="" v-if="showOnlyOa" @click.prevent="showOnlyOa=false">
                     (Show all papers)
                 </a>
+                <span class="spacer"></span>
+                <a :href="apiUrl" class="api">View in API</a>
             </div>
 
 
@@ -26,6 +28,9 @@
                          @click="setArticleZoom(result.doi)">
                         <div class="img">
                             <img :src="result.image.url" alt="">
+                            <div class="label">
+                                {{result.image.title}}
+                            </div>
                         </div>
                         <div class="content">
                             <div class="line title">
@@ -56,7 +61,9 @@
 
             </div>
             <div class="page-bottom">
-                <md-button class="md-raised md-primary" @click="fetchNextPageOfResults">
+                <md-button class="md-raised md-primary"
+                           v-show="currentPage < 6"
+                           @click="fetchNextPageOfResults">
                     See more results
                 </md-button>
             </div>
@@ -113,7 +120,7 @@
                     let zoomedResultIndex = ret.findIndex(r => {
                         return r.doi === this.zoomedResult.doi
                     })
-                    let cardsPerRow = 3
+                    let cardsPerRow = 4
                     for (let i = 1; i < ret.length; i++) {
                         if (i % cardsPerRow === 0 && i > zoomedResultIndex) {
                             ret[i-1].insertZoomAfterMe = true
@@ -269,10 +276,6 @@
         },
         mounted() {
             this.loadPage()
-        },
-        watch: {
-            "$route"(to, from) {
-            }
         }
     }
 </script>
@@ -290,9 +293,14 @@
         padding: 0 20px 20px;
         color: #666;
         border-bottom: 1px solid #ccc;
+        display: flex;
+        align-items: center;
         .info {
             margin-right: 10px;
             font-size: 120%;
+        }
+        .spacer {
+            flex: 1;
         }
         a {
             font-size: 14px;
@@ -301,7 +309,7 @@
     }
 
     div.results-list {
-        max-width: 800px;
+        max-width: 1100px;
         padding: 0;
         margin: 10px 0 0;
         display: flex;
@@ -313,7 +321,13 @@
         div.card {
             padding: 20px;
             .img {
-
+                .label {
+                    /*color: #fff;*/
+                    /*background: rgba(0,0,0,.6);*/
+                    padding: 1px 0;
+                    font-size: 12px;
+                    z-index: 999;
+                }
             }
             .content {
                 margin-top: 10px;

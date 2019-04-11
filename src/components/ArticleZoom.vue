@@ -13,9 +13,11 @@
             </div>
             <div class="abstract">
                 <span class="abstract-chunk-container" v-for="chunk in abstractChunks">
-                        <a class="chunk entity" v-html="chunk.rawName" v-if="chunk.nerd_selection_score > 0.5" href=""
-                           @click.prevent="selectEntity(chunk)"></a>
-                        <span class="chunk plaintext" v-if="chunk.nerd_selection_score <= 0.5">{{chunk.rawName}}</span>
+                        <a class="chunk entity" v-html="chunk.spot" v-if="chunk.abstract" href=""
+                           @click.prevent="selectEntity(chunk)">
+
+                        </a>
+                        <span class="chunk text" v-if="!chunk.abstract">{{chunk.text}}</span>
                     </span>
             </div>
         </div>
@@ -28,14 +30,17 @@
             <div class="anno-full" v-if="selectedEntity">
                 <div class="header">
                         <span class="term">
-                            {{selectedEntity.preferredTerm}}
+                            {{selectedEntity.title}}
+                            <span class="confidence">{{ selectedEntity.confidence.toFixed(2) }}</span>
                         </span>
                     <span class="close" @click="selectedEntity=false">&times;</span>
                 </div>
                 <div class="body">
-                    <img :src="selectedEntity.imgUrl" alt="">
-                    <span class="definition" v-html="selectedEntity.definition">
-                        </span>
+                    <img :src="selectedEntity.image_url" alt="" v-if="selectedEntity.image_url">
+                    <span class="definition" v-html="selectedEntity.abstract"></span>
+                </div>
+                <div class="footer">
+                    via <a :href="selectedEntity.uri">Wikipedia</a>
                 </div>
 
             </div>
@@ -46,7 +51,6 @@
 </template>
 
 <script>
-    import axios from 'axios'
     import _ from 'lodash'
 
     export default {
@@ -58,101 +62,46 @@
         }),
         computed: {
             abstractChunks() {
-                return ""
 
                 // make sure we have an abstract
                 if (!this.paper || !this.paper.abstract) {
-                    return ""
+                    return [""]
                 }
-                let abstract = this.paper.abstract
 
-                // make sure we have entities
-                if (!this.paper.nerd.entities.length) {
-                    return this.paper.abstract
+                // if no entities, return one big chunk
+                if (!this.paper.annotations || !this.paper.annotations.using_article_abstract.length) {
+                    return [this.paper.abstract]
                 }
-                let entities = this.paper.nerd.entities
 
                 // split the abstract into a bunch of chunks...some chunks are entities,
                 // the other chunks are the text in between entities.
                 let chunks = []
                 let cursorIndex = 0
-                entities.forEach(function (entity, index) {
+                this.paper.annotations.using_article_abstract.forEach(entity => {
 
-                    // between-entity chunks
-                    if (entity.offsetStart > 0) {
-                        let plaintextChunk = {
-                            rawName: abstract.slice(cursorIndex, entity.offsetStart),
-                            nerd_selection_score: 0
-                        }
-                        chunks.push(plaintextChunk)
+                    // add any plaintext chunk before the current entity
+                    if (entity.start > 0) {
+                        let textChunk = this.paper.abstract.slice(cursorIndex, entity.start)
+                        chunks.push({text: textChunk})
                     }
 
-                    // hydrate and save the entity chunks
-                    // todo: centralize the > 0.5 stuff which is currently both here an in the templates
-                    if (entity.nerd_selection_score > .5) {
-                        let nerdUrl = "http://cloud.science-miner.com/nerd/service/kb/concept/" + entity.wikipediaExternalRef + "?lang=en"
-                        axios.get(nerdUrl)
-                            .then(resp => {
-                                console.log("got NERD entity response back", resp)
-                                let def = resp.data.definitions[0].definition
-
-                                // first we handle links where wiki markup is showing one thing
-                                // but linking to another. they do that like this [[link_to_this|show_this]]
-                                let re = /\[\[([^\]]+)\|([^\]]+)\]\]/gi
-                                def = def.replace(
-                                    re,
-                                    "<a href='https://en.wikipedia.org/wiki/$1'>$2</a>"
-                                )
-
-                                // then we handle the simpler kind of link where the thing inside the
-                                // square brackets is both what we show and what we link to
-
-                                let reSimple = /\[\[([^\]]+)\]\]/gi
-                                def = def.replace(
-                                    reSimple,
-                                    "<a href='https://en.wikipedia.org/wiki/$1'>$1</a>"
-                                )
-                                entity.definition = def
-
-                                // for debugging
-                                entity.longDefinition = resp.data.definitions[0].definition
-
-                                // take note of the preferred term, we'll use this in the display.
-                                entity.preferredTerm = resp.data.preferredTerm
-                            })
-                            .catch(e => {
-                                console.log("error from NERD server", e)
-                            })
-
-                        let wikiImgUrl = "https://en.wikipedia.org/w/api.php?action=query&prop=pageimages&format=json&origin=*&pithumbsize=200&pageids=" + entity.wikipediaExternalRef
-                        axios.get(wikiImgUrl)
-                            .then(resp => {
-                                console.log("got wikipedia image URL back", resp)
-                                let page = Object.values(resp.data.query.pages)[0] // there should only ever be one page
-                                console.log("got this wiki page response:", page)
-
-
-                                if (page.thumbnail) {
-                                    entity.imgUrl = page.thumbnail.source
-                                }
-                            })
-                            .catch(e => {
-                                console.log("error from wikipedia api", e)
-                            })
-
-
+                    // this entity
+                    if (entity.confidence < 0.7){
+                        // if it's low-confidence, treat is as a text chunk
+                        chunks.push({text: entity.spot})
+                    }
+                    else {
                         chunks.push(entity)
                     }
 
                     // update the cursor
-                    cursorIndex = entity.offsetEnd
+                    cursorIndex = entity.end
                 })
 
-                if (cursorIndex < abstract.length) {
-                    chunks.push({
-                        rawName: abstract.slice(cursorIndex, abstract.length),
-                        nerd_selection_score: 0
-                    })
+                // after the last entity, there's generally one last hanging text chunk. add it.
+                if (cursorIndex < this.paper.abstract.length) {
+                    let lastTextChunk = this.paper.abstract.slice(cursorIndex, this.paper.abstract.length)
+                    chunks.push({text: lastTextChunk})
                 }
 
                 return chunks
@@ -163,7 +112,12 @@
                 console.log("selecting entity", entity)
                 this.selectedEntity = entity
                 return false
-            },
+            }
+        },
+        watch: {
+            paper: function(newVal, oldVal){
+                this.selectedEntity = null
+            }
         }
     }
 </script>
@@ -204,20 +158,31 @@
                 /*background: #fff;*/
                 /*z-index: 9999;*/
                 /*border: 1px solid #333;*/
+
+                border-left: 1px solid #ccc;
+                margin-left: 20px;
+                /*display: flex;*/
+                /*align-items: center;*/
+
                 @media (min-width: 600px) {
                     position: static;
                     max-width: 500px;
                 }
+
                 .header {
                     font-weight: bold;
                     font-size: 120%;
-                    color: #fff;
-                    background: #555;
+                    /*color: #fff;*/
+                    /*background: #555;*/
                     padding: 10px 20px;
                     display: flex;
                     justify-content: space-between;
                     .close {
                         cursor: pointer;
+                    }
+                    .confidence {
+                        font-weight: 100;
+                        font-size: 50%;
                     }
                 }
                 .body {
@@ -227,6 +192,11 @@
                         margin: 10px;
                         max-width: 150px;
                     }
+                }
+                .footer {
+                    text-align: right;
+                    font-size: 80%;
+                    padding-right: 30px;
                 }
 
             }
