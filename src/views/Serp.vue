@@ -325,7 +325,10 @@
             padding: 20px;
             .img {
                 overflow: hidden;
-                max-height: 150px;
+                height: 150px;
+                display: flex;
+                align-items: center;
+                background: #eee;
                 img {
                 }
                 .label {
