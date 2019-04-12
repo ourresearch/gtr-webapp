@@ -363,6 +363,7 @@
                 if (!newVal.query.zoom){
                     console.log("new search")
                     this.results.length = 0
+                    this.currentPage = 0
                     this.loadPage()
                 }
             }
