@@ -33,11 +33,6 @@
 
                         <div class="card-content" :class="{selected: result.isSelected}">
                             <div class="card-header">
-                                <div class="pub-type">
-                                    <div class="value" v-if="result.pubType">
-                                        {{result.pubType.pub_type_gtr}}
-                                    </div>
-                                </div>
                                 <div class="img-wrapper">
                                     <img :src="result.image.url" alt="" class="card-image">
                                 </div>
@@ -47,6 +42,11 @@
                             </div>
 
                             <div class="card-body">
+                                <div class="line pub-type" v-if="result.pubType">
+                                    <div class="value" >
+                                        {{result.pubType.pub_type_gtr}}
+                                    </div>
+                                </div>
                                 <div class="line title">
                                     {{result.title}}
                                 </div>
@@ -428,10 +428,6 @@
                     /*color: #fff;*/
                 }
                 .card-header {
-                    .pub-type {
-                        height: 14px;
-                        font-size: 12px;
-                    }
                     .img-wrapper {
                         min-height: 150px;
                         background: #fafafa;
@@ -448,6 +444,10 @@
                 }
                 .card-body {
                     margin-top: 10px;
+                    .pub-type {
+                        font-size: 12px;
+                        font-weight: bold;
+                    }
                     .source {
                         color: #999;
                         font-size: 12px;
