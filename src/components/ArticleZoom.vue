@@ -13,10 +13,10 @@
             </div>
             <div class="abstract">
                 <span class="abstract-chunk-container" v-for="chunk in abstractChunks">
-                        <a class="chunk entity" v-html="chunk.spot" v-if="chunk.abstract" href=""
-                           @click.prevent="selectEntity(chunk)">
+                        <span class="chunk entity" v-html="chunk.spot" v-if="chunk.abstract"
+                           @click="selectEntity(chunk)">
 
-                        </a>
+                        </span>
                         <span class="chunk text" v-if="!chunk.abstract">{{chunk.text}}</span>
                     </span>
             </div>
@@ -36,8 +36,8 @@
                     <span class="close" @click="selectedEntity=false">&times;</span>
                 </div>
                 <div class="body">
-                    <img :src="selectedEntity.image_url" alt="" v-if="selectedEntity.image_url">
                     <span class="definition" v-html="selectedEntity.abstract"></span>
+                    <img :src="selectedEntity.image_url" alt="" v-if="selectedEntity.image_url">
                 </div>
                 <div class="footer">
                     via <a :href="selectedEntity.uri">Wikipedia</a>
@@ -128,10 +128,12 @@
 
 
         background: #ddd;
-        padding: 20px;
+        padding: 30px;
         .col {
-            flex: 1;
             &.about {
+                flex: 2;
+                font-size: 18px;
+                line-height: 1.4;
                 h1 {
                     margin: 0;
                 }
@@ -146,6 +148,10 @@
                 }
                 .abstract {
                     margin-top: 10px;
+                    .entity {
+                        text-decoration: underline;
+                        cursor: pointer;
+                    }
                 }
             }
 
@@ -159,15 +165,14 @@
                 /*z-index: 9999;*/
                 /*border: 1px solid #333;*/
 
-                border-left: 1px solid #ccc;
-                margin-left: 20px;
+                flex: 1;
+
+                border-left: 1px solid #333;
+                margin-left: 30px;
+                padding-left: 30px;
                 /*display: flex;*/
                 /*align-items: center;*/
 
-                @media (min-width: 600px) {
-                    position: static;
-                    max-width: 500px;
-                }
 
                 .header {
                     font-weight: bold;
@@ -186,11 +191,11 @@
                     }
                 }
                 .body {
-                    padding: 10px 20px;
                     img {
-                        float: right;
-                        margin: 10px;
-                        max-width: 150px;
+                        margin-top: 20px;
+                        /*float: right;*/
+                        /*margin: 10px;*/
+                        /*max-width: 150px;*/
                     }
                 }
                 .footer {

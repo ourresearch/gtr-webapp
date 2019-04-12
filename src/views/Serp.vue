@@ -20,29 +20,51 @@
             </div>
 
 
+
+
             <div class="results-list">
 
                 <template v-for="(result, index) of displayResults">
                     <div class="card"
+                         :class="{selected: result.isSelected}"
                          :style="{width: cardWidth+'px'}"
                          @click="setArticleZoom(result.doi)">
-                        <div class="img">
-                            <img :src="result.image.url" alt="" class="card-image">
-                            <div class="label">
-                                {{result.image.title}}
-                            </div>
-                        </div>
-                        <div class="content">
-                            <div class="line title">
-                                {{result.title}}
-                            </div>
-                            <div class="line source">
-                                <span class="date">{{ result.year }}</span>
 
-                                <span class="journal">{{ result.journal_name }}</span>
+
+                        <div class="card-content" :class="{selected: result.isSelected}">
+                            <div class="card-header">
+                                <div class="pub-type">
+                                    <div class="value" v-if="result.pubType">
+                                        {{result.pubType.pub_type_gtr}}
+                                    </div>
+                                </div>
+                                <div class="img-wrapper">
+                                    <img :src="result.image.url" alt="" class="card-image">
+                                </div>
+                                <div class="label">
+                                    {{result.image.title}}
+                                </div>
                             </div>
 
+                            <div class="card-body">
+                                <div class="line title">
+                                    {{result.title}}
+                                </div>
+                                <div class="line source">
+                                    <span class="date">{{ result.year }}</span>
+
+                                    <span class="journal">{{ result.journal_name }}</span>
+                                </div>
+
+                            </div>
+                            <div class="card-footer"></div>
+
                         </div>
+
+                        <div class="card-spike-wrapper">
+                            <div class="card-spike" v-show="result.isSelected"></div>
+                        </div>
+
 
                     </div>
 
@@ -84,6 +106,17 @@
     import ArticleZoom from '../components/ArticleZoom'
 
 
+    function chunk(array, size) {
+      const chunked_arr = [];
+      let index = 0;
+      while (index < array.length) {
+        chunked_arr.push(array.slice(index, size + index));
+        index += size;
+      }
+      return chunked_arr;
+    }
+
+
     export default {
         name: "Serp",
         data: () => ({
@@ -91,7 +124,7 @@
             queryElapsed: 0.0,
             showOnlyOa: false,
             zoomedResult: null,
-            cardWidth: 260,
+            cardWidth: 280,
             rowWidth: null,
             currentPage: 0
         }),
@@ -105,6 +138,23 @@
                 let url = "https://gtr-api.herokuapp.com/search/" + searchTerm
                 return url
             },
+            cardRows() {
+                let rowSize = 4
+                let rows = [];
+                let index = 0;
+                while (index < this.displayResults.length) {
+                    let myRow = {
+                        containsSelected: false,
+                        results: []
+                    }
+                    myRow.results.push(this.displayResults.slice(index, rowSize + index));
+                    rows.push(myRow)
+                    index += rowSize;
+                }
+                return rows;
+            },
+
+
             displayResults() {
                 let ret = this.results
 
@@ -118,6 +168,7 @@
                 // handle the article zooming
                 ret.forEach(r => {
                     r.insertZoomAfterMe = false
+                    r.isSelected = false
                 })
                 if (this.zoomedResult){
                     let zoomedResultIndex = ret.findIndex(r => {
@@ -130,7 +181,25 @@
                             break
                         }
                     }
+
+                    ret.find(r => {
+                        return r.doi === this.zoomedResult.doi
+                    }).isSelected = true
+
+
                 }
+
+
+                ret = ret.map(r => {
+                    r.pub_types.sort((a, b) => {
+                        return a.evidence_level - b.evidence_level
+                    })
+
+                    r.pubType = r.pub_types.find(x => {
+                        return x.pub_type_gtr
+                    })
+                    return r
+                })
 
 
                 ret = ret.map(result => {
@@ -248,6 +317,7 @@
                             }
                             else {
                                 console.log("load(): we can't fetch more results, halting")
+                                alert("API error!")
                                 return false
                             }
                         })
@@ -279,7 +349,18 @@
         },
         mounted() {
             this.loadPage()
+        },
+        watch: {
+            "$route": function(newVal, oldVal){
+                console.log("route change", newVal)
+                if (!newVal.query.zoom){
+                    console.log("new search")
+                    this.results.length = 0
+                    this.loadPage()
+                }
+            }
         }
+
     }
 </script>
 
@@ -312,7 +393,7 @@
     }
 
     div.results-list {
-        max-width: 1100px;
+        max-width: 1140px;
         padding: 0;
         margin: 10px 0 0;
         display: flex;
@@ -322,34 +403,75 @@
 
 
         div.card {
-            padding: 20px;
-            .img {
-                overflow: hidden;
-                height: 150px;
-                display: flex;
-                align-items: center;
-                background: #eee;
-                img {
-                }
-                .label {
-                    /*color: #fff;*/
-                    /*background: rgba(0,0,0,.6);*/
-                    padding: 1px 0;
-                    font-size: 12px;
-                    z-index: 999;
-                }
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            &.selected {
             }
-            .content {
-                margin-top: 10px;
-                .source {
-                    color: #999;
-                    font-size: 12px;
-                    .journal {
-                        margin-left: 3px;
-                        font-style: italic;
+
+
+            .card-content {
+                padding: 5px 15px 15px;
+                margin: 10px;
+                cursor: pointer;
+                border-radius: 3px;
+                transition: box-shadow 300ms;
+                flex: 1;
+                &:hover {
+                    box-shadow: 0px 3px 6px 2px rgba(0, 0, 0, 0.1);
+                    /*background: #fafafa;*/
+                }
+                &.selected {
+                    box-shadow: 0px 3px 6px 2px rgba(0, 0, 0, 0.1);
+                    /*border: 1px solid #ddd;*/
+                    /*background: #333;*/
+                    /*color: #fff;*/
+                }
+                .card-header {
+                    .pub-type {
+                        height: 14px;
+                        font-size: 12px;
+                    }
+                    .img-wrapper {
+                        min-height: 150px;
+                        background: #fafafa;
+                        max-height: 200px;
+                        overflow: hidden;
+                        border-radius: 3px;
+
+
+                    }
+                    .label {
+                        padding: 1px 0;
+                        font-size: 12px;
+                    }
+                }
+                .card-body {
+                    margin-top: 10px;
+                    .source {
+                        color: #999;
+                        font-size: 12px;
+                        .journal {
+                            margin-left: 3px;
+                            font-style: italic;
+                        }
                     }
                 }
             }
+            .card-spike-wrapper {
+                display: flex;
+                justify-content: center;
+                height: 20px;
+                margin-top: 5px;
+                .card-spike {
+                    height: 0;
+                    width: 0;
+                    border-bottom: 20px solid #ddd;
+                    border-right: 20px solid transparent;
+                    border-left: 20px solid transparent;
+                }
+            }
+
 
         }
         .article-zoom {
