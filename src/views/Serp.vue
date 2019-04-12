@@ -48,9 +48,17 @@
                                     </div>
                                 </div>
 
-                                <div class="mesh">
-                                    <span class="mesh-term" v-for="(meshTerm, index) in result.mesh">
+                                <div class="mesh tags" v-if="result.mesh.length">
+                                    <strong>MESH: </strong>
+                                    <span class="tag" v-for="(meshTerm, index) in result.mesh">
                                         {{meshTerm.descriptor}}<span class="sep" v-show="index+1 < result.mesh.length">;</span>
+                                    </span>
+                                </div>
+
+                                <div class="entity tags" v-if="result.picture_candidates.length">
+                                    <strong>Entities: </strong>
+                                    <span class="tag" v-for="(candidate, index) in result.picture_candidates">
+                                        {{candidate.title}}<span class="sep" v-show="index+1 < result.picture_candidates.length">;</span>
                                     </span>
                                 </div>
 
@@ -448,20 +456,26 @@
                     .label {
                         padding: 1px 0;
                         font-size: 12px;
+                        text-align: right;
                     }
                 }
                 .card-body {
-                    margin-top: 10px;
-                    .mesh {
+                    margin-top: 5px;
+                    .tags {
                         font-size: 12px;
                         padding: 5px 0;
-                        border-top: 1px solid #ddd;
                         border-bottom: 1px solid #ddd;
                         margin: 5px 0;
                     }
                     .pub-type {
                         font-size: 12px;
-                        font-weight: bold;
+                        .value {
+                            padding: 2px 6px;
+                            border-radius: 3px;
+                            display: inline;
+                            border: 1px solid #999;
+
+                        }
                     }
                     .source {
                         color: #999;
