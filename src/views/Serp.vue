@@ -47,6 +47,13 @@
                                         {{result.pubType.pub_type_gtr}}
                                     </div>
                                 </div>
+
+                                <div class="mesh">
+                                    <span class="mesh-term" v-for="(meshTerm, index) in result.mesh">
+                                        {{meshTerm.descriptor}}<span class="sep" v-show="index+1 < result.mesh.length">;</span>
+                                    </span>
+                                </div>
+
                                 <div class="line title">
                                     {{result.title}}
                                 </div>
@@ -411,7 +418,7 @@
 
 
             .card-content {
-                padding: 5px 15px 15px;
+                padding: 15px;
                 margin: 10px;
                 cursor: pointer;
                 border-radius: 3px;
@@ -444,6 +451,13 @@
                 }
                 .card-body {
                     margin-top: 10px;
+                    .mesh {
+                        font-size: 12px;
+                        padding: 5px 0;
+                        border-top: 1px solid #ddd;
+                        border-bottom: 1px solid #ddd;
+                        margin: 5px 0;
+                    }
                     .pub-type {
                         font-size: 12px;
                         font-weight: bold;
