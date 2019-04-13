@@ -38,6 +38,8 @@
 <style lang="scss">
 
   @import url("https://use.fontawesome.com/releases/v5.0.10/css/all.css");
+  @import url("//fonts.googleapis.com/css?family=Lato:300,400,700,400italic");
+
 
 
   @import "~vue-material/dist/theme/engine";
@@ -55,6 +57,7 @@
   body {
     background: #fff;
     font-size: 16px;
+    font-family: Lato, sans-serif;
     .container {
       line-height: 1.3;
       font-size: 16px;
