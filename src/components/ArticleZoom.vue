@@ -1,30 +1,64 @@
 <template>
     <div class="article-zoom">
         <div class="col about">
-            <h1>{{paper.title}}</h1>
-            <div class="line source">
-                Published
-                <span class="date">{{ paper.year }}</span>
-                in
-                <span class="journal">{{ paper.journal_name }}</span>
-            </div>
-            <div class="line authors" v-show="paper.displayAuthors">
-                By {{paper.displayAuthors}}
+            <h1>
+                <span class="chunk-container" v-for="chunk in titleChunks">
+                    <span class="chunk entity" v-html="chunk.spot" v-if="chunk.abstract"
+                       @click="toggleEntity(chunk)">
+
+                    </span>
+                    <span class="chunk text" v-if="!chunk.abstract">{{chunk.text}}</span>
+                </span>
+
+
+            </h1>
+            <div class="meta">
+                <div class="line source">
+                    <span class="date">{{ paper.year }}</span> in
+                    <span class="journal">{{ paper.journal_name }}</span>
+                </div>
+
+
             </div>
             <div class="abstract">
-                <span class="abstract-chunk-container" v-for="chunk in abstractChunks">
-                        <span class="chunk entity" v-html="chunk.spot" v-if="chunk.abstract"
-                           @click="selectEntity(chunk)">
+                <span class="chunk-container" v-for="chunk in abstractChunks">
+                    <span class="chunk entity" v-html="chunk.spot" v-if="chunk.abstract"
+                       @click="toggleEntity(chunk)">
 
-                        </span>
-                        <span class="chunk text" v-if="!chunk.abstract">{{chunk.text}}</span>
                     </span>
+                    <span class="chunk text" v-if="!chunk.abstract">{{chunk.text}}</span>
+                </span>
             </div>
+
+            <div class="actions">
+
+            </div>
+            <div class="footer">
+                <div class="line authors" v-show="paper.displayAuthors">
+                    <strong>Authors:</strong> {{paper.displayAuthors}}
+                </div>
+                <div class="line topics">
+                    <strong>Topics:</strong>
+                    <router-link class="topic"
+                       :to="'/search/'+candidate.title.replace(' ', '_')"
+                       v-for="(candidate, index) in paper.picture_candidates">
+                        {{candidate.title}}<span class="sep" v-if="index+1 < paper.picture_candidates.length">;</span>
+                    </router-link>
+                </div>
+            </div>
+
         </div>
 
         <div class="col anno">
+            <div class="controls">
+                <div class="spacer"></div>
+                <div class="close" @click="$emit('close')">&times;</div>
+            </div>
             <div class="anno-empty" v-if="!selectedEntity">
-                Click underlined words to learn more.
+                <div class="text">
+                    <i class="fas fa-arrow-left"></i>
+                    Click <span class="entity">highlighted words</span> to learn more!
+                </div>
             </div>
 
             <div class="anno-full" v-if="selectedEntity">
@@ -52,6 +86,59 @@
 
 <script>
     import _ from 'lodash'
+    
+    function textChunk(str){
+        return {text: str}
+    }
+    
+    function makeChunks(str, annotations){
+        if (!str){
+            return textChunk("")
+        }
+        if (!annotations){
+            return textChunk(str)
+        }
+        
+        // split the str into a bunch of chunks...some chunks are entities,
+        // the other chunks are the text in between entities.
+        let chunks = []
+        let cursorIndex = 0
+        annotations.forEach(entity => {
+
+            // add any plaintext chunk before the current entity
+            if (entity.start > 0) {
+                chunks.push(
+                    textChunk(str.slice(cursorIndex, entity.start))
+                )
+            }
+
+            // this entity
+            if (entity.confidence < 0.7){
+                // if it's low-confidence, treat is as a text chunk
+                chunks.push(
+                    textChunk(entity.spot)
+                )
+            }
+            else {
+                chunks.push(entity)
+            }
+
+            // update the cursor
+            cursorIndex = entity.end
+        })
+
+        // after the last entity, there's generally one last hanging text chunk. add it.
+        if (cursorIndex < str.length) {
+            chunks.push(
+                textChunk(
+                    str.slice(cursorIndex, str.length)
+                )
+            )
+        }
+
+        return chunks        
+        
+    }
 
     export default {
         name: "ArticleZoom",
@@ -62,56 +149,27 @@
         }),
         computed: {
             abstractChunks() {
-
-                // make sure we have an abstract
-                if (!this.paper || !this.paper.abstract) {
-                    return [""]
-                }
-
-                // if no entities, return one big chunk
-                if (!this.paper.annotations || !this.paper.annotations.using_article_abstract.length) {
-                    return [this.paper.abstract]
-                }
-
-                // split the abstract into a bunch of chunks...some chunks are entities,
-                // the other chunks are the text in between entities.
-                let chunks = []
-                let cursorIndex = 0
-                this.paper.annotations.using_article_abstract.forEach(entity => {
-
-                    // add any plaintext chunk before the current entity
-                    if (entity.start > 0) {
-                        let textChunk = this.paper.abstract.slice(cursorIndex, entity.start)
-                        chunks.push({text: textChunk})
-                    }
-
-                    // this entity
-                    if (entity.confidence < 0.7){
-                        // if it's low-confidence, treat is as a text chunk
-                        chunks.push({text: entity.spot})
-                    }
-                    else {
-                        chunks.push(entity)
-                    }
-
-                    // update the cursor
-                    cursorIndex = entity.end
-                })
-
-                // after the last entity, there's generally one last hanging text chunk. add it.
-                if (cursorIndex < this.paper.abstract.length) {
-                    let lastTextChunk = this.paper.abstract.slice(cursorIndex, this.paper.abstract.length)
-                    chunks.push({text: lastTextChunk})
-                }
-
-                return chunks
+                return makeChunks(
+                    this.paper.abstract,
+                    this.paper.annotations.using_article_abstract
+                )
+            },
+            titleChunks(){
+                return makeChunks(
+                    this.paper.title,
+                    this.paper.annotations.using_article_title
+                )
             }
         },
         methods: {
-            selectEntity(entity) {
-                console.log("selecting entity", entity)
-                this.selectedEntity = entity
-                return false
+            toggleEntity(entity) {
+                console.log("toggling entity", entity)
+                if (this.selectedEntity && entity.id === this.selectedEntity.id){
+                    this.selectedEntity = null
+                }
+                else {
+                    this.selectedEntity = entity
+                }
             }
         },
         watch: {
@@ -127,31 +185,43 @@
         display: flex;
 
 
-        background: #ddd;
-        padding: 30px;
+        background: #dadada;
+        padding: 20px 30px 30px;
+        .entity {
+            background: lightgoldenrodyellow;
+            cursor: pointer;
+            padding: 0 3px;
+            white-space: nowrap;
+            border-radius: 3px;
+        }
         .col {
             &.about {
                 flex: 2;
                 font-size: 18px;
-                line-height: 1.4;
+
+
+                margin-top: 20px;
                 h1 {
                     margin: 0;
+                    line-height: 1.3;
                 }
-                .authors {
-                }
-                .source {
-                    .date {
-                    }
-                    .journal {
-                        font-style: italic;
+                .meta {
+                    margin-top: 5px;
+                    font-weight: bold;
+                    .source {
+                        .date {
+                        }
+                        .journal {
+                            font-style: italic;
+                        }
                     }
                 }
                 .abstract {
+                    line-height: 1.5;
                     margin-top: 10px;
-                    .entity {
-                        text-decoration: underline;
-                        cursor: pointer;
-                    }
+                    padding-top: 20px;
+                    font-size: 20px;
+
                 }
             }
 
@@ -167,11 +237,26 @@
 
                 flex: 1;
 
-                border-left: 1px solid #333;
                 margin-left: 30px;
                 padding-left: 30px;
                 /*display: flex;*/
                 /*align-items: center;*/
+
+                .controls {
+                    display: flex;
+                    .close {
+                        font-size: 38px;
+                        cursor: pointer;
+                    }
+                    .spacer{ flex: 1;}
+                }
+
+                .anno-empty {
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                    height: 100%;
+                }
 
 
                 .header {
@@ -179,7 +264,7 @@
                     font-size: 120%;
                     /*color: #fff;*/
                     /*background: #555;*/
-                    padding: 10px 20px;
+                    padding: 10px 0;
                     display: flex;
                     justify-content: space-between;
                     .close {

@@ -48,6 +48,18 @@
                                     </div>
                                 </div>
 
+
+                                <div class="line title">
+                                    {{result.title}}
+                                </div>
+                                <div class="line source">
+                                    <span class="date">{{ result.year }}</span>
+
+                                    <span class="journal">{{ result.journal_name }}</span>
+                                </div>
+
+                            </div>
+                            <div class="card-footer">
                                 <div class="mesh tags" v-if="result.mesh.length">
                                     <strong>MESH: </strong>
                                     <span class="tag" v-for="(meshTerm, index) in result.mesh">
@@ -61,18 +73,7 @@
                                         {{candidate.title}}<span class="sep" v-show="index+1 < result.picture_candidates.length">;</span>
                                     </span>
                                 </div>
-
-                                <div class="line title">
-                                    {{result.title}}
-                                </div>
-                                <div class="line source">
-                                    <span class="date">{{ result.year }}</span>
-
-                                    <span class="journal">{{ result.journal_name }}</span>
-                                </div>
-
                             </div>
-                            <div class="card-footer"></div>
 
                         </div>
 
@@ -86,6 +87,7 @@
 
                     <article-zoom
                             :paper="zoomedResult"
+                            @close="setArticleZoom(null)"
                             v-if="result.insertZoomAfterMe">
                     </article-zoom>
 
@@ -262,7 +264,7 @@
         methods: {
 
             setArticleZoom(doi){
-                if (doi == this.$route.query.zoom) {
+                if (!doi || doi == this.$route.query.zoom) {
                     console.log("remove doi from URL")
                     this.$router.push({query: {}})
                     this.zoomedResult = null
@@ -368,12 +370,12 @@
         watch: {
             "$route": function(newVal, oldVal){
                 console.log("route change", newVal)
-                if (!newVal.query.zoom){
-                    console.log("new search")
-                    this.results.length = 0
-                    this.currentPage = 0
-                    this.loadPage()
-                }
+                // if (!newVal.query.zoom){
+                //     console.log("new search")
+                //     this.results.length = 0
+                //     this.currentPage = 0
+                //     this.loadPage()
+                // }
             }
         }
 
@@ -461,13 +463,8 @@
                 }
                 .card-body {
                     margin-top: 5px;
-                    .tags {
-                        font-size: 12px;
-                        padding: 5px 0;
-                        border-bottom: 1px solid #ddd;
-                        margin: 5px 0;
-                    }
                     .pub-type {
+                        padding-bottom: 10px;
                         font-size: 12px;
                         .value {
                             padding: 2px 6px;
@@ -478,6 +475,7 @@
                         }
                     }
                     .source {
+
                         color: #999;
                         font-size: 12px;
                         .journal {
@@ -485,6 +483,16 @@
                             font-style: italic;
                         }
                     }
+                }
+                .card-footer {
+                    display: none;
+                    .tags {
+                        font-size: 12px;
+                        padding: 5px 0;
+                        border-top: 1px solid #ddd;
+                        margin: 5px 0;
+                    }
+
                 }
             }
             .card-spike-wrapper {
@@ -495,7 +503,7 @@
                 .card-spike {
                     height: 0;
                     width: 0;
-                    border-bottom: 20px solid #ddd;
+                    border-bottom: 20px solid #dadada;
                     border-right: 20px solid transparent;
                     border-left: 20px solid transparent;
                 }
