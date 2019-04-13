@@ -31,7 +31,9 @@
 
 
         <div class="tab overview" v-show="selectedTabIndex===0">
-            overview
+            <div class="short-abstract">
+                {{paper.short_abstract}}
+            </div>
         </div>
 
 
@@ -279,7 +281,7 @@
 
 
         .entity {
-            background: lightgoldenrodyellow;
+            background: rgba(0,200,100,.15);
             cursor: pointer;
             padding: 0 3px;
             white-space: nowrap;
@@ -317,7 +319,7 @@
                         flex: 2;
                         font-size: 18px;
                         .abstract {
-                            line-height: 1.5;
+                            line-height: 1.6;
                             margin-top: 10px;
                             padding-top: 20px;
                             font-size: 20px;

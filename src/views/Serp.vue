@@ -42,8 +42,12 @@
                             </div>
 
                             <div class="card-body">
-                                <div class="line pub-type" v-if="result.pubType">
-                                    <div class="value" >
+                                <div class="line pub-type">
+                                    <div class="oa">
+                                        <i class="fas fa-unlock" v-show="result.oa_url"></i>
+                                        Open access
+                                    </div>
+                                    <div class="value"  v-if="result.pubType">
                                         {{result.pubType.pub_type_gtr}}
                                     </div>
                                 </div>
@@ -84,12 +88,14 @@
 
                     </div>
 
-
-                    <article-zoom
-                            :paper="zoomedResult"
-                            @close="setArticleZoom(null)"
-                            v-if="result.insertZoomAfterMe">
-                    </article-zoom>
+                    <transition name="slide">
+                        <article-zoom
+                                :paper="zoomedResult"
+                                @close="setArticleZoom(null)"
+                                v-if="result.insertZoomAfterMe"
+                                >
+                        </article-zoom>
+                    </transition>
 
 
 
@@ -144,6 +150,7 @@
             cardWidth: 280,
             rowWidth: null,
             currentPage: 0
+
         }),
         components: {
             ArticleZoom,
@@ -391,6 +398,27 @@
     /*margin-left: 150px;*/
     /*}*/
 
+
+    /*.slide {*/
+        /*transition: height 5s;*/
+
+    /*}*/
+
+    .slide-enter-active, .slide-leave-active {
+        transition: max-height .5s;
+    }
+
+    .slide-leave, .slide-enter-to{
+        overflow: hidden;
+        max-height: 500px;
+    }
+
+    .slide-enter, .slide-leave-to {
+        overflow: hidden;
+        max-height: 0;
+    }
+
+
     .results-descr {
         padding: 0 20px 20px;
         color: #666;
@@ -466,6 +494,11 @@
                     .pub-type {
                         padding-bottom: 10px;
                         font-size: 12px;
+                        display: flex;
+                        .fas {
+                            font-size: 16px;
+                            margin-right: 5px;
+                        }
                         .value {
                             padding: 2px 6px;
                             border-radius: 3px;
