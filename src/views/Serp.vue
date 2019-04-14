@@ -20,8 +20,6 @@
             </div>
 
 
-
-
             <div class="results-list">
 
                 <template v-for="(result, index) of displayResults">
@@ -42,16 +40,6 @@
                             </div>
 
                             <div class="card-body">
-                                <div class="line pub-type">
-                                    <div class="oa value" v-if="result.oa_url">
-                                        <i class="fas fa-unlock" ></i>
-                                        Open access
-                                    </div>
-                                    <div class="value"  v-if="result.pubType">
-                                        {{result.pubType.pub_type_gtr}}
-                                    </div>
-                                </div>
-
 
                                 <div class="line title">
                                     {{result.title}}
@@ -64,17 +52,32 @@
 
                             </div>
                             <div class="card-footer">
+                                <div class="line pub-type">
+                                    <div class="oa value" v-if="result.oa_url">
+                                        <i class="fas fa-unlock"></i>
+                                        Open access
+                                    </div>
+                                    <div class="value" v-if="result.pubType">
+                                        {{result.pubType.pub_type_gtr}}
+                                    </div>
+                                </div>
+
+
+
+
                                 <div class="mesh tags" v-if="result.mesh.length">
                                     <strong>MESH: </strong>
                                     <span class="tag" v-for="(meshTerm, index) in result.mesh">
-                                        {{meshTerm.descriptor}}<span class="sep" v-show="index+1 < result.mesh.length">;</span>
+                                        {{meshTerm.descriptor}}<span class="sep"
+                                                                     v-show="index+1 < result.mesh.length">;</span>
                                     </span>
                                 </div>
 
                                 <div class="entity tags" v-if="result.picture_candidates.length">
                                     <strong>Entities: </strong>
                                     <span class="tag" v-for="(candidate, index) in result.picture_candidates">
-                                        {{candidate.title}}<span class="sep" v-show="index+1 < result.picture_candidates.length">;</span>
+                                        {{candidate.title}}<span class="sep"
+                                                                 v-show="index+1 < result.picture_candidates.length">;</span>
                                     </span>
                                 </div>
                             </div>
@@ -102,12 +105,11 @@
                     @close="setArticleZoom(null)"
                     v-if="zoomedResult"
                     :class="{open: !!zoomedResult}"
-                    >
+            >
             </article-zoom>
 
 
         </transition>
-
 
 
         <div class="loading" v-if="!results.length">
@@ -126,13 +128,13 @@
 
 
     function chunk(array, size) {
-      const chunked_arr = [];
-      let index = 0;
-      while (index < array.length) {
-        chunked_arr.push(array.slice(index, size + index));
-        index += size;
-      }
-      return chunked_arr;
+        const chunked_arr = [];
+        let index = 0;
+        while (index < array.length) {
+            chunked_arr.push(array.slice(index, size + index));
+            index += size;
+        }
+        return chunked_arr;
     }
 
 
@@ -248,7 +250,7 @@
         },
         methods: {
 
-            setArticleZoom(doi){
+            setArticleZoom(doi) {
                 if (!doi || doi == this.$route.query.zoom) {
                     console.log("remove doi from URL")
                     this.$router.push({query: {}})
@@ -271,7 +273,7 @@
                 return !!this.zoomedResult
             },
 
-            loadPage(){
+            loadPage() {
                 let that = this
                 load()
 
@@ -317,7 +319,7 @@
                                 that.zoomedResult,
                                 that.currentPage
                             )
-                            if (success){
+                            if (success) {
                                 return load()
                             }
                             else {
@@ -356,7 +358,7 @@
             this.loadPage()
         },
         watch: {
-            "$route": function(newVal, oldVal){
+            "$route": function (newVal, oldVal) {
                 console.log("route change", newVal)
                 // if (!newVal.query.zoom){
                 //     console.log("new search")
@@ -379,14 +381,10 @@
     /*margin-left: 150px;*/
     /*}*/
 
-
     /*.slide {*/
-        /*transition: height 5s;*/
+    /*transition: height 5s;*/
 
     /*}*/
-
-
-
 
     .results-descr {
         padding: 0 20px 20px;
@@ -415,15 +413,12 @@
         flex-wrap: wrap;
         margin: 10px 10px 100px;
 
-
-
         div.card {
             display: flex;
             flex-direction: column;
             justify-content: space-between;
             &.selected {
             }
-
 
             .card-content {
                 padding: 15px;
@@ -449,7 +444,6 @@
                         max-height: 200px;
                         overflow: hidden;
                         border-radius: 3px;
-
 
                     }
                     .label {
@@ -486,7 +480,11 @@
                     }
                 }
                 .card-footer {
-                    display: none;
+
+                    .mesh-tags, .entity-tags {
+                        display: none;
+                    }
+
                     .tags {
                         font-size: 12px;
                         padding: 5px 0;
@@ -500,6 +498,7 @@
         }
 
     }
+
     .page-bottom {
         margin: 20px;
         display: flex;
@@ -508,16 +507,15 @@
 
     }
 
-
-
-
     .slide-enter-active, .slide-leave-active {
-        transition:transform 300ms;
+        transition: transform 300ms;
     }
-    .slide-leave, .slide-enter-to{
+
+    .slide-leave, .slide-enter-to {
         transform: translateX(0);
 
     }
+
     .slide-enter, .slide-leave-to {
         transform: translateX(100%);
     }

@@ -1,95 +1,83 @@
 <template>
     <div class="article-zoom" v-if="paper">
-        <div class="header">
-            <div class="content">
-                <div class="plain" v-show="selectedTabIndex !== 1">
-                    <h1>{{paper.title}}</h1>
-                </div>
-                <div class="annotated" v-show="selectedTabIndex === 1">
-                    <h1>
-                        <span class="chunk-container" v-for="chunk in titleChunks">
-                            <span class="chunk entity" v-html="chunk.spot" v-if="chunk.abstract"
-                               @click="toggleEntity(chunk)">
 
-                            </span>
-                            <span class="chunk text" v-if="!chunk.abstract">{{chunk.text}}</span>
-                        </span>
-                    </h1>
-                </div>
-                <div class="line source">
-                    <span class="date">{{ paper.year }}</span> in
-                    <span class="journal">{{ paper.journal_name }}</span>
-                </div>
-            </div>
-            <div class="controls">
-                <div class="close" @click="$emit('close')">&times;</div>
-            </div>
-
-
-        </div>
-
-
-
-        <div class="tab overview" v-show="selectedTabIndex===0">
-            <div class="short-abstract">
-                {{paper.short_abstract}}
-            </div>
-        </div>
-
-
-        <div class="tab abstract" v-show="selectedTabIndex===1">
-            <div class="col about">
-
-                <div class="meta">
-                    <div class="line source">
-                        <span class="date">{{ paper.year }}</span> in
-                        <span class="journal">{{ paper.journal_name }}</span>
-                    </div>
-
-
-                </div>
-                <div class="abstract">
-                    <span class="chunk-container" v-for="chunk in abstractChunks">
+        <div class="col content">
+            <div class="header">
+                <h1>
+                    <span class="chunk-container" v-for="chunk in titleChunks">
                         <span class="chunk entity" v-html="chunk.spot" v-if="chunk.abstract"
                            @click="toggleEntity(chunk)">
 
                         </span>
                         <span class="chunk text" v-if="!chunk.abstract">{{chunk.text}}</span>
                     </span>
+                </h1>
+                <div class="line source">
+                    <span class="date">{{ paper.year }}</span> in
+                    <span class="journal">{{ paper.journal_name }}</span>
                 </div>
-
-                <div class="actions">
-                    <md-button class="md-raised md-primary">
+                <div class="line tag-thingies">
+                    <div class="oa value" v-if="paper.oa_url">
                         <i class="fas fa-unlock"></i>
-                        read full article
-                    </md-button>
-
-                </div>
-                <div class="footer">
-                    <div class="line authors" v-show="paper.displayAuthors">
-                        <div class="label">
-                            Authors:
-                        </div>
-                        <div class="items">
-                            {{paper.displayAuthors}}
-                        </div>
+                        Open access
                     </div>
-                    <div class="line topics">
-                        <div class="label">Topics:</div>
-                        <div class="items">
-                            <router-link class="topic"
-                               :to="'/search/'+candidate.title.replace(' ', '_')"
-                               v-for="(candidate, index) in paper.picture_candidates">
-                                {{candidate.title}}<span class="sep" v-if="index+1 < paper.picture_candidates.length">;</span>
-                            </router-link>
 
-                        </div>
+                    <div class="value" v-if="paper.pubType">
+                        {{paper.pubType.pub_type_gtr}}
                     </div>
                 </div>
+            </div>
+
+            <div class="abstract">
+                <span class="chunk-container" v-for="chunk in abstractChunks">
+                    <span class="chunk entity" v-html="chunk.spot" v-if="chunk.abstract"
+                       @click="toggleEntity(chunk)">
+
+                    </span>
+                    <span class="chunk text" v-if="!chunk.abstract">{{chunk.text}}</span>
+                </span>
+            </div>
+
+            <div class="actions">
+                <md-button class="md-raised">
+                    <i class="fas fa-unlock"></i>
+                    read full article
+                </md-button>
 
             </div>
 
-            <div class="col anno">
+
+            <div class="extra">
+                <div class="line authors" v-show="paper.displayAuthors">
+                    <div class="label">
+                        Authors:
+                    </div>
+                    <div class="items">
+                        {{paper.displayAuthors}}
+                    </div>
+                </div>
+                <div class="line topics">
+                    <div class="label">Topics:</div>
+                    <div class="items">
+                        <router-link class="topic"
+                                     :to="'/search/'+candidate.title.replace(' ', '_')"
+                                     v-for="(candidate, index) in paper.picture_candidates">
+                            {{candidate.title}}<span class="sep"
+                                                     v-if="index+1 < paper.picture_candidates.length">;</span>
+                        </router-link>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <div class="col anno">
+            <div class="col-header">
+                <div class="close-button" @click="$emit('close')">&times;</div>
+            </div>
+            <div class="col-content">
                 <div class="anno-empty" v-if="!selectedEntity">
                     <div class="text">
                         <i class="fas fa-arrow-left"></i>
@@ -114,36 +102,53 @@
                     </div>
 
                 </div>
+
             </div>
 
-        </div>
-        <div class="tab fulltext" v-show="selectedTabIndex===2">
-            fulltext
-        </div>
-        <div class="tab news" v-show="selectedTabIndex===3">
-            news
+
+
         </div>
 
 
-
-        <div class="footer">
-            <div class="tab-links">
-                <div class="tab-link"
-                     v-for="(tab, index) in tabs"
-                     @click="selectedTabIndex=index"
-                >
-                    <div class="name">
-                        {{tab}}
-                    </div>
-                    <div class="selected-indicator" :class="{selected: selectedTabIndex===index}">
-
-                    </div>
-                </div>
-            </div>
-        </div>
 
 
     </div>
+
+
+
+
+
+
+
+
+
+
+        <!--<div class="section fulltext">-->
+            <!--fulltext-->
+        <!--</div>-->
+        <!--<div class="section news">-->
+            <!--news-->
+        <!--</div>-->
+
+
+
+        <!--<div class="footer">-->
+            <!--<div class="tab-links">-->
+                <!--<div class="tab-link"-->
+                     <!--v-for="(tab, index) in tabs"-->
+                     <!--@click="selectedTabIndex=index"-->
+                <!--&gt;-->
+                    <!--<div class="name">-->
+                        <!--{{tab}}-->
+                    <!--</div>-->
+                    <!--<div class="selected-indicator" :class="{selected: selectedTabIndex===index}">-->
+
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
+
+
 
 
 </template>
@@ -277,7 +282,8 @@
 <style scoped lang="scss">
     .article-zoom {
         background: #dadada;
-        padding: 20px 30px 0;
+        padding: 30px 40px 0;
+        display: flex;
 
 
         .entity {
@@ -288,116 +294,128 @@
             border-radius: 3px;
         }
 
-
-        .header {
-            display: flex;
-            .content {
+        .col.content {
+            flex: 2;
+            padding: 30px;
+            .header {
                 h1 {
                     margin: 0;
                 }
-                .source {
-                    font-weight: bold;
+                .line {
+                    &.source {
+                        font-weight: bold;
+                        font-size: 18px;
+                    }
+                    &.tag-thingies {
+                        display: flex;
+                        padding-top: 5px;
+                        .value {
+                            padding: 2px 6px;
+                            margin-right: 3px;
+                            border-radius: 3px;
+                            display: inline;
+                            border: 1px solid #999;
+                        }
+                    }
                 }
             }
-            .controls {
-                .close {
+            .abstract {
+                line-height: 1.6;
+                margin-top: 10px;
+                padding-top: 20px;
+                font-size: 20px;
+            }
+
+            .actions {
+
+            }
+
+            .extra {
+                padding: 30px 0 100px;
+                .line {
+                    display: flex;
+                    font-size: 16px;
+                    .label {
+                        font-weight: bold;
+                        margin-right: 3px;
+                    }
+                }
+            }
+
+        }
+
+
+        .col.anno {
+            flex: 1;
+            padding: 15px;
+            .col-header {
+                display: flex;
+                justify-content: flex-end;
+                .close-button {
                     font-size: 44px;
                     line-height: 1;
                     cursor: pointer;
                 }
-            }
-        }
-
-
-        .tab {
-            &.overview {
 
             }
-            &.abstract {
-                .col {
-                    &.about {
-                        flex: 2;
-                        font-size: 18px;
-                        .abstract {
-                            line-height: 1.6;
-                            margin-top: 10px;
-                            padding-top: 20px;
-                            font-size: 20px;
-                        }
-                        .actions {
-                            margin-top: 20px;
-                            margin-bottom: 20px;
-                        }
-                        .footer {
-                            .line {
-                                display: flex;
-                                font-size: 16px;
-                                .label {
-                                    font-weight: bold;
-                                    margin-right: 3px;
-                                }
-                            }
-
-                        }
+            .col-content {
+                background: #eee;
+                padding: 20px;
+                .controls {
+                    display: flex;
+                    .close {
+                        font-size: 38px;
+                        cursor: pointer;
                     }
-
-                    &.anno {
+                    .spacer {
                         flex: 1;
-                        margin-left: 30px;
-                        padding-left: 30px;
-                        .controls {
-                            display: flex;
-                            .close {
-                                font-size: 38px;
-                                cursor: pointer;
-                            }
-                            .spacer{ flex: 1;}
-                        }
-
-                        .anno-empty {
-                            display: flex;
-                            flex-direction: column;
-                            justify-content: center;
-                            height: 100%;
-                        }
-
-                        .header {
-                            font-weight: bold;
-                            font-size: 120%;
-                            padding: 10px 0;
-                            display: flex;
-                            justify-content: space-between;
-                            .close {
-                                cursor: pointer;
-                            }
-                            .confidence {
-                                font-weight: 100;
-                                font-size: 50%;
-                            }
-                        }
-                        .body {
-                            img {
-                                margin-top: 20px;
-                            }
-                        }
-                        .footer {
-                            text-align: right;
-                            font-size: 80%;
-                            padding-right: 30px;
-                        }
                     }
                 }
 
-            }
-            &.fulltext {
+                .anno-empty {
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                    height: 100%;
+                }
 
+                .header {
+                    font-weight: bold;
+                    font-size: 120%;
+                    padding: 10px 0;
+                    display: flex;
+                    justify-content: space-between;
+                    .close {
+                        cursor: pointer;
+                    }
+                    .confidence {
+                        font-weight: 100;
+                        font-size: 50%;
+                    }
+                }
+                .body {
+                    img {
+                        margin-top: 20px;
+                    }
+                }
+                .footer {
+                    text-align: right;
+                    font-size: 80%;
+                    padding-right: 30px;
+                }
             }
-            &.news {
 
-            }
+
+
+
 
 
         }
+
+
+
+
+
 
 
 
