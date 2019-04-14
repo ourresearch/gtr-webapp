@@ -101,7 +101,7 @@
             </div>
             <div class="page-bottom">
                 <md-button class="md-raised md-primary"
-                           v-show="currentPage < 6"
+                           v-show="currentPage < 600"
                            @click="fetchNextPageOfResults">
                     See more results
                 </md-button>
