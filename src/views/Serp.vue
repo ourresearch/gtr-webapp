@@ -123,7 +123,6 @@
     import _ from 'lodash'
     import smartcrop from 'smartcrop'
     import ArticleZoom from '../components/ArticleZoom'
-    const bodyScrollLock = require('body-scroll-lock');
 
 
     function chunk(array, size) {
@@ -250,17 +249,16 @@
         methods: {
 
             setArticleZoom(doi){
-                let zoomPane = document.querySelector("#article-zoom");
                 if (!doi || doi == this.$route.query.zoom) {
                     console.log("remove doi from URL")
                     this.$router.push({query: {}})
                     this.zoomedResult = null
-                    bodyScrollLock.clearAllBodyScrollLocks();
+                    document.body.classList.remove("noscroll")
                 }
                 else {
                     this.$router.push({query: {zoom: doi}})
                     this.zoomArticle(doi)
-                    bodyScrollLock.disableBodyScroll(zoomPane);
+                    document.body.classList.add("noscroll")
 
                 }
 
@@ -533,6 +531,7 @@
         /*transform: translateX(100%);*/
         background: #fff;
         z-index: 999;
+        overflow: scroll;
     }
 
 

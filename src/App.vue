@@ -54,14 +54,25 @@
   $screen-xsmall: 600px;
   $screen-small: 960px;
 
+
+  html {
+    &.noscroll {
+      overflow: hidden
+    }
+  }
+
   body {
     background: #fff;
     font-size: 16px;
     font-family: Lato, sans-serif;
+    &.noscroll {
+      overflow: hidden
+    }
+
+
     .container {
       line-height: 1.3;
       font-size: 16px;
-
     }
 
     hr {
