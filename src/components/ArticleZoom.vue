@@ -1,5 +1,5 @@
 <template>
-    <div class="article-zoom">
+    <div class="article-zoom" v-if="paper">
         <div class="header">
             <div class="content">
                 <div class="plain" v-show="selectedTabIndex !== 1">

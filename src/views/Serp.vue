@@ -43,8 +43,8 @@
 
                             <div class="card-body">
                                 <div class="line pub-type">
-                                    <div class="oa">
-                                        <i class="fas fa-unlock" v-show="result.oa_url"></i>
+                                    <div class="oa value" v-if="result.oa_url">
+                                        <i class="fas fa-unlock" ></i>
                                         Open access
                                     </div>
                                     <div class="value"  v-if="result.pubType">
@@ -80,26 +80,7 @@
                             </div>
 
                         </div>
-
-                        <div class="card-spike-wrapper">
-                            <div class="card-spike" v-show="result.isSelected"></div>
-                        </div>
-
-
                     </div>
-
-                    <transition name="slide">
-                        <article-zoom
-                                :paper="zoomedResult"
-                                @close="setArticleZoom(null)"
-                                v-if="result.insertZoomAfterMe"
-                                >
-                        </article-zoom>
-                    </transition>
-
-
-
-
 
                 </template>
 
@@ -114,6 +95,21 @@
             </div>
         </div>
 
+        <transition name="slide">
+            <article-zoom
+                    id="article-zoom"
+                    :paper="zoomedResult"
+                    @close="setArticleZoom(null)"
+                    v-if="zoomedResult"
+                    :class="{open: !!zoomedResult}"
+                    >
+            </article-zoom>
+
+
+        </transition>
+
+
+
         <div class="loading" v-if="!results.length">
             <md-progress-bar md-mode="indeterminate"></md-progress-bar>
         </div>
@@ -127,6 +123,7 @@
     import _ from 'lodash'
     import smartcrop from 'smartcrop'
     import ArticleZoom from '../components/ArticleZoom'
+    const bodyScrollLock = require('body-scroll-lock');
 
 
     function chunk(array, size) {
@@ -194,24 +191,6 @@
                     r.insertZoomAfterMe = false
                     r.isSelected = false
                 })
-                if (this.zoomedResult){
-                    let zoomedResultIndex = ret.findIndex(r => {
-                        return r.doi === this.zoomedResult.doi
-                    })
-                    let cardsPerRow = 4
-                    for (let i = 1; i < ret.length; i++) {
-                        if (i % cardsPerRow === 0 && i > zoomedResultIndex) {
-                            ret[i-1].insertZoomAfterMe = true
-                            break
-                        }
-                    }
-
-                    ret.find(r => {
-                        return r.doi === this.zoomedResult.doi
-                    }).isSelected = true
-
-
-                }
 
 
                 ret = ret.map(r => {
@@ -271,14 +250,18 @@
         methods: {
 
             setArticleZoom(doi){
+                let zoomPane = document.querySelector("#article-zoom");
                 if (!doi || doi == this.$route.query.zoom) {
                     console.log("remove doi from URL")
                     this.$router.push({query: {}})
                     this.zoomedResult = null
+                    bodyScrollLock.clearAllBodyScrollLocks();
                 }
                 else {
                     this.$router.push({query: {zoom: doi}})
                     this.zoomArticle(doi)
+                    bodyScrollLock.disableBodyScroll(zoomPane);
+
                 }
 
             },
@@ -404,19 +387,7 @@
 
     /*}*/
 
-    .slide-enter-active, .slide-leave-active {
-        transition: max-height .5s;
-    }
 
-    .slide-leave, .slide-enter-to{
-        overflow: hidden;
-        max-height: 500px;
-    }
-
-    .slide-enter, .slide-leave-to {
-        overflow: hidden;
-        max-height: 0;
-    }
 
 
     .results-descr {
@@ -496,11 +467,10 @@
                         font-size: 12px;
                         display: flex;
                         .fas {
-                            font-size: 16px;
-                            margin-right: 5px;
                         }
                         .value {
                             padding: 2px 6px;
+                            margin-right: 3px;
                             border-radius: 3px;
                             display: inline;
                             border: 1px solid #999;
@@ -528,24 +498,6 @@
 
                 }
             }
-            .card-spike-wrapper {
-                display: flex;
-                justify-content: center;
-                height: 20px;
-                margin-top: 5px;
-                .card-spike {
-                    height: 0;
-                    width: 0;
-                    border-bottom: 20px solid #dadada;
-                    border-right: 20px solid transparent;
-                    border-left: 20px solid transparent;
-                }
-            }
-
-
-        }
-        .article-zoom {
-            width: 100%;
 
         }
 
@@ -556,6 +508,31 @@
         justify-content: center;
         align-items: center;
 
+    }
+
+
+
+
+    .slide-enter-active, .slide-leave-active {
+        transition:transform 300ms;
+    }
+    .slide-leave, .slide-enter-to{
+        transform: translateX(0);
+
+    }
+    .slide-enter, .slide-leave-to {
+        transform: translateX(100%);
+    }
+
+    #article-zoom {
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        right: 0;
+        width: 100%;
+        /*transform: translateX(100%);*/
+        background: #fff;
+        z-index: 999;
     }
 
 
