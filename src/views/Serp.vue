@@ -31,6 +31,25 @@
 
                         <div class="card-content">
                             <div class="card-header">
+                                <div class="top-line">
+                                    <div class="value" v-if="result.pubType">
+                                        <div class="num">
+                                            <div class="inside">
+                                                {{result.pubType.evidence_level}}
+                                            </div>
+                                        </div>
+                                        <div class="text">
+                                            {{result.pubType.pub_type_gtr}}
+                                        </div>
+
+                                    </div>
+                                    <div class="oa value" v-if="result.oa_url">
+                                        <i class="fas fa-unlock"></i>
+                                    </div>
+
+                                </div>
+
+
                                 <div class="img-wrapper">
                                     <img :src="result.image.url" alt="" class="card-image">
                                 </div>
@@ -52,16 +71,6 @@
 
                             </div>
                             <div class="card-footer">
-                                <div class="line pub-type">
-                                    <div class="oa value" v-if="result.oa_url">
-                                        <i class="fas fa-unlock"></i>
-                                        Open access
-                                    </div>
-                                    <div class="value" v-if="result.pubType">
-                                        {{result.pubType.pub_type_gtr}}
-                                    </div>
-                                </div>
-
 
 
 
@@ -434,7 +443,38 @@
                     /*background: #333;*/
                     /*color: #fff;*/
                 }
+
+                .top-line {
+                    display: flex;
+                    justify-content: space-between;
+                    opacity: .8;
+                    background: #eee;
+                    border-radius: 5px 5px 0 0;
+                    padding: 3px;
+                    .value {
+                        text-transform: capitalize;
+                        font-size: 12px;
+                        display: flex;
+                        align-items: center;
+
+                        .num {
+                            display: flex;
+                            justify-content: center;
+                            font-weight: bold;
+                            align-items: center;
+                            /*background: #555;*/
+                            /*border-radius: 30px;*/
+                            width: 16px;
+                            height: 16px;
+                            font-size: 11px;
+                            padding-top: 1px;
+                        }
+
+                    }
+                }
+
                 .card-header {
+
                     .img-wrapper {
                         min-height: 150px;
                         background: #fafafa;
@@ -451,21 +491,6 @@
                 }
                 .card-body {
                     margin-top: 5px;
-                    .pub-type {
-                        padding-bottom: 10px;
-                        font-size: 12px;
-                        display: flex;
-                        .fas {
-                        }
-                        .value {
-                            padding: 2px 6px;
-                            margin-right: 3px;
-                            border-radius: 3px;
-                            display: inline;
-                            border: 1px solid #999;
-
-                        }
-                    }
                     .source {
 
                         color: #999;
@@ -477,8 +502,11 @@
                     }
                 }
                 .card-footer {
+                    /*border-top: 1px solid #ddd;*/
+                    padding: 5px 0;
+                    margin: 5px 0;
 
-                    .mesh-tags, .entity-tags {
+                    .mesh, .entity {
                         display: none;
                     }
 

@@ -46,16 +46,18 @@
             </div>
 
             <div class="actions">
-                <md-button class="md-raised">
-                    <i class="fas fa-unlock"></i>
-                    read full article
+                <md-button class="md-raised"
+                           :href="paper.oa_url"
+                           v-show="paper.oa_url">
+                    full article (open access)
+                    <i class="fas fa-external-link-alt"></i>
                 </md-button>
 
             </div>
 
 
-            <div class="extra">
-                <div class="line authors" v-show="paper.displayAuthors">
+            <div class="extra" v-show="paper.picture_candidates.length || paper.displayAuthors.length">
+                <div class="line authors" v-show="paper.displayAuthors.length">
                     <div class="label">
                         Authors:
                     </div>
@@ -63,7 +65,7 @@
                         {{paper.displayAuthors}}
                     </div>
                 </div>
-                <div class="line topics">
+                <div class="line topics" v-show="paper.picture_candidates.length">
                     <div class="label">Topics:</div>
                     <div class="items">
                         <router-link class="topic"
@@ -75,7 +77,35 @@
 
                     </div>
                 </div>
+
+                <div class="line fulltext">
+                    <div class="label">Full text:</div>
+                    <div class="items">
+                        <span class="available" v-show="paper.oa_url">
+                            Available for free <a :href="paper.oa_url">here</a>
+                        </span>
+                        <span class="available" v-show="!paper.oa_url">
+                            Paywalled on the publisher site <a :href="paper.doi_url">here</a>
+                        </span>
+                    </div>
+                </div>
+
             </div>
+            
+            <div class="news" v-show="paper.news_articles.length">
+                <h2>News coverage</h2>
+                <div class="news-article" v-for="newsArticle in paper.news_articles">
+                    <span class="date">
+                        {{ newsArticle.occurred_at | moment("MMM YYYY")}}
+                    </span>
+                    <a :href="newsArticle.news_url">
+                        {{newsArticle.news_title}}
+                        <i class="fas fa-external-link-alt"></i>
+                    </a>
+                </div>
+            </div>
+            
+            
         </div>
 
 
@@ -360,7 +390,9 @@
             }
 
             .actions {
-
+                a.md-button {
+                    margin-left: 0px;
+                }
             }
 
             .extra {
@@ -380,6 +412,7 @@
 
         .col.anno {
             flex: 1;
+            height: 100%;
             .col-header {
                 display: flex;
                 justify-content: flex-end;
