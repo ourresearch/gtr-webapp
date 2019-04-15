@@ -29,7 +29,7 @@
                          @click="setArticleZoom(result.doi)">
 
 
-                        <div class="card-content" :class="{selected: result.isSelected}">
+                        <div class="card-content">
                             <div class="card-header">
                                 <div class="img-wrapper">
                                     <img :src="result.image.url" alt="" class="card-image">
@@ -91,7 +91,7 @@
             </div>
             <div class="page-bottom">
                 <md-button class="md-raised md-primary"
-                           v-show="currentPage < 600"
+                           v-show="currentPage < 6"
                            @click="fetchNextPageOfResults">
                     See more results
                 </md-button>
@@ -186,14 +186,12 @@
                     })
                 }
 
-
-                // handle the article zooming
-                ret.forEach(r => {
-                    r.insertZoomAfterMe = false
-                    r.isSelected = false
+                ret = ret.filter(r => {
+                    return !!r.doi
                 })
 
 
+                // pick best pubtype
                 ret = ret.map(r => {
                     r.pub_types.sort((a, b) => {
                         return a.evidence_level - b.evidence_level
@@ -359,7 +357,6 @@
         },
         watch: {
             "$route": function (newVal, oldVal) {
-                console.log("route change", newVal)
                 // if (!newVal.query.zoom){
                 //     console.log("new search")
                 //     this.results.length = 0
@@ -512,7 +509,7 @@
     }
 
     .slide-leave, .slide-enter-to {
-        transform: translateX(0);
+        transform: translateX(5%);
 
     }
 
@@ -524,8 +521,8 @@
         position: fixed;
         top: 0;
         bottom: 0;
-        right: 0;
-        width: 100%;
+        left: 5%;
+        width: 95%;
         /*transform: translateX(100%);*/
         background: #fff;
         z-index: 999;

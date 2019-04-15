@@ -1,7 +1,14 @@
 <template>
     <div class="article-zoom" v-if="paper">
 
+        <div class="col closer"  @click="$emit('close')">
+            <div class="close-button">
+                <i class="fas fa-chevron-right"></i>
+            </div>
+        </div>
+
         <div class="col content">
+
             <div class="header">
                 <h1>
                     <span class="chunk-container" v-for="chunk in titleChunks">
@@ -74,14 +81,16 @@
 
 
         <div class="col anno">
-            <div class="col-header">
-                <div class="close-button" @click="$emit('close')">&times;</div>
-            </div>
+
             <div class="col-content">
                 <div class="anno-empty" v-if="!selectedEntity">
-                    <div class="text">
-                        <i class="fas fa-arrow-left"></i>
-                        Click <span class="entity">highlighted words</span> to learn more!
+                    <div class="content">
+                        <div class="image">
+                            <i class="far fa-hand-point-left"></i>
+                        </div>
+                        <div class="text">
+                            Click <span class="entity">highlighted words</span> to learn more!
+                        </div>
                     </div>
                 </div>
 
@@ -161,6 +170,7 @@
     }
     
     function makeChunks(str, annotations){
+
         if (!str){
             return textChunk("")
         }
@@ -282,8 +292,24 @@
 <style scoped lang="scss">
     .article-zoom {
         background: #dadada;
-        padding: 30px 40px 0;
+        padding: 0;
         display: flex;
+        box-shadow: 0 0 30px 20px rgba(0,0,0,.5);
+
+
+        .closer {
+            border-left: 1px solid #fff;
+            background: #eee;
+            padding: 10px;
+            font-size: 40px;
+            display: flex;
+            align-items: center;
+            color: #555;
+            cursor: pointer;
+
+
+        }
+
 
 
         .entity {
@@ -297,6 +323,13 @@
         .col.content {
             flex: 2;
             padding: 30px;
+            .close-button {
+                font-size: 20px;
+                color: dodgerblue;
+                line-height: 1;
+                cursor: pointer;
+                margin-bottom: 10px;
+            }
             .header {
                 h1 {
                     margin: 0;
@@ -347,20 +380,16 @@
 
         .col.anno {
             flex: 1;
-            padding: 15px;
             .col-header {
                 display: flex;
                 justify-content: flex-end;
-                .close-button {
-                    font-size: 44px;
-                    line-height: 1;
-                    cursor: pointer;
-                }
+
 
             }
             .col-content {
-                background: #eee;
+                background: #fafafa;
                 padding: 20px;
+                height: 100%;
                 .controls {
                     display: flex;
                     .close {
@@ -377,6 +406,17 @@
                     flex-direction: column;
                     justify-content: center;
                     height: 100%;
+                    .content {
+                        max-width: 250px;
+                        display: flex;
+                        align-items: center;
+                        .text {
+                        }
+                        .image {
+                            font-size: 24px;
+                            margin-right: 10px;
+                        }
+                    }
                 }
 
                 .header {
