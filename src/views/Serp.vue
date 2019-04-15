@@ -60,8 +60,7 @@
 
                             <div class="card-body">
 
-                                <div class="line title">
-                                    {{result.title}}
+                                <div class="line title" v-html="result.title">
                                 </div>
                                 <div class="line source">
                                     <span class="date">{{ result.year }}</span>
@@ -195,10 +194,6 @@
                     })
                 }
 
-                ret = ret.filter(r => {
-                    return !!r.doi
-                })
-
 
                 // pick best pubtype
                 ret = ret.map(r => {
@@ -259,7 +254,6 @@
 
             setArticleZoom(doi) {
                 if (!doi || doi == this.$route.query.zoom) {
-                    console.log("remove doi from URL")
                     this.$router.push({query: {}})
                     this.zoomedResult = null
                     document.body.classList.remove("noscroll")
@@ -281,6 +275,11 @@
             },
 
             loadPage() {
+                this.results.length = 0
+                this.currentPage = 0
+                this.zoomedResult = null
+
+
                 let that = this
                 load()
 
@@ -366,12 +365,10 @@
         },
         watch: {
             "$route": function (newVal, oldVal) {
-                // if (!newVal.query.zoom){
-                //     console.log("new search")
-                //     this.results.length = 0
-                //     this.currentPage = 0
-                //     this.loadPage()
-                // }
+            },
+            "$route.params.q": function(newVal, oldVal){
+                console.log("change in search term", newVal)
+                this.loadPage()
             }
         }
 

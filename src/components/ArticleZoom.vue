@@ -12,11 +12,15 @@
             <div class="header">
                 <h1>
                     <span class="chunk-container" v-for="chunk in titleChunks">
-                        <span class="chunk entity" v-html="chunk.spot" v-if="chunk.abstract"
-                           @click="toggleEntity(chunk)">
+                        <span class="chunk entity"
+                              v-html="chunk.spot"
+                              v-if="chunk.abstract"
+                              @click="toggleEntity(chunk)">
 
                         </span>
-                        <span class="chunk text" v-if="!chunk.abstract">{{chunk.text}}</span>
+                        <span class="chunk text"
+                              v-html="chunk.text"
+                              v-if="!chunk.abstract"></span>
                     </span>
                 </h1>
                 <div class="line source">
@@ -37,11 +41,16 @@
 
             <div class="abstract">
                 <span class="chunk-container" v-for="chunk in abstractChunks">
-                    <span class="chunk entity" v-html="chunk.spot" v-if="chunk.abstract"
-                       @click="toggleEntity(chunk)">
+                    <span class="chunk entity"
+                          v-html="chunk.spot"
+                          v-if="chunk.abstract"
+                          @click="toggleEntity(chunk)">
 
                     </span>
-                    <span class="chunk text" v-if="!chunk.abstract">{{chunk.text}}</span>
+                    <span class="chunk text"
+                          v-if="!chunk.abstract"
+                          v-html="chunk.text"
+                    ></span>
                 </span>
             </div>
 
