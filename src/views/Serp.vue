@@ -6,7 +6,7 @@
                     <span class="info">
                         Showing {{ displayResults.length }}
                         <span v-if="showOnlyOa" class="filter">free-to-read</span>
-                        papers
+                        papers for "{{displaySearchTerm}}"
                     </span>
                 <a class="show-oa-only" href="" v-if="!showOnlyOa" @click.prevent="showOnlyOa=true">
                     (<i class="fas fa-unlock-alt"></i>
@@ -17,10 +17,15 @@
                 </a>
                 <span class="spacer"></span>
                 <a :href="apiUrl" class="api">View in API</a>
+                <a href="javascript:alert('This feature coming soon');">Create alert</a>
             </div>
 
 
-            <div class="results-list">
+            <div class="error" v-if="error">
+                <em>Sorry, there were no results for that search.</em>
+            </div>
+
+            <div class="results-list" v-if="!error">
 
                 <template v-for="(result, index) of displayResults">
                     <div class="card"
@@ -98,12 +103,18 @@
 
             </div>
             <div class="page-bottom">
-                <md-button class="md-raised md-primary"
-                           v-show="currentPage < 6"
-                           @click="fetchNextPageOfResults">
-                    See more results
-                </md-button>
+                <div class="controls">
+                    <md-button class="md-raised md-primary"
+                               v-show="currentPage < 6"
+                               @click="fetchNextPageOfResults">
+                        See more results
+                    </md-button>
+                </div>
+                <div class="report">
+                    <a href="mailto:team@impactstory.org">Report inappropriate images</a>
+                </div>
             </div>
+
         </div>
 
         <transition name="slide">
@@ -155,7 +166,8 @@
             zoomedResult: null,
             cardWidth: 280,
             rowWidth: null,
-            currentPage: 0
+            currentPage: 0,
+            error: null
 
         }),
         components: {
@@ -168,20 +180,12 @@
                 let url = "https://gtr-api.herokuapp.com/search/" + searchTerm
                 return url
             },
-            cardRows() {
-                let rowSize = 4
-                let rows = [];
-                let index = 0;
-                while (index < this.displayResults.length) {
-                    let myRow = {
-                        containsSelected: false,
-                        results: []
-                    }
-                    myRow.results.push(this.displayResults.slice(index, rowSize + index));
-                    rows.push(myRow)
-                    index += rowSize;
+            displaySearchTerm(){
+                if (this.$route.params.q){
+                    return this.$route.params.q.replace("_", " ")
                 }
-                return rows;
+                else return null
+
             },
 
 
@@ -278,6 +282,7 @@
                 this.results.length = 0
                 this.currentPage = 0
                 this.zoomedResult = null
+                this.error = null
 
 
                 let that = this
@@ -390,7 +395,7 @@
     /*}*/
 
     .results-descr {
-        padding: 0 20px 20px;
+        padding: 0 20px 5px;
         color: #666;
         border-bottom: 1px solid #ccc;
         display: flex;
@@ -404,6 +409,7 @@
         }
         a {
             font-size: 14px;
+            padding: 0 10px;
         }
 
     }
@@ -522,10 +528,11 @@
     }
 
     .page-bottom {
-        margin: 20px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
+        margin: 10px;
+        .controls {
+            display: flex;
+            justify-content: center;
+        }
 
     }
 
