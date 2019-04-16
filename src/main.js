@@ -9,10 +9,15 @@ import store from './store'
 import VueMaterial from 'vue-material'
 import 'vue-material/dist/vue-material.min.css'
 import 'vue-material/dist/theme/default.css'
+
 import VueScrollTo from 'vue-scrollto'
 import VueAnalytics from 'vue-analytics'
 import VueMoment from 'vue-moment'
 import VueTyperPlugin from 'vue-typer'
+
+
+
+
 
 Vue.use(VueMaterial)
 Vue.use(VueScrollTo)

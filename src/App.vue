@@ -38,7 +38,7 @@
 <style lang="scss">
 
   @import url("https://use.fontawesome.com/releases/v5.0.10/css/all.css");
-  @import url("//fonts.googleapis.com/css?family=Lato:300,400,700,400italic");
+  @import url("https://fonts.googleapis.com/css?family=Lato:300,400,700,400italic");
 
 
 
@@ -47,7 +47,11 @@
     primary: md-get-palette-color(deeporange, A400),
     accent: md-get-palette-color(blue, A400)
   ));
-  @import "~vue-material/dist/theme/all";
+
+
+
+
+
 
   $primary-color: #FF3D00;
 
@@ -91,7 +95,7 @@
       margin-top: 50px;
     }
     .md-button.md-primary {
-        background-color: $primary-color !important;
+     //   background-color: $primary-color !important;
     }
   }
   div.page {

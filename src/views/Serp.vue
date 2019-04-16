@@ -404,8 +404,8 @@
                 cursor: pointer;
             }
             .image {
-                flex: 0 0 150px;
-                margin-right: 20px;
+                flex: 0 0 200px;
+                margin-right: 25px;
                 .img-wrapper {
                     background: #fafafa;
                     min-height: 100px;
@@ -435,6 +435,7 @@
                 .title {
                     font-size: 24px;
                     margin-bottom: 5px;
+                    line-height: 1.4;
                 }
                 .summary {
                     margin-bottom: 20px;
