@@ -99,7 +99,7 @@
                     </div>
                 </div>
 
-                <div class="line article-type" v-show="paper.pubType.pub_type_gtr">
+                <div class="line article-type" v-if="paper.pubType && paper.pubType.pub_type_gtr">
                     <div class="label">Type: </div>
                     <div class="items">
                         <em>{{paper.pubType.pub_type_gtr}}: </em>
@@ -414,7 +414,7 @@
             }
 
             .extra {
-                padding: 30px 0 100px;
+                padding: 30px 0;
                 .line {
                     display: flex;
                     font-size: 16px;

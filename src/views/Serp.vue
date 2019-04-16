@@ -28,75 +28,49 @@
             <div class="results-list" v-if="!error">
 
                 <template v-for="(result, index) of displayResults">
-                    <div class="card"
+                    <div class="row"
                          :class="{selected: result.isSelected}"
-                         :style="{width: cardWidth+'px'}"
                          @click="setArticleZoom(result.doi)">
 
 
-                        <div class="card-content">
-                            <div class="card-header">
-                                <div class="top-line">
-                                    <div class="value" v-if="result.pubType">
-                                        <div class="num">
-                                            <div class="inside">
-                                                {{result.pubType.evidence_level}}
-                                            </div>
-                                        </div>
-                                        <div class="text">
-                                            {{result.pubType.pub_type_gtr}}
-                                        </div>
+                        <div class="image">
+                            <div class="img-wrapper">
+                                <img :src="result.image.url" alt="" class="card-image">
+                            </div>
+                            <div class="label">
+                                {{result.image.title}}
+                            </div>
+                        </div>
 
-                                    </div>
-                                    <div class="oa value" v-if="result.oa_url">
-                                        <i class="fas fa-unlock"></i>
-                                    </div>
+                        <div class="content">
+                            <div class="line evidence">
+                                <span class="val" v-if="result.pubType">
+                                    {{result.pubType.pub_type_gtr}}
+                                </span>
+                            </div>
+                            <div class="line title" v-html="result.title"></div>
 
-                                </div>
+                            <div class="summary" v-if="result.abstract_short" v-html="result.abstract_short"></div>
 
 
-                                <div class="img-wrapper">
-                                    <img :src="result.image.url" alt="" class="card-image">
-                                </div>
-                                <div class="label">
-                                    {{result.image.title}}
-                                </div>
+
+                            <div class="line source">
+                                <span class="date">{{ result.year }}</span>
+
+                                <span class="journal">{{ result.journal_name }}</span>
+                            </div>
+                            <div class="line oa" v-if="result.oa_url">
+                                <i class="fas fa-unlock"></i>
+                                Open Access
                             </div>
 
-                            <div class="card-body">
 
-                                <div class="line title" v-html="result.title">
-                                </div>
-                                <div class="line source">
-                                    <span class="date">{{ result.year }}</span>
-
-                                    <span class="journal">{{ result.journal_name }}</span>
-                                </div>
-
-                            </div>
-                            <div class="card-footer">
-
-
-
-                                <div class="mesh tags" v-if="result.mesh.length">
-                                    <strong>MESH: </strong>
-                                    <span class="tag" v-for="(meshTerm, index) in result.mesh">
-                                        {{meshTerm.descriptor}}<span class="sep"
-                                                                     v-show="index+1 < result.mesh.length">;</span>
-                                    </span>
-                                </div>
-
-                                <div class="entity tags" v-if="result.picture_candidates.length">
-                                    <strong>Entities: </strong>
-                                    <span class="tag" v-for="(candidate, index) in result.picture_candidates">
-                                        {{candidate.title}}<span class="sep"
-                                                                 v-show="index+1 < result.picture_candidates.length">;</span>
-                                    </span>
-                                </div>
-                            </div>
 
                         </div>
+
+
                     </div>
+
 
                 </template>
 
@@ -418,12 +392,75 @@
         max-width: 1140px;
         padding: 0;
         margin: 10px 0 0;
-        display: flex;
-        flex-wrap: wrap;
         margin: 10px 10px 100px;
 
-        div.card {
+
+        div.row {
             display: flex;
+            padding: 20px 30px;
+            margin: 20px 30px;
+            &:hover {
+                box-shadow: 0px 3px 6px 2px rgba(0, 0, 0, 0.1);
+                cursor: pointer;
+            }
+            .image {
+                flex: 0 0 150px;
+                margin-right: 20px;
+                .img-wrapper {
+                    background: #fafafa;
+                    min-height: 100px;
+                    padding: 10px;
+                    img {
+                        border-radius: 5px;
+                        /*border: 1px solid #333;*/
+
+                    }
+
+                }
+                .label {
+                    font-size: 11px;
+                    text-align: right;
+                    opacity: .7;
+                }
+
+            }
+            .content {
+                line-height: 1.5;
+                flex: 1;
+                .evidence {
+                    font-size: 15px;
+                    text-transform: capitalize;
+                    line-height: 1;
+                }
+                .title {
+                    font-size: 24px;
+                    margin-bottom: 5px;
+                }
+                .summary {
+                    margin-bottom: 20px;
+                }
+                .source {
+                    font-size: 15px;
+
+                    .journal {
+                        margin-left: 5px;
+                        font-style: italic;
+                    }
+                }
+                .oa {
+                    line-height: 1;
+                    font-size: 15px;
+                    i {font-size: 80%;}
+                }
+            }
+        }
+
+
+
+
+
+        div.card {
+            display: none;
             flex-direction: column;
             justify-content: space-between;
             &.selected {
