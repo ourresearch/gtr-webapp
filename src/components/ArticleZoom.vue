@@ -3,7 +3,8 @@
 
         <div class="col closer"  @click="$emit('close')">
             <div class="close-button">
-                <i class="fas fa-chevron-right"></i>
+                <!--<i class="fas fa-chevron-right"></i>-->
+                &times;
             </div>
         </div>
 
@@ -27,16 +28,16 @@
                     <span class="date">{{ paper.year }}</span> in
                     <span class="journal">{{ paper.journal_name }}</span>
                 </div>
-                <div class="line tag-thingies">
-                    <div class="oa value" v-if="paper.oa_url">
-                        <i class="fas fa-unlock"></i>
-                        Open access
-                    </div>
+                <!--<div class="line tag-thingies">-->
+                    <!--<div class="oa value" v-if="paper.oa_url">-->
+                        <!--<i class="fas fa-unlock"></i>-->
+                        <!--Open access-->
+                    <!--</div>-->
 
-                    <div class="value" v-if="paper.pubType">
-                        {{paper.pubType.pub_type_gtr}}
-                    </div>
-                </div>
+                    <!--<div class="value" v-if="paper.pubType">-->
+                        <!--{{paper.pubType.pub_type_gtr}}-->
+                    <!--</div>-->
+                <!--</div>-->
             </div>
 
             <div class="abstract">
@@ -45,7 +46,6 @@
                           v-html="chunk.spot"
                           v-if="chunk.abstract"
                           @click="toggleEntity(chunk)">
-
                     </span>
                     <span class="chunk text"
                           v-if="!chunk.abstract"
@@ -97,6 +97,18 @@
                             Paywalled on the publisher site <a :href="paper.doi_url">here</a>
                         </span>
                     </div>
+                </div>
+
+                <div class="line article-type" v-show="paper.pubType.pub_type_gtr">
+                    <div class="label">Type: </div>
+                    <div class="items">
+                        <em>{{paper.pubType.pub_type_gtr}}: </em>
+                        <span class="explanation">
+                            {{ pubTypeExplanation(paper.pubType.pub_type_gtr) }}
+                        </span>
+                    </div>
+
+
                 </div>
 
             </div>
@@ -290,11 +302,6 @@
                     this.paper.title,
                     this.paper.annotations.using_article_title
                 )
-            },
-            selectedTab(){
-                return this.tabs.find(tab => {
-                    return tab.isSelected
-                })
             }
         },
         methods: {
@@ -307,17 +314,21 @@
                     this.selectedEntity = entity
                 }
             },
-            selectTab(name){
-                console.log("select tab", name)
-
-                this.tabs.forEach(tab => {
-                    if (tab.name===name){
-                        tab.isSelected = true
-                    }
-                    else {
-                        tab.isSelected = false
-                    }
-                })
+            pubTypeExplanation(type){
+                let data = {
+                    "case study": "An up-close, in-depth, and detailed explanation of one particular patient and their situation.  Because it only describes a single case, extreme caution should be used in applying its conclusions to any other patients or situations.",
+                    "clinical trial": "An experiment or observation on a group of human participants, designed to answer specific questions about biomedical or behavioral interventions, including new treatments (such as novel vaccines, drugs, dietary choices, dietary supplements, and medical devices) and known interventions that warrant further study and comparison.",
+                    "editorial content": "Discusses, supports, or disputes an article.  Editorial content is usually not peer-reviewed, even if published in an otherwise peer-reviewed journal.",
+                    "guidelines": "A document written with the aim of guiding decisions regarding diagnosis, management, and treatment of healthcare.  Guidelines may be developed by government agencies, institutions, organizations such as professional societies or governing boards, or by a convening of experts.",
+                    "meta-analysis": "A type of study that combines the results of multiple scientific studies, leading to a more robust conclusion than is possible from any single study.",
+                    "news and interest": "Discusses, supports, or disputes an article. News and interest stories are usually not peer-reviewed, even if published in an otherwise peer-reviewed journal.",
+                    "randomized controlled trial": "A clinical trial in which the decision about which patient receives which treatment is decided randomly.  This type of study eliminates some kinds of error, leading to a more trustworthy result than a non-randomized controlled trial.",
+                    "research study": "A general scientific report on a topic, usually following the scientific method.  The research study may involve an experiment, or it may be an observational study in which the research observes but does not intervene.",
+                    "review": "An article that summarizes previously published studies on a subject. It provides background and context for the results of these studies, and so is useful for learning about a subject and the strengths and weaknesses of studies in the area."
+                }
+                if (type){
+                    return data[type]
+                }
             }
         },
         watch: {
@@ -338,12 +349,10 @@
 
         .closer {
             border-left: 1px solid #fff;
-            background: #eee;
-            padding: 10px;
+            background: #fafafa;
+            padding: 25px 15px;
             font-size: 40px;
-            display: flex;
-            align-items: center;
-            color: #555;
+            color: #333;
             cursor: pointer;
 
 
