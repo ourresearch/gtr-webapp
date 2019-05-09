@@ -48,10 +48,37 @@
                                     {{result.pubType.pub_type_gtr}}
                                 </span>
                             </div>
-                            <div class="line title" v-html="result.title"></div>
+                            <div class="line title">
+                                <span class="chunk-container"
+                                      :key="index"
+                                      v-for="(chunk, index) in result.titleChunks">
+                                    <span class="chunk entity"
+                                          v-html="chunk.spot"
+                                          v-if="chunk.abstract"
+                                          @click="toggleEntity(chunk)">
 
-                            <div class="summary" v-if="result.abstract_short" v-html="result.abstract_short"></div>
+                                    </span>
+                                    <span class="chunk text"
+                                          v-html="chunk.text"
+                                          v-if="!chunk.abstract"></span>
+                                </span>
+                            </div>
 
+                            <div class="summary" v-if="result.abstract_short">
+                                <span class="chunk-container"
+                                      :key="index"
+                                      v-for="(chunk, index) in result.shortAbstractChunks">
+                                    <span class="chunk entity"
+                                          v-html="chunk.spot"
+                                          v-if="chunk.abstract"
+                                          @click="toggleEntity(chunk)">
+
+                                    </span>
+                                    <span class="chunk text"
+                                          v-html="chunk.text"
+                                          v-if="!chunk.abstract"></span>
+                                </span>
+                            </div>
 
 
                             <div class="line source">
@@ -63,7 +90,6 @@
                                 <i class="fas fa-unlock"></i>
                                 Open Access
                             </div>
-
 
 
                         </div>
@@ -120,14 +146,57 @@
     import ArticleZoom from '../components/ArticleZoom'
 
 
-    function chunk(array, size) {
-        const chunked_arr = [];
-        let index = 0;
-        while (index < array.length) {
-            chunked_arr.push(array.slice(index, size + index));
-            index += size;
+    function textChunk(str) {
+        return {text: str}
+    }
+
+    function makeChunks(str, annotations) {
+
+        if (!str) {
+            return textChunk("")
         }
-        return chunked_arr;
+        if (!annotations) {
+            return textChunk(str)
+        }
+
+        // split the str into a bunch of chunks...some chunks are entities,
+        // the other chunks are the text in between entities.
+        let chunks = []
+        let cursorIndex = 0
+        annotations.forEach(entity => {
+
+            // add any plaintext chunk before the current entity
+            if (entity.start > 0) {
+                chunks.push(
+                    textChunk(str.slice(cursorIndex, entity.start))
+                )
+            }
+
+            // this entity
+            if (entity.confidence < 0.7) {
+                // if it's low-confidence, treat is as a text chunk
+                chunks.push(
+                    textChunk(entity.spot)
+                )
+            } else {
+                chunks.push(entity)
+            }
+
+            // update the cursor
+            cursorIndex = entity.end
+        })
+
+        // after the last entity, there's generally one last hanging text chunk. add it.
+        if (cursorIndex < str.length) {
+            chunks.push(
+                textChunk(
+                    str.slice(cursorIndex, str.length)
+                )
+            )
+        }
+
+        return chunks
+
     }
 
 
@@ -154,11 +223,10 @@
                 let url = "https://gtr-api.herokuapp.com/search/" + searchTerm
                 return url
             },
-            displaySearchTerm(){
-                if (this.$route.params.q){
+            displaySearchTerm() {
+                if (this.$route.params.q) {
                     return this.$route.params.q.replace("_", " ")
-                }
-                else return null
+                } else return null
 
             },
 
@@ -215,10 +283,23 @@
                     if (numAuths > 5) {
                         let numHidden = numAuths - 5
                         r.displayAuthors = r.author_lastnames.slice(0, 5).join(", ") + `, and ${numHidden} others`
-                    }
-                    else {
+                    } else {
                         r.displayAuthors = r.author_lastnames.join(", ")
                     }
+                    return r
+                })
+
+
+                // add abstract and title chunks
+                ret = ret.map(r => {
+                    r.titleChunks = makeChunks(
+                        r.title,
+                        r.annotations.using_article_title
+                    )
+                    r.shortAbstractChunks = makeChunks(
+                        r.abstract_short,
+                        r.annotations.using_article_abstract_short
+                    )
                     return r
                 })
 
@@ -235,8 +316,7 @@
                     this.$router.push({query: {}})
                     this.zoomedResult = null
                     document.body.classList.remove("noscroll")
-                }
-                else {
+                } else {
                     this.$router.push({query: {zoom: doi}})
                     this.zoomArticle(doi)
                     document.body.classList.add("noscroll")
@@ -280,18 +360,15 @@
                             if (that.zoomedResult) {
                                 console.log("load() halting: we've got results AND zoomedResult.")
                                 return true
-                            }
-                            else {
+                            } else {
                                 // we still need a zoomedResult
                             }
-                        }
-                        else {
+                        } else {
                             // we've got results, and don't need a zoomedResult. halt.
                             console.log("load() halting: we've got our results and that's all we needed.")
                             return true
                         }
-                    }
-                    else {
+                    } else {
                         // we still need to get results
                     }
 
@@ -306,8 +383,7 @@
                             )
                             if (success) {
                                 return load()
-                            }
-                            else {
+                            } else {
                                 console.log("load(): we can't fetch more results, halting")
                                 alert("API error!")
                                 return false
@@ -345,7 +421,7 @@
         watch: {
             "$route": function (newVal, oldVal) {
             },
-            "$route.params.q": function(newVal, oldVal){
+            "$route.params.q": function (newVal, oldVal) {
                 console.log("change in search term", newVal)
                 this.loadPage()
             }
@@ -371,16 +447,20 @@
     .results-descr {
         padding: 0 20px 5px;
         color: #666;
+        /*color: #FF7F66;*/
         border-bottom: 1px solid #ccc;
         display: flex;
         align-items: center;
+
         .info {
             margin-right: 10px;
             font-size: 120%;
         }
+
         .spacer {
             flex: 1;
         }
+
         a {
             font-size: 14px;
             padding: 0 10px;
@@ -399,17 +479,17 @@
             display: flex;
             padding: 20px 30px;
             margin: 20px 30px;
-            &:hover {
-                box-shadow: 0px 3px 6px 2px rgba(0, 0, 0, 0.1);
-                cursor: pointer;
-            }
+
+
             .image {
                 flex: 0 0 200px;
                 margin-right: 25px;
+
                 .img-wrapper {
                     background: #fafafa;
                     min-height: 100px;
                     padding: 10px;
+
                     img {
                         border-radius: 5px;
                         /*border: 1px solid #333;*/
@@ -417,6 +497,7 @@
                     }
 
                 }
+
                 .label {
                     font-size: 11px;
                     text-align: right;
@@ -424,22 +505,27 @@
                 }
 
             }
+
             .content {
                 line-height: 1.5;
                 flex: 1;
+
                 .evidence {
                     font-size: 15px;
                     text-transform: capitalize;
                     line-height: 1;
                 }
+
                 .title {
                     font-size: 24px;
                     margin-bottom: 5px;
                     line-height: 1.4;
                 }
+
                 .summary {
                     margin-bottom: 20px;
                 }
+
                 .source {
                     font-size: 15px;
 
@@ -448,125 +534,30 @@
                         font-style: italic;
                     }
                 }
+
                 .oa {
                     line-height: 1;
                     font-size: 15px;
-                    i {font-size: 80%;}
+
+                    i {
+                        font-size: 80%;
+                    }
+                }
+
+                .entity {
+                    background: rgba(255,127,102, .15);
+                    cursor: pointer;
+                    padding: 0 3px;
+                    white-space: nowrap;
+                    border-radius: 3px;
                 }
             }
         }
-
-
-
-
-
-        div.card {
-            display: none;
-            flex-direction: column;
-            justify-content: space-between;
-            &.selected {
-            }
-
-            .card-content {
-                padding: 15px;
-                margin: 10px;
-                cursor: pointer;
-                border-radius: 3px;
-                transition: box-shadow 300ms;
-                flex: 1;
-                &:hover {
-                    box-shadow: 0px 3px 6px 2px rgba(0, 0, 0, 0.1);
-                    /*background: #fafafa;*/
-                }
-                &.selected {
-                    box-shadow: 0px 3px 6px 2px rgba(0, 0, 0, 0.1);
-                    /*border: 1px solid #ddd;*/
-                    /*background: #333;*/
-                    /*color: #fff;*/
-                }
-
-                .top-line {
-                    display: flex;
-                    justify-content: space-between;
-                    opacity: .8;
-                    background: #eee;
-                    border-radius: 5px 5px 0 0;
-                    padding: 3px;
-                    .value {
-                        text-transform: capitalize;
-                        font-size: 12px;
-                        display: flex;
-                        align-items: center;
-
-                        .num {
-                            display: flex;
-                            justify-content: center;
-                            font-weight: bold;
-                            align-items: center;
-                            /*background: #555;*/
-                            /*border-radius: 30px;*/
-                            width: 16px;
-                            height: 16px;
-                            font-size: 11px;
-                            padding-top: 1px;
-                        }
-
-                    }
-                }
-
-                .card-header {
-
-                    .img-wrapper {
-                        min-height: 150px;
-                        background: #fafafa;
-                        max-height: 200px;
-                        overflow: hidden;
-                        border-radius: 3px;
-
-                    }
-                    .label {
-                        padding: 1px 0;
-                        font-size: 12px;
-                        text-align: right;
-                    }
-                }
-                .card-body {
-                    margin-top: 5px;
-                    .source {
-
-                        color: #999;
-                        font-size: 12px;
-                        .journal {
-                            margin-left: 3px;
-                            font-style: italic;
-                        }
-                    }
-                }
-                .card-footer {
-                    /*border-top: 1px solid #ddd;*/
-                    padding: 5px 0;
-                    margin: 5px 0;
-
-                    .mesh, .entity {
-                        display: none;
-                    }
-
-                    .tags {
-                        font-size: 12px;
-                        padding: 5px 0;
-                        border-top: 1px solid #ddd;
-                        margin: 5px 0;
-                    }
-
-                }
-            }
-
-        }
-
     }
 
     .page-bottom {
         margin: 10px;
+
         .controls {
             display: flex;
             justify-content: center;
