@@ -1,139 +1,155 @@
 <template>
     <div class="root">
 
-        <div class="loaded" v-if="results.length">
-            <div class="results-descr">
-                    <span class="info">
-                        Showing {{ displayResults.length }}
-                        <span v-if="showOnlyOa" class="filter">free-to-read</span>
-                        papers for "{{displaySearchTerm}}"
-                    </span>
-                <a class="show-oa-only" href="" v-if="!showOnlyOa" @click.prevent="showOnlyOa=true">
-                    (<i class="fas fa-unlock-alt"></i>
-                    Show only free-to-read papers)
-                </a>
-                <a class="show-everything" href="" v-if="showOnlyOa" @click.prevent="showOnlyOa=false">
-                    (Show all papers)
-                </a>
-                <span class="spacer"></span>
-                <a :href="apiUrl" class="api">View in API</a>
-                <a href="javascript:alert('This feature coming soon');">Create alert</a>
-            </div>
+        <div class="main-col">
+            <div class="loaded" v-if="results.length">
+                <div class="results-descr">
+                        <span class="info">
+                            Showing {{ displayResults.length }}
+                            <span v-if="showOnlyOa" class="filter">free-to-read</span>
+                            papers for "{{displaySearchTerm}}"
+                        </span>
+                    <a class="show-oa-only" href="" v-if="!showOnlyOa" @click.prevent="showOnlyOa=true">
+                        (<i class="fas fa-unlock-alt"></i>
+                        Show only free-to-read papers)
+                    </a>
+                    <a class="show-everything" href="" v-if="showOnlyOa" @click.prevent="showOnlyOa=false">
+                        (Show all papers)
+                    </a>
+                    <span class="spacer"></span>
+                    <a :href="apiUrl" class="api">View in API</a>
+                    <a href="javascript:alert('This feature coming soon');">Create alert</a>
+                </div>
 
 
-            <div class="error" v-if="error">
-                <em>Sorry, there were no results for that search.</em>
-            </div>
+                <div class="error" v-if="error">
+                    <em>Sorry, there were no results for that search.</em>
+                </div>
 
-            <div class="results-list" v-if="!error">
+                <div class="results-list" v-if="!error">
 
-                <template v-for="(result, index) of displayResults">
-                    <div class="row"
-                         :class="{selected: result.isSelected}"
-                         @click="setArticleZoom(result.doi)">
+                    <template v-for="(result, index) of displayResults">
+                        <div class="row"
+                             :class="{selected: result.isSelected}"
+                             @click="setArticleZoom(result.doi)">
 
 
-                        <div class="image">
-                            <div class="img-wrapper">
-                                <img :src="result.image.url" alt="" class="card-image">
+                            <div class="image">
+                                <div class="img-wrapper">
+                                    <img :src="result.image.url" alt="" class="card-image">
+                                </div>
+                                <div class="label">
+                                    {{result.image.title}}
+                                </div>
                             </div>
-                            <div class="label">
-                                {{result.image.title}}
+
+                            <div class="content">
+                                <div class="line evidence">
+                                    <span class="val" v-if="result.pubType">
+                                        {{result.pubType.pub_type_gtr}}
+                                    </span>
+                                </div>
+                                <div class="line title">
+                                    <span class="chunk-container"
+                                          :key="index"
+                                          v-for="(chunk, index) in result.titleChunks">
+                                        <span class="chunk entity"
+                                              v-html="chunk.spot"
+                                              v-if="chunk.abstract"
+                                              @click="toggleEntity(chunk)">
+
+                                        </span>
+                                        <span class="chunk text"
+                                              v-html="chunk.text"
+                                              v-if="!chunk.abstract"></span>
+                                    </span>
+                                </div>
+
+                                <div class="summary" v-if="result.abstract_short">
+                                    <span class="chunk-container"
+                                          :key="index"
+                                          v-for="(chunk, index) in result.shortAbstractChunks">
+                                        <span class="chunk entity"
+                                              v-html="chunk.spot"
+                                              v-if="chunk.abstract"
+                                              @click="toggleEntity(chunk)">
+
+                                        </span>
+                                        <span class="chunk text"
+                                              v-html="chunk.text"
+                                              v-if="!chunk.abstract"></span>
+                                    </span>
+                                </div>
+
+
+                                <div class="line source">
+                                    <span class="date">{{ result.year }}</span>
+
+                                    <span class="journal">{{ result.journal_name }}</span>
+                                </div>
+                                <div class="line oa" v-if="result.oa_url">
+                                    <i class="fas fa-unlock"></i>
+                                    Open Access
+                                </div>
+
+
                             </div>
+
+
                         </div>
 
-                        <div class="content">
-                            <div class="line evidence">
-                                <span class="val" v-if="result.pubType">
-                                    {{result.pubType.pub_type_gtr}}
-                                </span>
-                            </div>
-                            <div class="line title">
-                                <span class="chunk-container"
-                                      :key="index"
-                                      v-for="(chunk, index) in result.titleChunks">
-                                    <span class="chunk entity"
-                                          v-html="chunk.spot"
-                                          v-if="chunk.abstract"
-                                          @click="toggleEntity(chunk)">
 
-                                    </span>
-                                    <span class="chunk text"
-                                          v-html="chunk.text"
-                                          v-if="!chunk.abstract"></span>
-                                </span>
-                            </div>
-
-                            <div class="summary" v-if="result.abstract_short">
-                                <span class="chunk-container"
-                                      :key="index"
-                                      v-for="(chunk, index) in result.shortAbstractChunks">
-                                    <span class="chunk entity"
-                                          v-html="chunk.spot"
-                                          v-if="chunk.abstract"
-                                          @click="toggleEntity(chunk)">
-
-                                    </span>
-                                    <span class="chunk text"
-                                          v-html="chunk.text"
-                                          v-if="!chunk.abstract"></span>
-                                </span>
-                            </div>
+                    </template>
 
 
-                            <div class="line source">
-                                <span class="date">{{ result.year }}</span>
-
-                                <span class="journal">{{ result.journal_name }}</span>
-                            </div>
-                            <div class="line oa" v-if="result.oa_url">
-                                <i class="fas fa-unlock"></i>
-                                Open Access
-                            </div>
-
-
-                        </div>
-
-
+                </div>
+                <div class="page-bottom">
+                    <div class="controls">
+                        <md-button class="md-raised md-primary"
+                                   v-show="currentPage < 6"
+                                   @click="fetchNextPageOfResults">
+                            See more results
+                        </md-button>
                     </div>
-
-
-                </template>
-
+                    <div class="report">
+                        <a href="mailto:team@impactstory.org">Report inappropriate images</a>
+                    </div>
+                </div>
 
             </div>
-            <div class="page-bottom">
-                <div class="controls">
-                    <md-button class="md-raised md-primary"
-                               v-show="currentPage < 6"
-                               @click="fetchNextPageOfResults">
-                        See more results
-                    </md-button>
-                </div>
-                <div class="report">
-                    <a href="mailto:team@impactstory.org">Report inappropriate images</a>
-                </div>
-            </div>
+
+            <transition name="slide">
+                <article-zoom
+                        id="article-zoom"
+                        :paper="zoomedResult"
+                        @close="setArticleZoom(null)"
+                        v-if="zoomedResult"
+                        :class="{open: !!zoomedResult}"
+                >
+                </article-zoom>
+
+
+            </transition>
+
 
         </div>
 
-        <transition name="slide">
-            <article-zoom
-                    id="article-zoom"
-                    :paper="zoomedResult"
-                    @close="setArticleZoom(null)"
-                    v-if="zoomedResult"
-                    :class="{open: !!zoomedResult}"
-            >
-            </article-zoom>
 
+        <div class="annotray">
 
-        </transition>
-
-
-        <div class="loading" v-if="!results.length">
-            <md-progress-bar md-mode="indeterminate"></md-progress-bar>
         </div>
+
+
+
+
+
+
+
+
+
+
+
+
     </div>
 
 
@@ -142,8 +158,9 @@
 <script>
     import axios from 'axios'
     import _ from 'lodash'
-    import smartcrop from 'smartcrop'
     import ArticleZoom from '../components/ArticleZoom'
+    import SearchBox from "../components/SearchBox";
+
 
 
     function textChunk(str) {
@@ -215,7 +232,7 @@
         }),
         components: {
             ArticleZoom,
-            smartcrop
+            SearchBox
         },
         computed: {
             apiUrl() {
@@ -433,6 +450,16 @@
 <style scoped lang="scss">
     .root {
         min-height: 90vh;
+        display: flex;
+        .main-col {
+            flex: 2 2;
+
+        }
+        .annotray {
+            flex: 1 1 300px;
+            background: #eee;
+        }
+
     }
 
     /*@media (min-width: 600px) {*/

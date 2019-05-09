@@ -1,11 +1,10 @@
 <template>
-    <div class="main-header" v-if="!isOnBasepage">
+    <div class="main-header" v-if="!(isOnBasepage | isOnSearchPage)">
         <div class="logo">
                 <a class="site-logo" href="/search">
                     <img src="../assets/get-the-research-logo.png" alt="">
                 </a>
         </div>
-        <search-box/>
     </div>
 
 
@@ -13,13 +12,14 @@
 
 <script>
 
-    import SearchBox from "./SearchBox";
     export default {
-        components: {SearchBox},
         name: 'MainHeader',
         computed: {
           isOnBasepage(){
               return window.location.pathname == "/"
+          },
+          isOnSearchPage(){
+              return window.location.pathname.indexOf("/search") === 0
           }
         }
     }
