@@ -77,6 +77,7 @@
                             <result-row
                                     :key="index"
                                     :result="result"
+                                    @selected="setArticleZoom(result.doi)"
                             ></result-row>
 
 

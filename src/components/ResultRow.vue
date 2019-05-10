@@ -40,7 +40,7 @@
             </div>
 
             <div class="actions line">
-                <v-btn @click="setArticleZoom(result.doi)">Learn more</v-btn>
+                <v-btn @click="$emit('selected')">Learn more</v-btn>
             </div>
 
 
