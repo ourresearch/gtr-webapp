@@ -4,7 +4,7 @@
 
             <div class="annotray pa-4 anno-tray">
 
-                <div class="anno-empty" v-if="!selectedEntity">
+                <div class="anno-empty" v-if="!myStore.data.selectedEntity">
                     <div class="content">
                         <div class="image">
                             <i class="far fa-hand-point-left"></i>
@@ -15,20 +15,20 @@
                     </div>
                 </div>
 
-                <div class="anno-full" v-if="selectedEntity">
+                <div class="anno-full" v-if="myStore.data.selectedEntity">
                     <div class="header">
                             <span class="term">
-                                {{selectedEntity.title}}
-                                <span class="confidence">{{ selectedEntity.confidence.toFixed(2) }}</span>
+                                {{myStore.data.selectedEntity.title}}
+                                <span class="confidence">{{ myStore.data.selectedEntity.confidence.toFixed(2) }}</span>
                             </span>
-                        <span class="close" @click="selectedEntity=false">&times;</span>
+                        <span class="close" @click="myStore.clearSelectedEntity()">&times;</span>
                     </div>
                     <div class="body">
-                        <span class="definition" v-html="selectedEntity.abstract"></span>
-                        <img :src="selectedEntity.image_url" alt="" v-if="selectedEntity.image_url">
+                        <span class="definition" v-html="myStore.data.selectedEntity.abstract"></span>
+                        <img :src="myStore.data.selectedEntity.image_url" alt="" v-if="myStore.data.selectedEntity.image_url">
                     </div>
                     <div class="footer">
-                        via <a :href="selectedEntity.uri">Wikipedia</a>
+                        via <a :href="myStore.data.selectedEntity.uri">Wikipedia</a>
                     </div>
 
                 </div>
@@ -74,78 +74,10 @@
                     <div class="results-list" v-if="!error">
 
                         <template v-for="(result, index) of displayResults">
-                            <div class="row"
-                                 :key="index"
-                                 :class="{selected: result.isSelected}">
-
-
-                                <div class="image">
-                                    <div class="img-wrapper">
-                                        <img :src="result.image.url" alt="">
-                                    </div>
-                                    <div class="label">
-                                        {{result.image.title}}
-                                    </div>
-                                </div>
-
-                                <div class="content">
-                                    <div class="line evidence">
-                                        <span class="val" v-if="result.pubType">
-                                            {{result.pubType.pub_type_gtr}}
-                                        </span>
-                                    </div>
-                                    <div class="line title">
-                                        <span class="chunk-container"
-                                              :key="index"
-                                              v-for="(chunk, index) in result.titleChunks">
-                                            <span class="chunk entity"
-                                                  v-html="chunk.spot"
-                                                  v-if="chunk.abstract"
-                                                  @click="toggleEntity(chunk)">
-
-                                            </span>
-                                            <span class="chunk text"
-                                                  v-html="chunk.text"
-                                                  v-if="!chunk.abstract"></span>
-                                        </span>
-                                    </div>
-
-                                    <div class="summary" v-if="result.abstract_short">
-                                        <span class="chunk-container"
-                                              :key="index"
-                                              v-for="(chunk, index) in result.shortAbstractChunks">
-                                            <span class="chunk entity"
-                                                  v-html="chunk.spot"
-                                                  v-if="chunk.abstract"
-                                                  @click="toggleEntity(chunk)">
-
-                                            </span>
-                                            <span class="chunk text"
-                                                  v-html="chunk.text"
-                                                  v-if="!chunk.abstract"></span>
-                                        </span>
-                                    </div>
-
-
-                                    <div class="line source">
-                                        <span class="date">{{ result.year }}</span>
-
-                                        <span class="journal">{{ result.journal_name }}</span>
-                                    </div>
-                                    <div class="line oa" v-if="result.oa_url">
-                                        <i class="fas fa-unlock"></i>
-                                        Open Access
-                                    </div>
-
-                                    <div class="actions line">
-                                        <v-btn @click="setArticleZoom(result.doi)">Learn more</v-btn>
-                                    </div>
-
-
-                                </div>
-
-
-                            </div>
+                            <result-row
+                                    :key="index"
+                                    :result="result"
+                            ></result-row>
 
 
                         </template>
@@ -208,67 +140,17 @@
     import _ from 'lodash'
     import ArticleZoom from '../components/ArticleZoom'
     import SearchBox from "../components/SearchBox";
+    import {myStore} from "../myStore";
 
 
-
-    function textChunk(str) {
-        return {text: str}
-    }
-
-    function makeChunks(str, annotations) {
-
-        if (!str) {
-            return textChunk("")
-        }
-        if (!annotations) {
-            return textChunk(str)
-        }
-
-        // split the str into a bunch of chunks...some chunks are entities,
-        // the other chunks are the text in between entities.
-        let chunks = []
-        let cursorIndex = 0
-        annotations.forEach(entity => {
-
-            // add any plaintext chunk before the current entity
-            if (entity.start > 0) {
-                chunks.push(
-                    textChunk(str.slice(cursorIndex, entity.start))
-                )
-            }
-
-            // this entity
-            if (entity.confidence < 0.7) {
-                // if it's low-confidence, treat is as a text chunk
-                chunks.push(
-                    textChunk(entity.spot)
-                )
-            } else {
-                chunks.push(entity)
-            }
-
-            // update the cursor
-            cursorIndex = entity.end
-        })
-
-        // after the last entity, there's generally one last hanging text chunk. add it.
-        if (cursorIndex < str.length) {
-            chunks.push(
-                textChunk(
-                    str.slice(cursorIndex, str.length)
-                )
-            )
-        }
-
-        return chunks
-
-    }
+    import ResultRow from "../components/ResultRow"
 
 
     export default {
         name: "Serp",
         data: () => ({
             results: [],
+            myStore: myStore,
             queryElapsed: 0.0,
             showOnlyOa: false,
             zoomedResult: null,
@@ -281,7 +163,8 @@
         }),
         components: {
             ArticleZoom,
-            SearchBox
+            SearchBox,
+            ResultRow
         },
         computed: {
             apiUrl() {
@@ -355,18 +238,6 @@
                 })
 
 
-                // add abstract and title chunks
-                ret = ret.map(r => {
-                    r.titleChunks = makeChunks(
-                        r.title,
-                        r.annotations.using_article_title
-                    )
-                    r.shortAbstractChunks = makeChunks(
-                        r.abstract_short,
-                        r.annotations.using_article_abstract_short
-                    )
-                    return r
-                })
 
 
                 return ret
@@ -569,85 +440,7 @@
         margin: 10px 10px 100px;
 
 
-        div.row {
-            display: flex;
-            padding: 20px 30px;
-            margin: 20px 30px;
 
-
-            .image {
-                flex: 0 0 200px;
-                margin-right: 25px;
-
-                .img-wrapper {
-                    background: #fafafa;
-                    min-height: 100px;
-                    padding: 10px;
-
-                    img {
-                        border-radius: 5px;
-                        /*border: 1px solid #333;*/
-                        width: 250px;
-
-                    }
-
-                }
-
-                .label {
-                    font-size: 11px;
-                    text-align: right;
-                    opacity: .7;
-                }
-
-            }
-
-            .content {
-                line-height: 1.5;
-                flex: 1;
-
-                .evidence {
-                    font-size: 15px;
-                    text-transform: capitalize;
-                    line-height: 1;
-                }
-
-                .title {
-                    font-size: 24px;
-                    margin-bottom: 5px;
-                    line-height: 1.4;
-                }
-
-                .summary {
-                    margin-bottom: 20px;
-                }
-
-                .source {
-                    font-size: 15px;
-
-                    .journal {
-                        margin-left: 5px;
-                        font-style: italic;
-                    }
-                }
-
-                .oa {
-                    line-height: 1;
-                    font-size: 15px;
-
-                    i {
-                        font-size: 80%;
-                    }
-                }
-
-                .entity {
-                    background: rgba(255,127,102, .15);
-                    cursor: pointer;
-                    padding: 0 3px;
-                    white-space: nowrap;
-                    border-radius: 3px;
-                }
-            }
-        }
     }
 
     .page-bottom {

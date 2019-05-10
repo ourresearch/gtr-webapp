@@ -1,0 +1,11 @@
+export const pubTypes = {
+    "case study": "An up-close, in-depth, and detailed explanation of one particular patient and their situation.  Because it only describes a single case, extreme caution should be used in applying its conclusions to any other patients or situations.",
+    "clinical trial": "An experiment or observation on a group of human participants, designed to answer specific questions about biomedical or behavioral interventions, including new treatments (such as novel vaccines, drugs, dietary choices, dietary supplements, and medical devices) and known interventions that warrant further study and comparison.",
+    "editorial content": "Discusses, supports, or disputes an article.  Editorial content is usually not peer-reviewed, even if published in an otherwise peer-reviewed journal.",
+    "guidelines": "A document written with the aim of guiding decisions regarding diagnosis, management, and treatment of healthcare.  Guidelines may be developed by government agencies, institutions, organizations such as professional societies or governing boards, or by a convening of experts.",
+    "meta-analysis": "A type of study that combines the results of multiple scientific studies, leading to a more robust conclusion than is possible from any single study.",
+    "news and interest": "Discusses, supports, or disputes an article. News and interest stories are usually not peer-reviewed, even if published in an otherwise peer-reviewed journal.",
+    "randomized controlled trial": "A clinical trial in which the decision about which patient receives which treatment is decided randomly.  This type of study eliminates some kinds of error, leading to a more trustworthy result than a non-randomized controlled trial.",
+    "research study": "A general scientific report on a topic, usually following the scientific method.  The research study may involve an experiment, or it may be an observational study in which the research observes but does not intervene.",
+    "review": "An article that summarizes previously published studies on a subject. It provides background and context for the results of these studies, and so is useful for learning about a subject and the strengths and weaknesses of studies in the area."
+}
