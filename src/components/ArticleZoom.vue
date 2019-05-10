@@ -55,17 +55,17 @@
             </div>
 
             <div class="actions">
-                <md-button class="md-raised"
+                <v-btn class="md-raised"
                            :href="paper.oa_url"
                            v-show="paper.oa_url">
                     full article (open access)
                     <i class="fas fa-external-link-alt"></i>
-                </md-button>
+                </v-btn>
 
             </div>
 
 
-            <div class="extra" v-show="paper.picture_candidates.length || paper.displayAuthors.length">
+            <div class="extra" v-if="false" v-show="paper.picture_candidates.length || paper.displayAuthors.length">
                 <div class="line authors" v-show="paper.displayAuthors.length">
                     <div class="label">
                         Authors:

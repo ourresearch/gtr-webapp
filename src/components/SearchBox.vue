@@ -2,7 +2,7 @@
     <div class="search-box">
         <input v-model="query" @keyup.enter="goSearch"></input>
         <div class="icon md-primary" @click="goSearch">
-            <md-icon>search</md-icon>
+
 
         </div>
 

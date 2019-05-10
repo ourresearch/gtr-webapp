@@ -5,9 +5,9 @@
         <p>
             Welcome to the cutting edge&hellip;you'll be getting the first look at new features and beta versions.
         </p>
-        <md-button class="md-primary md-raised" to="/">
+        <v-btn class="md-primary md-raised" to="/">
             Back to homepage
-        </md-button>
+        </v-btn>
     </div>
   </div>
 </template>

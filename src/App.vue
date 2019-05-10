@@ -1,16 +1,32 @@
 <template>
-  <div id="app" class="container">
+
+  <v-app id="inspire">
 
     <main-header />
 
-    <div class="container-wrapper md-layout-row">
-      <router-view/>
-    </div>
-
-    <main-footer />
 
 
-  </div>
+
+    <v-content>
+      <v-container fluid fill-height class="pa-0">
+        <v-layout
+          justify-center
+        >
+
+          <router-view></router-view>
+
+
+        </v-layout>
+      </v-container>
+    </v-content>
+    <v-footer
+    height="auto">
+      <main-footer />
+    </v-footer>
+  </v-app>
+
+
+
 
 
 
@@ -37,7 +53,8 @@
 
 <style lang="scss">
 
-  @import url("https://use.fontawesome.com/releases/v5.0.10/css/all.css");
+
+  @import url("https://use.fontawesome.com/releases/v5.8.1/css/all.css");
   @import url("https://fonts.googleapis.com/css?family=Lato:300,400,700,400italic");
 
 

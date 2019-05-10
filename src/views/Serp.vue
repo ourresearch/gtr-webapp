@@ -1,143 +1,188 @@
 <template>
-    <div class="root">
-
-        <div class="main-col">
-            <div class="loaded" v-if="results.length">
-                <div class="results-descr">
-                        <span class="info">
-                            Showing {{ displayResults.length }}
-                            <span v-if="showOnlyOa" class="filter">free-to-read</span>
-                            papers for "{{displaySearchTerm}}"
-                        </span>
-                    <a class="show-oa-only" href="" v-if="!showOnlyOa" @click.prevent="showOnlyOa=true">
-                        (<i class="fas fa-unlock-alt"></i>
-                        Show only free-to-read papers)
-                    </a>
-                    <a class="show-everything" href="" v-if="showOnlyOa" @click.prevent="showOnlyOa=false">
-                        (Show all papers)
-                    </a>
-                    <span class="spacer"></span>
-                    <a :href="apiUrl" class="api">View in API</a>
-                    <a href="javascript:alert('This feature coming soon');">Create alert</a>
-                </div>
+    <v-flex class="root">
 
 
-                <div class="error" v-if="error">
-                    <em>Sorry, there were no results for that search.</em>
-                </div>
+            <div class="annotray pa-4 anno-tray">
 
-                <div class="results-list" v-if="!error">
-
-                    <template v-for="(result, index) of displayResults">
-                        <div class="row"
-                             :class="{selected: result.isSelected}"
-                             @click="setArticleZoom(result.doi)">
-
-
-                            <div class="image">
-                                <div class="img-wrapper">
-                                    <img :src="result.image.url" alt="" class="card-image">
-                                </div>
-                                <div class="label">
-                                    {{result.image.title}}
-                                </div>
-                            </div>
-
-                            <div class="content">
-                                <div class="line evidence">
-                                    <span class="val" v-if="result.pubType">
-                                        {{result.pubType.pub_type_gtr}}
-                                    </span>
-                                </div>
-                                <div class="line title">
-                                    <span class="chunk-container"
-                                          :key="index"
-                                          v-for="(chunk, index) in result.titleChunks">
-                                        <span class="chunk entity"
-                                              v-html="chunk.spot"
-                                              v-if="chunk.abstract"
-                                              @click="toggleEntity(chunk)">
-
-                                        </span>
-                                        <span class="chunk text"
-                                              v-html="chunk.text"
-                                              v-if="!chunk.abstract"></span>
-                                    </span>
-                                </div>
-
-                                <div class="summary" v-if="result.abstract_short">
-                                    <span class="chunk-container"
-                                          :key="index"
-                                          v-for="(chunk, index) in result.shortAbstractChunks">
-                                        <span class="chunk entity"
-                                              v-html="chunk.spot"
-                                              v-if="chunk.abstract"
-                                              @click="toggleEntity(chunk)">
-
-                                        </span>
-                                        <span class="chunk text"
-                                              v-html="chunk.text"
-                                              v-if="!chunk.abstract"></span>
-                                    </span>
-                                </div>
-
-
-                                <div class="line source">
-                                    <span class="date">{{ result.year }}</span>
-
-                                    <span class="journal">{{ result.journal_name }}</span>
-                                </div>
-                                <div class="line oa" v-if="result.oa_url">
-                                    <i class="fas fa-unlock"></i>
-                                    Open Access
-                                </div>
-
-
-                            </div>
-
-
+                <div class="anno-empty" v-if="!selectedEntity">
+                    <div class="content">
+                        <div class="image">
+                            <i class="far fa-hand-point-left"></i>
                         </div>
-
-
-                    </template>
-
-
-                </div>
-                <div class="page-bottom">
-                    <div class="controls">
-                        <md-button class="md-raised md-primary"
-                                   v-show="currentPage < 6"
-                                   @click="fetchNextPageOfResults">
-                            See more results
-                        </md-button>
-                    </div>
-                    <div class="report">
-                        <a href="mailto:team@impactstory.org">Report inappropriate images</a>
+                        <div class="text">
+                            Click <span class="entity">highlighted words</span> to learn more!
+                        </div>
                     </div>
                 </div>
+
+                <div class="anno-full" v-if="selectedEntity">
+                    <div class="header">
+                            <span class="term">
+                                {{selectedEntity.title}}
+                                <span class="confidence">{{ selectedEntity.confidence.toFixed(2) }}</span>
+                            </span>
+                        <span class="close" @click="selectedEntity=false">&times;</span>
+                    </div>
+                    <div class="body">
+                        <span class="definition" v-html="selectedEntity.abstract"></span>
+                        <img :src="selectedEntity.image_url" alt="" v-if="selectedEntity.image_url">
+                    </div>
+                    <div class="footer">
+                        via <a :href="selectedEntity.uri">Wikipedia</a>
+                    </div>
+
+                </div>
+            </div>
+
+
+
+
+            <div class="main-col">
+                <div class="header">
+                    <v-layout>
+                        <search-box></search-box>
+                    </v-layout>
+                    <v-layout>
+                        <a class="show-oa-only" href="" v-if="!showOnlyOa" @click.prevent="showOnlyOa=true">
+                            (<i class="fas fa-unlock-alt"></i>
+                            Show only free-to-read papers)
+                        </a>
+                        <a class="show-everything" href="" v-if="showOnlyOa" @click.prevent="showOnlyOa=false">
+                            (Show all papers)
+                        </a>
+                        <v-spacer></v-spacer>
+                        <a :href="apiUrl" class="api pa-2">View in API</a>
+                        <a href="javascript:alert('This feature coming soon');" class="pa-2">Create alert</a>
+
+                    </v-layout>
+                </div>
+
+
+
+
+
+
+                <div class="loaded" v-if="results.length">
+
+
+                    <div class="error" v-if="error">
+                        <em>Sorry, there were no results for that search.</em>
+                    </div>
+
+
+
+                    <div class="results-list" v-if="!error">
+
+                        <template v-for="(result, index) of displayResults">
+                            <div class="row"
+                                 :key="index"
+                                 :class="{selected: result.isSelected}">
+
+
+                                <div class="image">
+                                    <div class="img-wrapper">
+                                        <img :src="result.image.url" alt="">
+                                    </div>
+                                    <div class="label">
+                                        {{result.image.title}}
+                                    </div>
+                                </div>
+
+                                <div class="content">
+                                    <div class="line evidence">
+                                        <span class="val" v-if="result.pubType">
+                                            {{result.pubType.pub_type_gtr}}
+                                        </span>
+                                    </div>
+                                    <div class="line title">
+                                        <span class="chunk-container"
+                                              :key="index"
+                                              v-for="(chunk, index) in result.titleChunks">
+                                            <span class="chunk entity"
+                                                  v-html="chunk.spot"
+                                                  v-if="chunk.abstract"
+                                                  @click="toggleEntity(chunk)">
+
+                                            </span>
+                                            <span class="chunk text"
+                                                  v-html="chunk.text"
+                                                  v-if="!chunk.abstract"></span>
+                                        </span>
+                                    </div>
+
+                                    <div class="summary" v-if="result.abstract_short">
+                                        <span class="chunk-container"
+                                              :key="index"
+                                              v-for="(chunk, index) in result.shortAbstractChunks">
+                                            <span class="chunk entity"
+                                                  v-html="chunk.spot"
+                                                  v-if="chunk.abstract"
+                                                  @click="toggleEntity(chunk)">
+
+                                            </span>
+                                            <span class="chunk text"
+                                                  v-html="chunk.text"
+                                                  v-if="!chunk.abstract"></span>
+                                        </span>
+                                    </div>
+
+
+                                    <div class="line source">
+                                        <span class="date">{{ result.year }}</span>
+
+                                        <span class="journal">{{ result.journal_name }}</span>
+                                    </div>
+                                    <div class="line oa" v-if="result.oa_url">
+                                        <i class="fas fa-unlock"></i>
+                                        Open Access
+                                    </div>
+
+                                    <div class="actions line">
+                                        <v-btn @click="setArticleZoom(result.doi)">Learn more</v-btn>
+                                    </div>
+
+
+                                </div>
+
+
+                            </div>
+
+
+                        </template>
+
+
+                    </div>
+                    <div class="page-bottom">
+                        <div class="controls">
+                            <v-btn class="md-raised md-primary"
+                                       v-show="currentPage < 6"
+                                       @click="fetchNextPageOfResults">
+                                See more results
+                            </v-btn>
+                        </div>
+                        <div class="report">
+                            <a href="mailto:team@impactstory.org">Report inappropriate images</a>
+                        </div>
+                    </div>
+
+                </div>
+
+                <transition name="slide">
+                    <article-zoom
+                            id="article-zoom"
+                            :paper="zoomedResult"
+                            @close="setArticleZoom(null)"
+                            v-if="zoomedResult"
+                            :class="{open: !!zoomedResult}"
+                    >
+                    </article-zoom>
+
+
+                </transition>
+
 
             </div>
 
-            <transition name="slide">
-                <article-zoom
-                        id="article-zoom"
-                        :paper="zoomedResult"
-                        @close="setArticleZoom(null)"
-                        v-if="zoomedResult"
-                        :class="{open: !!zoomedResult}"
-                >
-                </article-zoom>
-
-
-            </transition>
-
-
-        </div>
-
-
-        <div class="annotray">
-
-        </div>
 
 
 
@@ -150,7 +195,10 @@
 
 
 
-    </div>
+
+
+
+    </v-flex>
 
 
 </template>
@@ -227,7 +275,8 @@
             cardWidth: 280,
             rowWidth: null,
             currentPage: 0,
-            error: null
+            error: null,
+            selectedEntity: null
 
         }),
         components: {
@@ -246,7 +295,6 @@
                 } else return null
 
             },
-
 
             displayResults() {
                 let ret = this.results
@@ -341,6 +389,15 @@
                 }
 
             },
+            toggleEntity(entity) {
+                console.log("toggling entity", entity)
+                if (this.selectedEntity && entity.id === this.selectedEntity.id){
+                    this.selectedEntity = null
+                }
+                else {
+                    this.selectedEntity = entity
+                }
+            },
 
             zoomArticle(doi) {
                 this.zoomedResult = this.results.find(result => {
@@ -354,6 +411,7 @@
                 this.currentPage = 0
                 this.zoomedResult = null
                 this.error = null
+                this.selectedEntity = null
 
 
                 let that = this
@@ -449,16 +507,25 @@
 
 <style scoped lang="scss">
     .root {
-        min-height: 90vh;
-        display: flex;
-        .main-col {
-            flex: 2 2;
-
-        }
         .annotray {
-            flex: 1 1 300px;
             background: #eee;
+            position: fixed;
+            top:0;
+            bottom:0;
+            right:0;
+            width: 25%;
+            overflow: scroll;
+
+            img {
+                width: 100%;
+            }
         }
+
+        .main-col {
+            width: 75%;
+        }
+
+
 
     }
 
@@ -520,6 +587,7 @@
                     img {
                         border-radius: 5px;
                         /*border: 1px solid #333;*/
+                        width: 250px;
 
                     }
 
@@ -592,25 +660,25 @@
 
     }
 
-    .slide-enter-active, .slide-leave-active {
-        transition: transform 300ms;
-    }
+    /*.slide-enter-active, .slide-leave-active {*/
+    /*    transition: transform 300ms;*/
+    /*}*/
 
-    .slide-leave, .slide-enter-to {
-        transform: translateX(5%);
+    /*.slide-leave, .slide-enter-to {*/
+    /*    transform: translateX(75%);*/
 
-    }
+    /*}*/
 
-    .slide-enter, .slide-leave-to {
-        transform: translateX(100%);
-    }
+    /*.slide-enter, .slide-leave-to {*/
+    /*    transform: translateX(0%);*/
+    /*}*/
 
     #article-zoom {
         position: fixed;
         top: 0;
         bottom: 0;
-        left: 5%;
-        width: 95%;
+        left: 0;
+        width: 75%;
         /*transform: translateX(100%);*/
         background: #fff;
         z-index: 999;

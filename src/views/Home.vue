@@ -29,16 +29,16 @@ Discover 20 million free-to-read scholarly papers, and understand them with our 
 
           <!--</div>-->
 
-          <md-button class="md-raised md-primary main" target="_blank" href="http://eepurl.com/dAtthz">
+          <v-btn class="md-raised md-primary main" target="_blank" href="http://eepurl.com/dAtthz">
             Get early access
-          </md-button>
+          </v-btn>
 
 
 
 
-          <md-button class="md-raised learn-more" v-scroll-to="'#about'">
+          <v-btn class="md-raised learn-more" v-scroll-to="'#about'">
             learn more
-          </md-button>
+          </v-btn>
 
         </div>
       </div>
