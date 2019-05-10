@@ -11,8 +11,8 @@
 
         <div class="content">
             <div class="line evidence">
-                <span class="val" v-if="result.pubType">
-                    {{result.pubType.pub_type_gtr}}
+                <span class="val" v-if="pubType">
+                    {{pubType.pub_type_gtr}}
                 </span>
             </div>
             <annotated-content
@@ -66,6 +66,16 @@
             selectedEntity: false,
         }),
         computed: {
+            pubType(){
+                this.result.pub_types.sort((a, b) => {
+                    return a.evidence_level - b.evidence_level
+                })
+                return this.result.pub_types.find(x => {
+                    return x.pub_type_gtr
+                })
+            }
+
+
         },
         methods: {
         },

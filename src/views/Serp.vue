@@ -173,77 +173,8 @@
                 let url = "https://gtr-api.herokuapp.com/search/" + searchTerm
                 return url
             },
-            displaySearchTerm() {
-                if (this.$route.params.q) {
-                    return this.$route.params.q.replace("_", " ")
-                } else return null
-
-            },
-
             displayResults() {
-                let ret = this.results
-
-                if (this.showOnlyOa) {
-                    ret = ret.filter(myResult => {
-                        return myResult.is_oa
-                    })
-                }
-
-
-                // pick best pubtype
-                ret = ret.map(r => {
-                    r.pub_types.sort((a, b) => {
-                        return a.evidence_level - b.evidence_level
-                    })
-
-                    r.pubType = r.pub_types.find(x => {
-                        return x.pub_type_gtr
-                    })
-                    return r
-                })
-
-
-                ret = ret.map(result => {
-                    if (result.title === result.title.toUpperCase()) {
-                        // result.title = _.capitalize(result.title)
-                    }
-                    return result
-                })
-
-                ret = ret.filter(myResult => {
-                    // example: http://localhost:8080/search/heart_disease
-                    return myResult.title.length < 450
-                })
-
-                ret = ret.map(r => {
-
-                    r.displayAbstract = _.truncate(
-                        r.short_abstract,
-                        {
-                            length: 500,
-                            separator: /,? +/
-                        }
-                    )
-                    return r
-                })
-
-                ret = ret.map(r => {
-                    let numAuths = r.author_lastnames.length
-                    if (numAuths > 5) {
-                        let numHidden = numAuths - 5
-                        r.displayAuthors = r.author_lastnames.slice(0, 5).join(", ") + `, and ${numHidden} others`
-                    } else {
-                        r.displayAuthors = r.author_lastnames.join(", ")
-                    }
-                    return r
-                })
-
-
-
-
-                return ret
-
-
+                return this.results
             }
         },
         methods: {
@@ -260,15 +191,6 @@
 
                 }
 
-            },
-            toggleEntity(entity) {
-                console.log("toggling entity", entity)
-                if (this.selectedEntity && entity.id === this.selectedEntity.id){
-                    this.selectedEntity = null
-                }
-                else {
-                    this.selectedEntity = entity
-                }
             },
 
             zoomArticle(doi) {
@@ -392,46 +314,9 @@
                 width: 100%;
             }
         }
-
         .main-col {
             width: 75%;
         }
-
-
-
-    }
-
-    /*@media (min-width: 600px) {*/
-    /*margin-left: 150px;*/
-    /*}*/
-
-    /*.slide {*/
-    /*transition: height 5s;*/
-
-    /*}*/
-
-    .results-descr {
-        padding: 0 20px 5px;
-        color: #666;
-        /*color: #FF7F66;*/
-        border-bottom: 1px solid #ccc;
-        display: flex;
-        align-items: center;
-
-        .info {
-            margin-right: 10px;
-            font-size: 120%;
-        }
-
-        .spacer {
-            flex: 1;
-        }
-
-        a {
-            font-size: 14px;
-            padding: 0 10px;
-        }
-
     }
 
     div.results-list {
@@ -439,19 +324,14 @@
         padding: 0;
         margin: 10px 0 0;
         margin: 10px 10px 100px;
-
-
-
     }
 
     .page-bottom {
         margin: 10px;
-
         .controls {
             display: flex;
             justify-content: center;
         }
-
     }
 
     /*.slide-enter-active, .slide-leave-active {*/
