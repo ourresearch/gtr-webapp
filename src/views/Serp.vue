@@ -38,7 +38,7 @@
 
 
             <div class="main-col">
-                <div class="header">
+                <v-container class="header">
                     <v-layout>
                         <search-box></search-box>
                     </v-layout>
@@ -55,7 +55,7 @@
                         <a href="javascript:alert('This feature coming soon');" class="pa-2">Create alert</a>
 
                     </v-layout>
-                </div>
+                </v-container>
 
 
 

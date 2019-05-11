@@ -1,72 +1,101 @@
 <template>
-    <div class="search-box">
-        <input v-model="query" @keyup.enter="goSearch"></input>
-        <div class="icon md-primary" @click="goSearch">
+    <v-layout class="searchbox">
+            <v-autocomplete
+                    v-model="select"
+                    :loading="loading"
+                    :items="items"
+                    :search-input.sync="search"
+                    @input="goSearch"
+                    @keypress.enter="goSearch(search)"
+                    class="mx-3"
+                    flat
+                    hide-no-data
+                    hide-details
+                    label="Get the research on..."
+                    solo
+            ></v-autocomplete>
+    </v-layout>
 
 
-        </div>
-
-
-    </div>
 </template>
 
 <script>
     import _ from 'lodash'
+    import axios from 'axios'
+
     export default {
         name: "SearchBox",
         data: () => ({
-            query:""
+            select: "",
+            loading: false,
+            items: [],
+            search: ""
         }),
         computed: {
-            cleanQuery(){
-                return _.snakeCase(this.query)
+            displayItems(){
+                return this.items.slice(0, 6)
             }
         },
         methods: {
-            goSearch(){
+            goSearch(q) {
+                console.log("searching!", q)
+                // this.items = this.items.filter(x=>{
+                //     let suggestion = (x || "").toLowerCase()
+                //     let myQ = (q || "").toLowerCase()
+                //     return suggestion.indexOf(myQ) > -1
+                // })
+                this.fetchSuggestions(q)
+                
 
                 this.$router.push({
                     name: "search",
                     params: {
-                        q: this.cleanQuery
+                        q: _.snakeCase(q)
                     }
                 })
+            },
+            fetchSuggestions(v) {
+                this.loading = true
 
+                let url = "https://gtr-api.herokuapp.com/autocomplete/" + v
+                axios.get(url)
+                    .then(resp => {
+                        this.items = resp.data.results.slice(0, 6)
+                        this.loading = false
+                    })
+
+
+
+
+            }
+        },
+        watch: {
+            search(val) {
+                val && val !== this.select && this.fetchSuggestions(val)
             }
         }
     }
 </script>
 
-<style scoped lang="scss">
-    div.search-box {
-        max-width: 500px;
-        padding: 20px 0;
-        border: none !important;
-        display:flex;
-        width: 100%;
-        input {
-            width: 100%;
-            height: inherit;
-            outline:none; // clear browser styles
-            max-width: 500px;
-            font-size: 18px;
-            padding: 15px 25px;
-            border: 1px solid #aaa;
-            border-radius: 50px;
-            box-shadow: 0px 2px 2px rgba(0,0,0,.05);
-            transition: box-shadow 0.3s;
-            &:hover {
-                box-shadow: 0px 2px 6px rgba(0,0,0,.4);
+<style lang="scss">
+    .v-autocomplete__content {
+        .v-list__tile {
+            height: auto;
+        }
 
+        .v-list__tile__title {
+            font-weight: bold !important;
+
+        }
+
+        .theme--light.v-list  {
+            .v-list__tile__mask {
+                background: #fff;
+                color: #333;
+                font-weight: normal;
             }
         }
-        div.icon {
-            display: flex;
-            margin-left: -40px;
-            cursor:pointer;
-            color: #2196F3;
-        }
-        div.md-field {
-        }
+
     }
+
 </style>
