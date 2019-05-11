@@ -42,19 +42,31 @@
                     <v-layout>
                         <search-box></search-box>
                     </v-layout>
-                    <v-layout>
-                        <a class="show-oa-only" href="" v-if="!showOnlyOa" @click.prevent="showOnlyOa=true">
-                            (<i class="fas fa-unlock-alt"></i>
-                            Show only free-to-read papers)
-                        </a>
-                        <a class="show-everything" href="" v-if="showOnlyOa" @click.prevent="showOnlyOa=false">
-                            (Show all papers)
-                        </a>
-                        <v-spacer></v-spacer>
-                        <a :href="apiUrl" class="api pa-2">View in API</a>
-                        <a href="javascript:alert('This feature coming soon');" class="pa-2">Create alert</a>
 
+
+                    <v-layout class="pa-2" align-center>
+                        <v-flex shrink class="px-3">
+                            <v-switch
+                                    shrink
+                              v-model="showOnlyOa"
+                              label="Show only free-to-read papers"
+                            ></v-switch>
+
+                        </v-flex>
+
+                            <v-switch
+                              v-model="hideAnnotations"
+                              label="Hide annotations"
+                            ></v-switch>
+                        <v-spacer></v-spacer>
+                            <v-btn small flat :href="apiUrl">
+                                View in API
+                            </v-btn>
+                            <v-btn small flat>
+                                Create alert
+                            </v-btn>
                     </v-layout>
+                    <v-divider color="black"></v-divider>
                 </v-container>
 
 
@@ -72,18 +84,13 @@
 
 
                     <div class="results-list" v-if="!error">
-
                         <template v-for="(result, index) of displayResults">
                             <result-row
                                     :key="index"
                                     :result="result"
                                     @selected="setArticleZoom(result.doi)"
                             ></result-row>
-
-
                         </template>
-
-
                     </div>
                     <div class="page-bottom">
                         <div class="controls">
@@ -159,7 +166,8 @@
             rowWidth: null,
             currentPage: 0,
             error: null,
-            selectedEntity: null
+            selectedEntity: null,
+            hideAnnotations: false
 
         }),
         components: {

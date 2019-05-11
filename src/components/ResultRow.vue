@@ -15,11 +15,16 @@
                     {{pubType.pub_type_gtr}}
                 </span>
             </div>
-            <annotated-content
-                    :content="result.title"
-                    :annotations="result.annotations.using_article_title"
-                    class="line title">
-            </annotated-content>
+            <div class="line  article-title pb-2">
+                <span class="is-oa" v-if="result.oa_url">
+                    <i class="fas fa-unlock"></i>
+                </span>
+                <annotated-content
+                        :content="result.title"
+                        :annotations="result.annotations.using_article_title">
+                </annotated-content>
+
+            </div>
 
             <annotated-content
                     v-if="result.abstract_short"
@@ -34,13 +39,10 @@
 
                 <span class="journal">{{ result.journal_name }}</span>
             </div>
-            <div class="line oa" v-if="result.oa_url">
-                <i class="fas fa-unlock"></i>
-                Open Access
-            </div>
+
 
             <div class="actions line">
-                <v-btn @click="$emit('selected')">Learn more</v-btn>
+                <v-btn small flat @click="$emit('selected')">Learn more</v-btn>
             </div>
 
 
@@ -130,15 +132,16 @@ div.row {
             line-height: 1;
         }
 
-        .title {
-            font-size: 24px;
-            margin-bottom: 5px;
+        .article-title {
             line-height: 1.4;
+            font-size: 20px;
+            .is-oa {
+                font-size: 70%;
+                vertical-align: 2px;
+                margin-right: 5px;
+            }
         }
 
-        .summary {
-            margin-bottom: 20px;
-        }
 
         .source {
             font-size: 15px;
@@ -146,15 +149,6 @@ div.row {
             .journal {
                 margin-left: 5px;
                 font-style: italic;
-            }
-        }
-
-        .oa {
-            line-height: 1;
-            font-size: 15px;
-
-            i {
-                font-size: 80%;
             }
         }
 

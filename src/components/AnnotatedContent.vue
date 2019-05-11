@@ -1,5 +1,5 @@
 <template>
-    <div class="annotated-content">
+    <span class="annotated-content">
         <span class="chunk-container"
               :key="index"
               v-for="(chunk, index) in chunks">
@@ -13,7 +13,7 @@
               v-html="chunk.text"
               v-if="!chunk.abstract"></span>
         </span>
-    </div>
+    </span>
 </template>
 
 <script>
