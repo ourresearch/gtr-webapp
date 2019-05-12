@@ -4,7 +4,7 @@
 
         <div class="annotray pa-4 anno-tray">
 
-            <div class="anno-empty" v-if="!myStore.data.selectedEntity">
+            <div class="anno-empty" v-if="!search.selectedEntity && search.query.annotations">
                 <div class="content">
                     <div class="image">
                         <i class="far fa-hand-point-left"></i>
@@ -15,21 +15,20 @@
                 </div>
             </div>
 
-            <div class="anno-full" v-if="myStore.data.selectedEntity">
-                <div class="header">
+            <div class="anno-full" v-if="search.selectedEntity && search.query.annotations">
+                <div class="header headline">
                             <span class="term">
-                                {{myStore.data.selectedEntity.title}}
-                                <span class="confidence">{{ myStore.data.selectedEntity.confidence.toFixed(2) }}</span>
+                                {{search.selectedEntity.title}}
                             </span>
-                    <span class="close" @click="myStore.clearSelectedEntity()">&times;</span>
+                    <span class="close" @click="search.setSelectedEntity()">&times;</span>
                 </div>
                 <div class="body">
-                    <span class="definition" v-html="myStore.data.selectedEntity.abstract"></span>
-                    <img :src="myStore.data.selectedEntity.image_url" alt=""
-                         v-if="myStore.data.selectedEntity.image_url">
+                    <span class="definition" v-html="search.selectedEntity.abstract"></span>
+                    <img :src="search.selectedEntity.image_url" alt=""
+                         v-if="search.selectedEntity.image_url">
                 </div>
                 <div class="footer">
-                    via <a :href="myStore.data.selectedEntity.uri">Wikipedia</a>
+                    via <a :href="search.selectedEntity.uri">Wikipedia</a>
                 </div>
 
             </div>
@@ -39,7 +38,7 @@
         <div class="main-col">
             <v-container class="header">
                 <v-layout>
-                    <search-box @query="setQ"></search-box>
+                    <search-box></search-box>
                 </v-layout>
 
 
@@ -47,14 +46,14 @@
                     <v-flex shrink class="px-3">
                         <v-switch
                                 shrink
-                                v-model="query.oa"
+                                v-model="search.query.oa"
                                 label="Show only free-to-read papers"
                         ></v-switch>
 
                     </v-flex>
 
                     <v-switch
-                            v-model="query.annotations"
+                            v-model="search.query.annotations"
                             label="Show annotations"
                     ></v-switch>
                     <v-spacer></v-spacer>
@@ -67,6 +66,13 @@
                 </v-layout>
                 <v-divider color="black"></v-divider>
             </v-container>
+
+<!--            <v-container>-->
+<!--                <pre>-->
+<!--                {{search.query}}-->
+<!--                </pre>-->
+<!--            </v-container>-->
+
             <v-container>
 
                 <div class="results-list" v-if="!search.loading">
@@ -77,7 +83,7 @@
                         <result-row
                                 :key="index"
                                 :result="result"
-                                @selected="setArticleZoom(result.doi)"
+                                @selected="search.setZoom(result.doi)"
                         ></result-row>
                     </template>
                 </div>
@@ -96,7 +102,7 @@
                 <article-zoom
                         id="article-zoom"
                         :paper="zoomedResult"
-                        @close="setArticleZoom(null)"
+                        @close="search.setZoom(null)"
                         v-if="zoomedResult"
                         :class="{open: !!zoomedResult}"
                 >
@@ -115,11 +121,8 @@
 </template>
 
 <script>
-    import axios from 'axios'
-    import _ from 'lodash'
     import ArticleZoom from '../components/ArticleZoom'
     import SearchBox from "../components/SearchBox";
-    import {myStore} from "../myStore";
     import {search} from "../search"
 
 
@@ -139,9 +142,7 @@
         name: "Serp",
         data: () => ({
             results: [],
-            myStore: myStore,
             queryElapsed: 0.0,
-            zoomedResult: null,
             cardWidth: 280,
             rowWidth: null,
             currentPage: 0,
@@ -167,64 +168,34 @@
                 let searchTerm = this.$route.params.q
                 let url = "https://gtr-api.herokuapp.com/search/" + searchTerm
                 return url
+            },
+            zoomedResult(){
+                return search.results.find(r => {
+                    return r.doi === search.query.zoom
+                })
             }
         },
         methods: {
-            setQ(q){
-                this.query.q = _.snakeCase(q.toLowerCase())
-            },
-
-            setArticleZoom(doi) {
-                this.query.zoom = doi
-            },
-            doArticleZoom(){
-                console.log("article zoom, using DOI from URL", this.$route.query.zoom)
-                document.body.classList.remove("noscroll")
-                this.zoomedResult = search.results.find(result => {
-                    return result.doi === this.$route.query.zoom
-                })
-                if (this.zoomedResult){
-                    console.log("we have a zoomed results")
-                    document.body.classList.add("noscroll")
-                }
-            },
-            setQueryFromUrl(){
-
-            }
 
         },
         mounted() {
-            Object.keys(this.query).forEach(k => {
-                this.query[k] = this.$route.query[k]
-            })
-            search.fetchResults()
-            this.doArticleZoom()
+            search.setQuery(this.$route.query)
         },
         watch: {
-            // when the user input changes, update the URL
-            "query": {
-                handler: function (to) {
-                    this.$router.push({query: to})
+            // when *any* user input changes, update the URL
+            "search.query": {
+                handler: function (to, from) {
+                    this.$router.push({
+                        query: search.getQueryForUrl()
+                    });
                 },
                 deep: true
             },
 
-            // for some URL changes, we need to hit the server
-            "$route.query.q": function (to) {
-                search.fetchResults()
-            },
-            "$route.query.oa": function (to) {
-                search.fetchResults()
-            },
-
-
-            // for some URL changes we just need to move stuff around on the client
-            "$route.query.zoom": function (to) {
-                this.doArticleZoom()
-            },
-            "$route.query.annotations": function (to) {
-                console.log("dude its the cops, hide the annotations!")
-            }
+            // changes that require a server refresh
+            "search.query.q": function(){search.fetchResults()},
+            "search.query.oa": function(){search.fetchResults()},
+            "search.query.page": function(){search.fetchResults()}
         }
 
     }
@@ -243,6 +214,13 @@
 
             img {
                 width: 100%;
+            }
+
+            .header.headline {
+                background: rgba(255, 127, 102, 1);
+                color: #fff;
+                padding: 5px;
+                border-radius: 3px;
             }
         }
 

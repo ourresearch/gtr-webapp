@@ -1,6 +1,8 @@
 export const myStore = {
     data: {
-        selectedEntity: null
+        selectedEntity: null,
+        annotations: [],
+        showAnnotations: true
     },
     selectEntity: function(entity){
         this.data.selectedEntity = entity

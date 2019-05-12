@@ -3,21 +3,30 @@
         <span class="chunk-container"
               :key="index"
               v-for="(chunk, index) in chunks">
-        <span class="chunk entity"
-              v-html="chunk.spot"
-              v-if="chunk.spot"
-              @click="myStore.selectEntity(chunk)">
 
-        </span>
-        <span class="chunk text"
-              v-html="chunk.text"
-              v-if="!chunk.abstract"></span>
+            <span class="chunk entity clickable"
+                  v-html="chunk.spot"
+                  v-if="chunk.spot && search.query.annotations"
+                  :class="{selected: search.selectedEntity && chunk.title===search.selectedEntity.title}"
+                  @click="search.setSelectedEntity(chunk.title)">
+            </span>
+
+            <span class="chunk entity hidden"
+                  v-html="chunk.spot"
+                  v-if="chunk.spot && !search.query.annotations">
+            </span>
+
+            <span class="chunk text"
+                  v-html="chunk.text"
+                  v-if="!chunk.abstract">
+            </span>
+
         </span>
     </span>
 </template>
 
 <script>
-    import {myStore} from "../myStore";
+    import {search} from "../search";
 
 
     function makeChunks(str, annotations) {
@@ -71,7 +80,7 @@
         props: ['content', 'annotations'],
         data: () => ({
             answer: 42,
-            myStore: myStore
+            search: search
         }),
         computed: {
             chunks() {
@@ -83,10 +92,18 @@
 
 <style scoped lang="scss">
     .entity {
-        background: rgba(255,127,102, .15);
-        cursor: pointer;
-        padding: 0 3px;
         white-space: nowrap;
-        border-radius: 3px;
+        &.clickable {
+            background: rgba(255, 127, 102, .15);
+            cursor: pointer;
+            padding: 0 3px;
+            border-radius: 3px;
+            &.selected {
+                background: rgba(255, 127, 102, 1);
+                color: #fff;
+            }
+        }
+
     }
+
 </style>

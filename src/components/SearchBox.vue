@@ -4,9 +4,9 @@
                     v-model="select"
                     :loading="loading"
                     :items="items"
-                    :search-input.sync="search"
+                    :search-input.sync="searchString"
                     @input="goSearch"
-                    @keypress.enter="goSearch(search)"
+                    @keypress.enter="goSearch(searchString)"
                     class="mx-3"
                     flat
                     hide-no-data
@@ -21,6 +21,7 @@
 
 <script>
     import axios from 'axios'
+    import {search} from '../search'
 
     export default {
         name: "SearchBox",
@@ -28,7 +29,7 @@
             select: "",
             loading: false,
             items: [],
-            search: ""
+            searchString: ""
         }),
         computed: {
             displayItems(){
@@ -49,7 +50,7 @@
                 else {
                     this.items = []
                 }
-                this.$emit('query', q)
+                search.setQ(q)
 
             },
             fetchSuggestions(v) {
@@ -64,7 +65,7 @@
             }
         },
         watch: {
-            search(val) {
+            searchString(val) {
                 val && val !== this.select && this.fetchSuggestions(val)
             }
         }
