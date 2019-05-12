@@ -20,7 +20,6 @@
 </template>
 
 <script>
-    import _ from 'lodash'
     import axios from 'axios'
 
     export default {
@@ -44,15 +43,14 @@
                 //     let myQ = (q || "").toLowerCase()
                 //     return suggestion.indexOf(myQ) > -1
                 // })
-                this.fetchSuggestions(q)
-                
+                if (q){
+                    this.fetchSuggestions(q)
+                }
+                else {
+                    this.items = []
+                }
+                this.$emit('query', q)
 
-                this.$router.push({
-                    name: "search",
-                    params: {
-                        q: _.snakeCase(q)
-                    }
-                })
             },
             fetchSuggestions(v) {
                 this.loading = true
@@ -63,10 +61,6 @@
                         this.items = resp.data.results.slice(0, 6)
                         this.loading = false
                     })
-
-
-
-
             }
         },
         watch: {

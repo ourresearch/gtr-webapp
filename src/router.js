@@ -29,7 +29,7 @@ export default new Router({
         },
 
         {
-            path: '/search/:q',
+            path: '/search',
             name: 'search',
             component: Serp,
             reloadOnSearch: false
