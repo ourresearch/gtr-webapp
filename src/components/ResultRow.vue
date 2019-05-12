@@ -21,15 +21,15 @@
                 </span>
                 <annotated-content
                         :content="result.title"
-                        :annotations="result.annotations.using_article_title">
+                        :annotations="result.title_annotations">
                 </annotated-content>
 
             </div>
 
             <annotated-content
-                    v-if="result.abstract_short"
-                    :content="result.abstract_short"
-                    :annotations="result.annotations.using_article_abstract_short"
+                    v-if="summary"
+                    :content="summary.text"
+                    :annotations="summary.annotations"
                     class="line short-abstract">
             </annotated-content>
 
@@ -74,6 +74,11 @@
                 })
                 return this.result.pub_types.find(x => {
                     return x.pub_type_gtr
+                })
+            },
+            summary(){
+                return this.result.abstract.find(x => {
+                    return x.summary
                 })
             }
 

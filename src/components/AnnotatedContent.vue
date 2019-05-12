@@ -5,7 +5,7 @@
               v-for="(chunk, index) in chunks">
         <span class="chunk entity"
               v-html="chunk.spot"
-              v-if="chunk.abstract"
+              v-if="chunk.spot"
               @click="myStore.selectEntity(chunk)">
 
         </span>
@@ -42,15 +42,7 @@
                 )
             }
 
-            // this entity
-            if (entity.confidence < 0.7) {
-                // if it's low-confidence, treat is as a text chunk
-                chunks.push(
-                    textChunk(entity.spot)
-                )
-            } else {
-                chunks.push(entity)
-            }
+            chunks.push(entity)
 
             // update the cursor
             cursorIndex = entity.end
