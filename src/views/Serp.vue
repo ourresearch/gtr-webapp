@@ -91,7 +91,13 @@
 
 
                 <div class="page-bottom" v-if="search.results.length">
-                    <div class="report">
+                    <div class="text-xs-center">
+                        <v-pagination
+                          v-model="search.query.page"
+                          :length="10"
+                        ></v-pagination>
+                      </div>
+                    <div class="report text-xs-center pt-2">
                         <a href="mailto:team@impactstory.org">Report inappropriate images</a>
                     </div>
                 </div>
