@@ -36,14 +36,15 @@
 
 
         <div class="main-col">
-            <v-container class="header">
+            <v-container class="serp-header">
                 <v-layout>
+                    <img src="../assets/logo.png" alt="">
                     <search-box></search-box>
                 </v-layout>
 
 
                 <v-layout class="pa-2" align-center>
-                    <v-flex shrink class="px-3">
+                    <v-flex shrink class="pr-3">
                         <v-switch
                                 shrink
                                 v-model="search.query.oa"
@@ -203,6 +204,13 @@
 
 <style scoped lang="scss">
     .root {
+        .serp-header {
+            img {
+                height: 50px;
+                margin-right: 20px;
+            }
+        }
+
         .annotray {
             background: #eee;
             position: fixed;
