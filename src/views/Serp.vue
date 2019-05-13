@@ -102,7 +102,7 @@
             <transition name="slide">
                 <article-zoom
                         id="article-zoom"
-                        :paper="zoomedResult"
+                        :result="zoomedResult"
                         @close="search.setZoom(null)"
                         v-if="zoomedResult"
                         :class="{open: !!zoomedResult}"

@@ -1,30 +1,29 @@
 <template>
-    <v-container class="article-zoom" v-if="paper">
+    <v-container class="article-zoom" v-if="result">
 
 
         <v-layout class="header">
             <v-flex>
                 <annotated-content
-                        :content="paper.title"
-                        :annotations="paper.annotations.using_article_title"
-                        class="line  display-1">
+                        :content="result.title"
+                        class="display-1"
+                        :annotations="result.title_annotations">
                 </annotated-content>
 
-                <div class="line source">
-                    <span class="date">{{ paper.year }}</span> in
-                    <span class="journal font-italic">{{ paper.journal_name }}</span>
+                <div class="line source py-1">
+                    <span class="date">{{ result.year }}</span> in
+                    <span class="journal font-italic">{{ result.journal_name }}</span>
                     by
                     <span class="authors">{{displayAuthors}}</span>
                 </div>
-                <div class="line topics" v-if="false" v-show="paper.picture_candidates.length">
-                    <div class="label">Topics:</div>
+                <div class="line topics pt-3"  v-show="result.topics.length">
                     <div class="items">
-                        <router-link class="topic"
-                                     :to="'/search/'+candidate.title.replace(' ', '_')"
-                                     v-for="(candidate, index) in paper.picture_candidates">
-                            {{candidate.title}}<span class="sep"
-                                                     v-if="index+1 < paper.picture_candidates.length">;</span>
-                        </router-link>
+                        <span class="topic"
+                              @click="searchTopic(topic)"
+                                     :to="'/search?q='+ topic.replace(' ', '_')"
+                                     v-for="(topic, index) in result.topics">
+                            {{topic}}
+                        </span>
 
                     </div>
                 </div>
@@ -42,90 +41,48 @@
 
         </v-layout>
 
+        <div class="abstract">
+            <div class="abstract-section pa-2" v-for="section in result.abstract">
+                <div class="font-weight-bold text-capitalize" v-html="section.heading"></div>
+                <annotated-content
+                        :content="section.text"
+                        :annotations="section.annotations"
+                        class="abstract">
+                </annotated-content>
 
-        <div class="header">
+            </div>
         </div>
 
-        <annotated-content
-                v-if="paper.abstract"
-                :content="paper.abstract"
-                :annotations="paper.annotations.using_article_abstract"
-                class="abstract">
-        </annotated-content>
+        <div class="actions pt-2">
+            <v-btn class="primary"
+                   :href="result.oa_url"
+                   v-show="result.oa_url">
+                full article
+                <i class="fas fa-external-link-alt pl-2"></i>
+            </v-btn>
 
-        <div class="actions">
-            <v-btn class="md-raised"
-                   :href="paper.oa_url"
-                   v-show="paper.oa_url">
-                full article (open access)
-                <i class="fas fa-external-link-alt"></i>
+            <v-btn depressed
+                   :href="result.doi_url"
+                   v-show="!result.oa_url">
+                full article (paywalled)
+                <i class="fas fa-external-link-alt pl-2"></i>
             </v-btn>
 
         </div>
 
 
-<!--        <div class="extra" v-if="false" v-show="paper.picture_candidates.length || paper.displayAuthors.length">-->
-<!--            <div class="line authors" v-show="paper.displayAuthors.length">-->
-<!--                <div class="label">-->
-<!--                    Authors:-->
-<!--                </div>-->
-<!--                <div class="items">-->
-<!--                    {{paper.displayAuthors}}-->
-<!--                </div>-->
-<!--            </div>-->
-<!--            <div class="line topics" v-if="paper.picture_candidates.length">-->
-<!--                <div class="label">Topics:</div>-->
-<!--                <div class="items">-->
-<!--                    <router-link class="topic"-->
-<!--                                 :to="'/search/'+candidate.title.replace(' ', '_')"-->
-<!--                                 v-for="(candidate, index) in paper.picture_candidates">-->
-<!--                        {{candidate.title}}<span class="sep"-->
-<!--                                                 v-if="index+1 < paper.picture_candidates.length">;</span>-->
-<!--                    </router-link>-->
-
-<!--                </div>-->
-<!--            </div>-->
-
-<!--            <div class="line fulltext">-->
-<!--                <div class="label">Full text:</div>-->
-<!--                <div class="items">-->
-<!--                        <span class="available" v-show="paper.oa_url">-->
-<!--                            Available for free <a :href="paper.oa_url">here</a>-->
-<!--                        </span>-->
-<!--                    <span class="available" v-show="!paper.oa_url">-->
-<!--                            Paywalled on the publisher site <a :href="paper.doi_url">here</a>-->
-<!--                        </span>-->
-<!--                </div>-->
-<!--            </div>-->
-
-<!--            <div class="line article-type" v-if="paper.pubType && paper.pubType.pub_type_gtr">-->
-<!--                <div class="label">Type:</div>-->
-<!--                <div class="items">-->
-<!--                    <em>{{paper.pubType.pub_type_gtr}}: </em>-->
-<!--                    <span class="explanation">-->
-<!--                            {{ pubTypeExplanation(paper.pubType.pub_type_gtr) }}-->
-<!--                        </span>-->
-<!--                </div>-->
-
-
-<!--            </div>-->
-
-<!--        </div>-->
-
-<!--        <div class="news" v-show="paper.news_articles.length">-->
-<!--            <h2>News coverage</h2>-->
-<!--            <div class="news-article" v-for="newsArticle in paper.news_articles">-->
-<!--                    <span class="date">-->
-<!--                        {{ newsArticle.occurred_at | moment("MMM YYYY")}}-->
-<!--                    </span>-->
-<!--                <a :href="newsArticle.news_url">-->
-<!--                    {{newsArticle.news_title}}-->
-<!--                    <i class="fas fa-external-link-alt"></i>-->
-<!--                </a>-->
-<!--            </div>-->
-<!--        </div>-->
-
-
+        <div class="news-articles" v-show="result.news_articles.length">
+            <h2 class="headline">News coverage</h2>
+            <div class="news-article py-2" v-for="newsArticle in result.news_articles">
+                    <span class="date">
+                        {{ newsArticle.occurred_at | moment("MMM YYYY")}}:
+                    </span>
+                <a :href="newsArticle.news_url">
+                    {{newsArticle.news_title}}
+                    <i class="fas fa-external-link-alt"></i>
+                </a>
+            </div>
+        </div>
     </v-container>
 
 
@@ -134,11 +91,12 @@
 <script>
     import _ from 'lodash'
     import AnnotatedContent from "../components/AnnotatedContent";
+    import {search} from "../search";
 
 
     export default {
         name: "ArticleZoom",
-        props: ["paper"],
+        props: ["result"],
         components: {
             AnnotatedContent
         },
@@ -148,19 +106,23 @@
         computed: {
             displayAuthors(){
 
-
                 let ret
-                let numAuths = this.paper.author_lastnames.length
+                let numAuths = this.result.author_lastnames.length
                 if (numAuths > 5) {
                     let numHidden = numAuths - 5
-                    ret = this.paper.author_lastnames.slice(0, 5).join(", ") + `, and ${numHidden} others`
+                    ret = this.result.author_lastnames.slice(0, 5).join(", ") + `, and ${numHidden} others`
                 } else {
-                    this.paper.displayAuthors = this.paper.author_lastnames.join(", ")
+                    ret = this.result.author_lastnames.join(", ")
                 }
                 return ret
             }
         },
-        methods: {},
+        methods: {
+            searchTopic(topic){
+                console.log("search topic", topic)
+                search.setQ(_.snakeCase(topic))
+            }
+        },
         watch: {}
     }
 </script>
@@ -179,12 +141,24 @@
 
 
         }
+        span.topic {
+            border: 1px solid;
+            margin-right: 5px;
+            margin-top: 5px;
+            border-radius: 20px;
+            text-decoration: none;
+            padding: 3px 10px;
+            white-space: nowrap;
+            display:inline-block;
+            cursor: pointer;
+            color: #555;
+        }
 
         .abstract {
-            line-height: 1.6;
+            line-height: 1.5;
             margin-top: 10px;
             padding-top: 20px;
-            font-size: 20px;
+            font-size: 18px;
         }
 
 

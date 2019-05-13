@@ -64,16 +64,20 @@ export const search = {
             }
         })
 
-        // this.query.annotations = false
 
-        console.log("query.anno", this.query.annotations)
     },
 
     setQ(q){
         this.query.q = _.snakeCase(q.toLowerCase())
+
+        // doing a new search should clear entity and zoom
+        this.setZoom()
+        this.setSelectedEntity()
     },
 
     setZoom(doi){
+        console.log("setting zoom", doi)
+        this.setSelectedEntity()
         this.query.zoom = doi
     },
 
