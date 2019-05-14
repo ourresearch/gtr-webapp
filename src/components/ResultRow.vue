@@ -44,7 +44,7 @@
 
 
             <div class="actions line">
-                <v-btn small flat @click="$emit('selected')">Learn more</v-btn>
+                <v-btn color="secondary" small depressed @click="$emit('selected')">Learn more</v-btn>
             </div>
 
 

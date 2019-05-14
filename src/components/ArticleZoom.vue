@@ -12,7 +12,7 @@
 
                 <div class="line source py-1">
                     <span class="date">{{ result.year }}</span> in
-                    <span class="journal font-italic">{{ result.journal_name }}</span>
+                    <span v-html="result.journal_name" class="journal font-italic"></span>
                     by
                     <span class="authors">{{displayAuthors}}</span>
                 </div>
