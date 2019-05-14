@@ -15,7 +15,7 @@
                     {{pubType.pub_type_gtr}}
                 </span>
             </div>
-            <div class="line  article-title pb-2">
+            <div class="line  article-title">
                 <span class="is-oa" v-if="result.oa_url">
                     <i class="fas fa-unlock"></i>
                 </span>
@@ -26,6 +26,14 @@
 
             </div>
 
+
+
+            <div class="line source pb-2">
+                <span class="date">{{ result.year }}</span>
+
+                <span v-html="result.journal_name" class="journal"></span>
+            </div>
+
             <annotated-content
                     v-if="summary"
                     :content="summary.text"
@@ -34,17 +42,8 @@
             </annotated-content>
 
 
-
-
-            <div class="line source">
-                <span class="date">{{ result.year }}</span>
-
-                <span v-html="result.journal_name" class="journal"></span>
-            </div>
-
-
             <div class="actions line">
-                <v-btn color="secondary" small depressed @click="$emit('selected')">Learn more</v-btn>
+                <v-btn class="learn-more" small dark depressed @click="$emit('selected')">Learn more</v-btn>
             </div>
 
 
@@ -147,6 +146,14 @@ div.row {
                 vertical-align: 2px;
                 margin-right: 5px;
             }
+        }
+
+        .v-btn.learn-more {
+            font-size: 10px;
+            height: auto;
+            padding: 4px 0 3px;
+            margin: 5px 0 0;
+            background: #999;
         }
 
 
