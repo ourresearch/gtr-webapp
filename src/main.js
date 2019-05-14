@@ -24,9 +24,9 @@ import 'vuetify/dist/vuetify.min.css'
 
 Vue.use(Vuetify, {
   theme: {
-    primary: '#FF8064',
+    accent: '#FF8064',
     secondary: '#343434',
-    accent: '#8c9eff'
+    primary: '#8c9eff'
   }
 })
 Vue.use(VueScrollTo)
