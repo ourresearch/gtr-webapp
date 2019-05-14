@@ -7,6 +7,7 @@ export const search = {
     results: [],
     entities: [],
     selectedEntity: null,
+    selectedEntityId: null,
     totalResultsCount: 0,
 
     query: {
@@ -83,12 +84,18 @@ export const search = {
     },
 
     setSelectedEntity(id){
-        if (this.entities[id]){
-            this.selectedEntity = this.entities[id]
+        this.selectedEntityId = id
+        console.log("setting entity id", id)
+    },
+    getSelectedEntity(){
+        console.log("this.entities.length", this.entities.length)
+        console.log("this.results.length", this.results.length)
+
+        if (!this.entities || !this.selectedEntityId){
+            console.log("can't get a selected entity")
+            return null
         }
-        else {
-            this.selectedEntity = null
-        }
+        return this.entities[this.selectedEntityId]
     },
 
     getQueryForUrl(){

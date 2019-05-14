@@ -1,14 +1,13 @@
 <template>
     <v-autocomplete
             v-model="select"
-            :loading="loading"
             :items="items"
             :search-input.sync="searchString"
             @input="goSearch"
             @keypress.enter="goSearch(searchString)"
             class="mx-3"
             hide-no-data
-            hide-details
+            hide-detailsf
             solo
     ></v-autocomplete>
 

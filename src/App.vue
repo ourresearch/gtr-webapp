@@ -70,6 +70,9 @@
       overflow: hidden !important;
     }
   }
+  .theme--light.application {
+    background: #fff;
+  }
 
 
 </style>

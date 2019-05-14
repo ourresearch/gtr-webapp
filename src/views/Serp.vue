@@ -2,10 +2,10 @@
     <v-flex class="root">
 
 
-        <div class="annotray pa-4 anno-tray">
+        <div class="annotray anno-tray" :class="{full:selectedEntity}">
 
-            <div class="anno-empty" v-if="!search.selectedEntity && search.query.annotations">
-                <div class="content">
+            <div class="anno-empty" v-if="!selectedEntity && search.query.annotations">
+                <div class="content" v-if="false">
                     <div class="image">
                         <i class="far fa-hand-point-left"></i>
                     </div>
@@ -15,20 +15,24 @@
                 </div>
             </div>
 
-            <div class="anno-full" v-if="search.selectedEntity && search.query.annotations">
-                <div class="header headline">
-                            <span class="term">
-                                {{search.selectedEntity.title}}
-                            </span>
-                    <span class="close" @click="search.setSelectedEntity()">&times;</span>
+            <div class="anno-full" v-if="selectedEntity && search.query.annotations">
+                <v-layout class="header headline px-4 pt-3 font-weight-bold">
+                    <v-flex class="term">
+                        {{selectedEntity.title}}
+                    </v-flex>
+                    <v-spacer></v-spacer>
+                    <v-flex shrink>
+                        <span class="close" @click="search.setSelectedEntity()">&times;</span>
+
+                    </v-flex>
+                </v-layout>
+                <div class="body pa-4">
+                    <span class="definition" v-html="selectedEntity.abstract"></span>
+                    <img :src="selectedEntity.image_url" alt=""
+                         v-if="selectedEntity.image_url">
                 </div>
-                <div class="body">
-                    <span class="definition" v-html="search.selectedEntity.abstract"></span>
-                    <img :src="search.selectedEntity.image_url" alt=""
-                         v-if="search.selectedEntity.image_url">
-                </div>
-                <div class="footer" v-show="search.selectedEntity.uri">
-                    via <a :href="search.selectedEntity.uri">Wikipedia</a>
+                <div class="footer px-4" v-show="selectedEntity.uri">
+                    via <a :href="selectedEntity.uri">Wikipedia</a>
                 </div>
 
             </div>
@@ -37,7 +41,7 @@
 
         <div class="main-col">
             <v-container grid class="serp-header pa-0">
-                <v-layout class="pt-3 pl-2">
+                <v-layout class="pt-4 pl-4 pr-4">
                     <v-flex shrink>
                         <router-link to="/">
                             <img src="../assets/logo.png" alt="">
@@ -47,9 +51,11 @@
                         <v-layout>
                             <search-box></search-box>
                         </v-layout>
-                        <v-layout class="px-2" align-center>
+                        <v-layout class="px-2 controls" align-center>
                             <v-flex shrink class="pr-3 pl-2">
                                 <v-switch
+                                        color="primary"
+                                        class="pa-0 ma-0"
                                         shrink
                                         v-model="search.query.oa"
                                         label="Open Access only"
@@ -58,6 +64,8 @@
                             </v-flex>
 
                             <v-switch
+                                    color="primary"
+                                    class="pa-0 ma-0"
                                     v-model="search.query.annotations"
                                     label="Highlight terms"
                             ></v-switch>
@@ -65,7 +73,7 @@
 
                             <v-dialog v-model="dialogs.subscribe.show" persistent max-width="600px">
                                 <template v-slot:activator="{ on }">
-                                    <v-btn small color="primary" dark v-on="on">
+                                    <v-btn small color="primary subscribe" dark v-on="on">
                                         <i class="far fa-envelope mr-1"></i>
                                         Subscribe to feed
                                     </v-btn>
@@ -97,13 +105,9 @@
                     </v-flex>
 
 
-
-
-
                 </v-layout>
 
 
-                <v-divider color="black"></v-divider>
             </v-container>
 
             <!--            <v-container>-->
@@ -201,7 +205,6 @@
             rowWidth: null,
             currentPage: 0,
             error: null,
-            selectedEntity: null,
             search: search,
             dialogs: {
                 subscribe: {
@@ -236,9 +239,11 @@
                     return r.doi === search.query.zoom
                 })
             },
-            numResultsPages(){
-                console.log("search.results.length", search.results.length)
+            numResultsPages() {
                 return Math.ceil(search.totalResultsCount / 10)
+            },
+            selectedEntity() {
+                return search.getSelectedEntity()
             }
         },
         methods: {
@@ -297,27 +302,50 @@
                 height: 50px;
                 margin-right: 20px;
             }
+            .controls {
+                margin-top: -10px;
+                .subscribe {
+                    margin-top: -20px;
+                }
+
+            }
         }
 
         .annotray {
-            background: #eee;
             position: fixed;
             top: 0;
             bottom: 0;
             right: 0;
             width: 25%;
             overflow: scroll;
+            /*border-left: 3px solid rgba(255, 127, 102, 1);*/
 
+            background: #555;
+            color: #fff;
+            font-size: 15px;
+
+            &.full {
+                /*background: rgba(255, 127, 102, .1);*/
+            }
             img {
                 width: 100%;
             }
+
 
             .header.headline {
                 background: #8c9eff;
                 background: rgba(255, 127, 102, 1);
                 color: #fff;
+
+
+                color: rgba(255, 127, 102, 1);
+                color: #fff;
+                background: transparent;
+
                 padding: 5px;
-                border-radius: 3px;
+                .close {
+                    cursor: pointer;
+                }
             }
         }
 
