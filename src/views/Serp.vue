@@ -2,7 +2,7 @@
     <v-flex class="root">
 
 
-        <div class="annotray anno-tray" :class="{full:selectedEntity}">
+        <div class="annotray anno-tray" :class="{full:selectedEntity, 'annotations-active': search.query.annotations}">
 
             <div class="anno-empty" v-if="!selectedEntity && search.query.annotations">
                 <div class="content" v-if="false">
@@ -16,7 +16,7 @@
             </div>
 
             <div class="anno-full" v-if="selectedEntity && search.query.annotations">
-                <v-layout class="header headline px-4 font-weight-bold" >
+                <v-layout class="header headline pl-5 pr-4 font-weight-bold" >
                     <v-flex class="term">
                         {{selectedEntity.title}}
                     </v-flex>
@@ -26,12 +26,13 @@
 
                     </v-flex>
                 </v-layout>
-                <div class="body px-4 py-3">
+                <div class="body pl-5 pr-5 py-3">
                     <span class="definition" v-html="selectedEntity.abstract"></span>
                     <img :src="selectedEntity.image_url" alt=""
+                         class="pt-3"
                          v-if="selectedEntity.image_url">
                 </div>
-                <div class="footer px-4" v-show="selectedEntity.uri">
+                <div class="footer px-5" v-show="selectedEntity.uri">
                     via <a :href="selectedEntity.uri">Wikipedia</a>
                 </div>
 
@@ -39,7 +40,7 @@
         </div>
 
 
-        <div class="main-col">
+        <div class="main-col" :class="{'annotations-active': search.query.annotations}">
             <v-container grid class="serp-header pa-0">
                 <v-layout class="pt-5 pl-5 pr-5">
                     <v-flex xs3 class="text-xs-center">
@@ -318,6 +319,11 @@
             bottom: 0;
             right: 0;
             width: 30%;
+            &.annotations-active {
+                display: block;
+            }
+            display: none;
+
             overflow: scroll;
             font-size: 15px;
             /*border-left: 3px solid rgba(255, 127, 102, 1);*/
@@ -362,7 +368,7 @@
             }
         }
 
-        .main-col {
+        .main-col.annotations-active {
             width: 70%;
         }
     }
