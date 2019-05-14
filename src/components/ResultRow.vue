@@ -2,7 +2,7 @@
     <div class="row">
         <div class="image">
             <div class="img-wrapper">
-                <img :src="result.image.url" alt="">
+                <img :src="result.image.image_url" alt="">
             </div>
             <div class="label">
                 {{result.image.title}}
@@ -34,10 +34,12 @@
             </annotated-content>
 
 
+
+
             <div class="line source">
                 <span class="date">{{ result.year }}</span>
 
-                <span class="journal">{{ result.journal_name }}</span>
+                <span v-html="result.journal_name" class="journal"></span>
             </div>
 
 

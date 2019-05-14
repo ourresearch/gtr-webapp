@@ -138,8 +138,6 @@
             font-size: 40px;
             color: #333;
             cursor: pointer;
-
-
         }
         span.topic {
             border: 1px solid;
@@ -156,8 +154,7 @@
 
         .abstract {
             line-height: 1.5;
-            margin-top: 10px;
-            padding-top: 20px;
+            margin-top: 20px;
             font-size: 18px;
         }
 
