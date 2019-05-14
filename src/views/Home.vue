@@ -13,7 +13,7 @@
             <search-box @submit="goSearch"></search-box>
         </div>
         <div class="try">
-            Try "Lorem," "Ipsum," or "Dolor et"
+            Try: "vaccines and autism," "How safe is bicycling," or "chocolate"
         </div>
 
 
