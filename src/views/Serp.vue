@@ -16,7 +16,7 @@
             </div>
 
             <div class="anno-full" v-if="selectedEntity && search.query.annotations">
-                <v-layout class="header headline px-4 pt-3 font-weight-bold">
+                <v-layout class="header headline px-4 font-weight-bold" >
                     <v-flex class="term">
                         {{selectedEntity.title}}
                     </v-flex>
@@ -26,7 +26,7 @@
 
                     </v-flex>
                 </v-layout>
-                <div class="body pa-4">
+                <div class="body px-4 py-3">
                     <span class="definition" v-html="selectedEntity.abstract"></span>
                     <img :src="selectedEntity.image_url" alt=""
                          v-if="selectedEntity.image_url">
@@ -41,8 +41,8 @@
 
         <div class="main-col">
             <v-container grid class="serp-header pa-0">
-                <v-layout class="pt-4 pl-4 pr-4">
-                    <v-flex shrink>
+                <v-layout class="pt-5 pl-5 pr-5">
+                    <v-flex xs3 class="text-xs-center">
                         <router-link to="/">
                             <img src="../assets/logo.png" alt="">
                         </router-link>
@@ -51,11 +51,11 @@
                         <v-layout>
                             <search-box></search-box>
                         </v-layout>
-                        <v-layout class="px-2 controls" align-center>
+                        <v-layout class="px-2 controls" align-top>
                             <v-flex shrink class="pr-3 pl-2">
                                 <v-switch
                                         color="primary"
-                                        class="pa-0 ma-0"
+                                        class="pa-0 ma-2"
                                         shrink
                                         v-model="search.query.oa"
                                         label="Open Access only"
@@ -65,7 +65,7 @@
 
                             <v-switch
                                     color="primary"
-                                    class="pa-0 ma-0"
+                                    class="pa-0 ma-2"
                                     v-model="search.query.annotations"
                                     label="Highlight terms"
                             ></v-switch>
@@ -73,7 +73,7 @@
 
                             <v-dialog v-model="dialogs.subscribe.show" persistent max-width="600px">
                                 <template v-slot:activator="{ on }">
-                                    <v-btn small color="primary subscribe" dark v-on="on">
+                                    <v-btn flat small color="primary subscribe" dark v-on="on">
                                         <i class="far fa-envelope mr-1"></i>
                                         Subscribe to feed
                                     </v-btn>
@@ -299,13 +299,14 @@
     .root {
         .serp-header {
             img {
-                height: 50px;
+                height: 60px;
                 margin-right: 20px;
+                margin-top: -5px;
             }
             .controls {
                 margin-top: -10px;
-                .subscribe {
-                    margin-top: -20px;
+                .v-btn.subscribe {
+                    margin-top: -30px;
                 }
 
             }
@@ -316,16 +317,24 @@
             top: 0;
             bottom: 0;
             right: 0;
-            width: 25%;
+            width: 30%;
             overflow: scroll;
+            font-size: 15px;
             /*border-left: 3px solid rgba(255, 127, 102, 1);*/
 
             background: #555;
             color: #fff;
-            font-size: 15px;
+
+
+            background: #fff;
+            color: #333;
+
+
+
 
             &.full {
                 /*background: rgba(255, 127, 102, .1);*/
+                border-left: 1px solid #ddd;
             }
             img {
                 width: 100%;
@@ -336,10 +345,12 @@
                 background: #8c9eff;
                 background: rgba(255, 127, 102, 1);
                 color: #fff;
+                margin-top:50px;
 
 
                 color: rgba(255, 127, 102, 1);
                 color: #fff;
+                color: #333;
                 background: transparent;
 
                 padding: 5px;
@@ -347,15 +358,16 @@
                     cursor: pointer;
                 }
             }
+            .body {
+            }
         }
 
         .main-col {
-            width: 75%;
+            width: 70%;
         }
     }
 
     div.results-list {
-        max-width: 1140px;
         padding: 0;
         margin: 10px 0 0;
         margin: 10px 10px 100px;

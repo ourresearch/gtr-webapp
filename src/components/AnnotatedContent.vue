@@ -7,7 +7,7 @@
             <span class="chunk entity clickable"
                   v-html="chunk.spot"
                   v-if="chunk.spot && search.query.annotations"
-                  :class="{selected: search.selectedEntity && chunk.title===search.selectedEntity.title}"
+                  :class="{selected: search.selectedEntityId && chunk.title===search.selectedEntityId}"
                   @click="search.setSelectedEntity(chunk.title)">
             </span>
 

@@ -1,15 +1,15 @@
 <template>
-    <div class="row">
-        <div class="image">
+    <v-layout class="row">
+        <v-flex xs3 class="image">
             <div class="img-wrapper">
                 <img :src="result.image.image_url" alt="">
             </div>
             <div class="label">
                 {{result.image.title}}
             </div>
-        </div>
+        </v-flex>
 
-        <div class="content">
+        <v-flex xs9 class="content pr-5">
             <div class="line evidence">
                 <span class="val" v-if="pubType">
                     <annotated-content
@@ -55,7 +55,7 @@
 
 
             <div class="actions line">
-                <v-btn class="learn-more" small dark depressed @click="$emit('selected')">Learn more</v-btn>
+                <a class="learn-more" href="" @click.prevent="$emit('selected')">Learn more</a>
                 <v-btn small depressed v-if="false && result.oa_url" class="learn-more full-article mx-2">
                     <span>
                         <i class="fas fa-lock-open"></i>
@@ -68,10 +68,10 @@
             </div>
 
 
-        </div>
+        </v-flex>
 
 
-    </div>
+    </v-layout>
 
 
 </template>
@@ -128,12 +128,11 @@
 <style scoped lang="scss">
 div.row {
     display: flex;
-    padding: 20px 30px;
-    margin: 20px 30px;
+    padding: 20px 0;
+    margin: 20px 0;
 
 
     .image {
-        flex: 0 0 200px;
         margin-right: 25px;
 
         .img-wrapper {
@@ -144,7 +143,7 @@ div.row {
             img {
                 border-radius: 5px;
                 /*border: 1px solid #333;*/
-                width: 250px;
+                max-width: 100%;
 
             }
 
@@ -180,15 +179,10 @@ div.row {
             margin-right: 2px;
         }
 
-        .v-btn.learn-more {
-            font-size: 10px;
+        a.learn-more {
             height: auto;
             padding: 4px 0 3px;
-            margin: 5px 0 0;
-            background: #999;
-            &.full-article {
-                background: transparent;
-            }
+            color: #333;
         }
 
 

@@ -71,7 +71,7 @@
     }
   }
   .theme--light.application {
-    background: #fff;
+    background: #fff !important;
   }
 
 
