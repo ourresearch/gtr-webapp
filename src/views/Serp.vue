@@ -36,61 +36,73 @@
 
 
         <div class="main-col">
-            <v-container class="serp-header">
-                <v-layout>
-                    <router-link to="/">
-                        <img src="../assets/logo.png" alt="">
-                    </router-link>
-                    <search-box></search-box>
-                </v-layout>
+            <v-container grid class="serp-header pa-0">
+                <v-layout class="pt-3 pl-2">
+                    <v-flex shrink>
+                        <router-link to="/">
+                            <img src="../assets/logo.png" alt="">
+                        </router-link>
+                    </v-flex>
+                    <v-flex>
+                        <v-layout>
+                            <search-box></search-box>
+                        </v-layout>
+                        <v-layout class="px-2" align-center>
+                            <v-flex shrink class="pr-3 pl-2">
+                                <v-switch
+                                        shrink
+                                        v-model="search.query.oa"
+                                        label="Open Access only"
+                                ></v-switch>
+
+                            </v-flex>
+
+                            <v-switch
+                                    v-model="search.query.annotations"
+                                    label="Highlight terms"
+                            ></v-switch>
+                            <v-spacer></v-spacer>
+
+                            <v-dialog v-model="dialogs.subscribe.show" persistent max-width="600px">
+                                <template v-slot:activator="{ on }">
+                                    <v-btn small color="primary" dark v-on="on">
+                                        <i class="far fa-envelope mr-1"></i>
+                                        Subscribe to feed
+                                    </v-btn>
+                                </template>
+                                <v-card>
+                                    <v-card-title>
+                                        <span class="headline">Subscribe to feed</span>
+                                    </v-card-title>
+                                    <v-card-text>
+                                        <p>
+                                            Get email alerts when new articles are published related to this search.
+                                        </p>
+                                        <div>
+                                            <v-text-field v-model="dialogs.subscribe.email" label="Email"
+                                                          required></v-text-field>
+                                        </div>
+                                    </v-card-text>
+                                    <v-card-actions>
+                                        <v-spacer></v-spacer>
+                                        <v-btn flat @click="dialogs.subscribe.show = false">Cancel</v-btn>
+                                        <v-btn color="primary" @click="subscribe">Subscribe</v-btn>
+                                    </v-card-actions>
+                                </v-card>
+                            </v-dialog>
 
 
-                <v-layout class="pa-2" align-center>
-                    <v-flex shrink class="pr-3">
-                        <v-switch
-                                shrink
-                                v-model="search.query.oa"
-                                label="Show only free-to-read papers"
-                        ></v-switch>
+                        </v-layout>
 
                     </v-flex>
 
-                    <v-switch
-                            v-model="search.query.annotations"
-                            label="Show annotations"
-                    ></v-switch>
-                    <v-spacer></v-spacer>
 
-                    <v-dialog v-model="dialogs.subscribe.show" persistent max-width="600px">
-                        <template v-slot:activator="{ on }">
-                            <v-btn small color="primary" dark v-on="on">
-                                <i class="far fa-envelope mr-1"></i>
-                                Subscribe to feed
-                            </v-btn>
-                        </template>
-                        <v-card>
-                            <v-card-title>
-                                <span class="headline">Subscribe to feed</span>
-                            </v-card-title>
-                            <v-card-text>
-                                <p>
-                                    Get email alerts when new articles are published related to this search.
-                                </p>
-                                <div>
-                                    <v-text-field v-model="dialogs.subscribe.email" label="Email"
-                                                  required></v-text-field>
-                                </div>
-                            </v-card-text>
-                            <v-card-actions>
-                                <v-spacer></v-spacer>
-                                <v-btn flat @click="dialogs.subscribe.show = false">Cancel</v-btn>
-                                <v-btn color="primary" @click="subscribe">Subscribe</v-btn>
-                            </v-card-actions>
-                        </v-card>
-                    </v-dialog>
+
 
 
                 </v-layout>
+
+
                 <v-divider color="black"></v-divider>
             </v-container>
 
