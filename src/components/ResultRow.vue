@@ -22,9 +22,7 @@
                 </span>
             </div>
             <div class="line  article-title">
-                <span class="is-oa" v-if="result.oa_url">
-                    <i class="fas fa-unlock"></i>
-                </span>
+
                 <annotated-content
                         :content="result.title"
                         :annotations="result.title_annotations">
@@ -34,11 +32,19 @@
 
 
 
-            <div class="line source pb-2">
+            <div class="line source">
                 <span class="date">{{ result.year }}</span>
 
                 <span v-html="result.journal_name" class="journal"></span>
             </div>
+            <div class="line access-status body-1" v-if="false">
+                <span class="is-oa" v-if="result.oa_url">
+                    <i class="fas fa-lock-open oa-icon"></i>
+                    Free to read
+                </span>
+            </div>
+            <div class="space pt-2"></div>
+
 
             <annotated-content
                     v-if="summary"
@@ -50,6 +56,15 @@
 
             <div class="actions line">
                 <v-btn class="learn-more" small dark depressed @click="$emit('selected')">Learn more</v-btn>
+                <v-btn small depressed v-if="false && result.oa_url" class="learn-more full-article mx-2">
+                    <span>
+                        <i class="fas fa-lock-open"></i>
+                        full article
+
+                    </span>
+                </v-btn>
+
+
             </div>
 
 
@@ -156,11 +171,13 @@ div.row {
         .article-title {
             line-height: 1.4;
             font-size: 20px;
-            .is-oa {
-                font-size: 70%;
-                vertical-align: 2px;
-                margin-right: 5px;
-            }
+            font-weight: 500;
+
+        }
+        .oa-icon {
+            font-size: 70%;
+            vertical-align: 1px;
+            margin-right: 2px;
         }
 
         .v-btn.learn-more {
@@ -169,6 +186,9 @@ div.row {
             padding: 4px 0 3px;
             margin: 5px 0 0;
             background: #999;
+            &.full-article {
+                background: transparent;
+            }
         }
 
 

@@ -54,23 +54,6 @@
 
 <style scoped lang="scss">
 
-    @import "~vue-material/dist/theme/engine";
-
-    @include md-register-theme("default", (
-            primary: md-get-palette-color(deeporange, A400),
-            accent: md-get-palette-color(blue, A400)
-    ));
-    @import "~vue-material/dist/theme/all";
-    $primary-color: #FF3D00;
-
-    .page {
-        padding: 50px 10px;
-        font-size: 22px;
-        .content {
-            max-width: 600px;
-            margin: 0 auto;
-        }
-    }
 
 
 </style>

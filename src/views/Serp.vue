@@ -27,7 +27,7 @@
                     <img :src="search.selectedEntity.image_url" alt=""
                          v-if="search.selectedEntity.image_url">
                 </div>
-                <div class="footer">
+                <div class="footer" v-show="search.selectedEntity.uri">
                     via <a :href="search.selectedEntity.uri">Wikipedia</a>
                 </div>
 
@@ -38,7 +38,9 @@
         <div class="main-col">
             <v-container class="serp-header">
                 <v-layout>
-                    <img src="../assets/logo.png" alt="">
+                    <router-link to="/">
+                        <img src="../assets/logo.png" alt="">
+                    </router-link>
                     <search-box></search-box>
                 </v-layout>
 
@@ -58,18 +60,49 @@
                             label="Show annotations"
                     ></v-switch>
                     <v-spacer></v-spacer>
-                    <v-btn small flat>
-                        Create alert
-                    </v-btn>
+
+                    <v-dialog v-model="dialog" persistent max-width="600px">
+                        foobar
+                        <template v-slot:activator="{ on }">
+                            <v-btn color="primary" dark v-on="on">Open Dialog</v-btn>
+                        </template>
+                        <v-card>
+                            <v-card-title>
+                                <span class="headline">User Profile</span>
+                            </v-card-title>
+                            <v-card-text>
+                                <v-container grid-list-md>
+                                    <v-layout>
+                                        this is the workds
+                                    </v-layout>
+                                    <v-layout wrap>
+
+                                        <v-flex xs12>
+                                            <v-text-field label="Email" required></v-text-field>
+                                        </v-flex>
+
+
+                                    </v-layout>
+                                </v-container>
+                            </v-card-text>
+                            <v-card-actions>
+                                <v-spacer></v-spacer>
+                                <v-btn flat @click="dialog = false">Cancel</v-btn>
+                                <v-btn flat @click="foo">Subscribe</v-btn>
+                            </v-card-actions>
+                        </v-card>
+                    </v-dialog>
+
+
                 </v-layout>
                 <v-divider color="black"></v-divider>
             </v-container>
 
-<!--            <v-container>-->
-<!--                <pre>-->
-<!--                {{search.query}}-->
-<!--                </pre>-->
-<!--            </v-container>-->
+            <!--            <v-container>-->
+            <!--                <pre>-->
+            <!--                {{search.query}}-->
+            <!--                </pre>-->
+            <!--            </v-container>-->
 
             <v-container>
 
@@ -90,10 +123,10 @@
                 <div class="page-bottom" v-if="search.results.length">
                     <div class="text-xs-center">
                         <v-pagination
-                          v-model="search.query.page"
-                          :length="10"
+                                v-model="search.query.page"
+                                :length="10"
                         ></v-pagination>
-                      </div>
+                    </div>
                     <div class="report text-xs-center pt-2">
                         <a href="mailto:team@impactstory.org">Report inappropriate images</a>
                     </div>
@@ -156,6 +189,7 @@
             error: null,
             selectedEntity: null,
             search: search,
+            dialog: false,
             query: {
                 q: "",
                 oa: false,
@@ -174,14 +208,16 @@
             apiUrl() {
                 return search.apiQueryUrl()
             },
-            zoomedResult(){
+            zoomedResult() {
                 return search.results.find(r => {
                     return r.doi === search.query.zoom
                 })
             }
         },
         methods: {
-
+            foo(){
+                console.log("foo called")
+            }
         },
         mounted() {
             search.setQuery(this.$route.query)
@@ -198,9 +234,15 @@
             },
 
             // changes that require a server refresh
-            "search.query.q": function(){search.fetchResults()},
-            "search.query.oa": function(){search.fetchResults()},
-            "search.query.page": function(){search.fetchResults()}
+            "search.query.q": function () {
+                search.fetchResults()
+            },
+            "search.query.oa": function () {
+                search.fetchResults()
+            },
+            "search.query.page": function () {
+                search.fetchResults()
+            }
         }
 
     }
