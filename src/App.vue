@@ -58,7 +58,7 @@
 
   html {
     &.noscroll {
-      overflow: hidden
+      overflow: hidden !important;
     }
   }
 
@@ -67,7 +67,7 @@
     font-size: 16px;
     font-family: Lato, sans-serif;
     &.noscroll {
-      overflow: hidden;
+      overflow: hidden !important;
     }
   }
 

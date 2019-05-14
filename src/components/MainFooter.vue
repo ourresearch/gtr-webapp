@@ -39,6 +39,9 @@
 </script>
 
 <style scoped lang="scss">
+    .v-footer {
+        font-size: 14px;
+    }
     a {
         color: #fff;
         &.faq {
