@@ -6,6 +6,7 @@ export const search = {
     loading: false,
     results: [],
     entities: [],
+    queryEntities: [],
     selectedEntity: null,
     selectedEntityId: null,
     totalResultsCount: 0,
@@ -38,12 +39,18 @@ export const search = {
     fetchResults: function(){
         this.loading = true
         this.results = []
+        this.queryEntities = []
+        this.totalResultsCount = 0
         let request = axios.get(this.apiQueryUrl())
             .then(resp => {
                 console.log("got query results back", resp.data)
                 this.results = resp.data.results
                 this.entities = resp.data.annotations
                 this.totalResultsCount = resp.data.total_num_pubs
+                this.queryEntities = resp.data.query_entities
+                if (this.queryEntities.length){
+                    this.selectedEntityId = this.queryEntities[0]
+                }
             })
             .catch(e=> {
                 console.log("search error", e)
@@ -88,8 +95,6 @@ export const search = {
         console.log("setting entity id", id)
     },
     getSelectedEntity(){
-        console.log("this.entities.length", this.entities.length)
-        console.log("this.results.length", this.results.length)
 
         if (!this.entities || !this.selectedEntityId){
             console.log("can't get a selected entity")

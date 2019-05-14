@@ -16,7 +16,7 @@
             </div>
 
             <div class="anno-full" v-if="selectedEntity && search.query.annotations">
-                <v-layout class="header headline pl-5 pr-4 font-weight-bold" >
+                <v-layout class="header headline pl-5 pr-4 font-weight-bold">
                     <v-flex class="term">
                         {{selectedEntity.title}}
                     </v-flex>
@@ -48,7 +48,7 @@
                             <img src="../assets/logo.png" alt="">
                         </router-link>
                     </v-flex>
-                    <v-flex>
+                    <v-flex class="pl-4">
                         <v-layout>
                             <search-box></search-box>
                         </v-layout>
@@ -118,6 +118,24 @@
             <!--            </v-container>-->
 
             <v-container>
+                <v-layout class="query-entities" v-if="search.queryEntities.length && search.query.annotations">
+                    <v-flex xs3 class="label text-xs-right pt-2">
+                        <div class="search-term-label">
+                            Search terms:
+                        </div>
+                        <div class="extra" v-if="false">
+                            <small>(Click for more info)</small>
+                        </div>
+                    </v-flex>
+                    <v-flex xs9 class="pl-5">
+                        <span class="query-entity headline mr-2" v-for="queryEntity in search.queryEntities">
+                            <annotated-content
+                                :content="queryEntity"
+                                :annotations="[inPlaceAnnotation(queryEntity)]">
+                            </annotated-content>
+                        </span>
+                    </v-flex>
+                </v-layout>
 
                 <div class="results-list" v-if="!search.loading">
                     <div class="no-results" v-if="query.q && !search.results.length">
@@ -183,6 +201,7 @@
     import ArticleZoom from '../components/ArticleZoom'
     import SearchBox from "../components/SearchBox";
     import {search} from "../search"
+    import AnnotatedContent from "../components/AnnotatedContent";
 
 
     import ResultRow from "../components/ResultRow"
@@ -229,7 +248,8 @@
         components: {
             ArticleZoom,
             SearchBox,
-            ResultRow
+            ResultRow,
+            AnnotatedContent
         },
         computed: {
             apiUrl() {
@@ -265,6 +285,15 @@
                     .catch(e => {
                         alert("sorry, there was a bug! Please let us know at team@impactstory.org")
                     })
+            },
+            inPlaceAnnotation(topic) {
+                return {
+                    confidence: 1.0,
+                    end: topic.length,
+                    start: 0,
+                    spot: topic,
+                    title: topic
+                }
             }
         },
         mounted() {
@@ -304,8 +333,10 @@
                 margin-right: 20px;
                 margin-top: -5px;
             }
+
             .controls {
                 margin-top: -10px;
+
                 .v-btn.subscribe {
                     margin-top: -30px;
                 }
@@ -319,9 +350,11 @@
             bottom: 0;
             right: 0;
             width: 30%;
+
             &.annotations-active {
                 display: block;
             }
+
             display: none;
 
             overflow: scroll;
@@ -336,12 +369,11 @@
             color: #333;
 
 
-
-
             &.full {
                 /*background: rgba(255, 127, 102, .1);*/
                 border-left: 1px solid #ddd;
             }
+
             img {
                 width: 100%;
             }
@@ -351,7 +383,7 @@
                 background: #8c9eff;
                 background: rgba(255, 127, 102, 1);
                 color: #fff;
-                margin-top:50px;
+                margin-top: 50px;
 
 
                 color: rgba(255, 127, 102, 1);
@@ -360,10 +392,12 @@
                 background: transparent;
 
                 padding: 5px;
+
                 .close {
                     cursor: pointer;
                 }
             }
+
             .body {
             }
         }
@@ -371,6 +405,10 @@
         .main-col.annotations-active {
             width: 70%;
         }
+    }
+
+    .search-term-label {
+        opacity: .5;
     }
 
     div.results-list {
@@ -406,7 +444,7 @@
         top: 0;
         bottom: 0;
         left: 0;
-        width: 75%;
+        width: 70%;
         /*transform: translateX(100%);*/
         background: #fff;
         z-index: 999;

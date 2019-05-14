@@ -9,7 +9,7 @@
             </div>
         </v-flex>
 
-        <v-flex xs9 class="content pr-5">
+        <v-flex xs9 class="content pr-5 pl-5">
             <div class="line evidence">
                 <span class="val" v-if="pubType">
                     <annotated-content
@@ -133,7 +133,6 @@ div.row {
 
 
     .image {
-        margin-right: 25px;
 
         .img-wrapper {
             background: #fafafa;
