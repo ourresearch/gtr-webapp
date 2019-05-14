@@ -83,6 +83,13 @@
                 </a>
             </div>
         </div>
+        <div class="px-2 mt-5">
+            <small>
+                <a :href="apiUrl" class="grey--text">View this page in API</a>
+                |
+                <a class="grey--text" href="mailto:team@impactstory.org">Report issue</a>
+            </small>
+        </div>
     </v-container>
 
 
@@ -115,6 +122,10 @@
                     ret = this.result.author_lastnames.join(", ")
                 }
                 return ret
+            },
+            apiUrl(){
+                return "https://gtr-api.herokuapp.com/paper/doi/"
+                    + this.result.doi
             }
         },
         methods: {

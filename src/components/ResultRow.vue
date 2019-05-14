@@ -12,7 +12,13 @@
         <div class="content">
             <div class="line evidence">
                 <span class="val" v-if="pubType">
-                    {{pubType.pub_type_gtr}}
+                    <annotated-content
+                        :content="pubType.pub_type_gtr"
+                        :annotations="[inPlaceAnnotation(pubType.pub_type_gtr)]">
+                    </annotated-content>
+
+
+
                 </span>
             </div>
             <div class="line  article-title">
@@ -86,6 +92,15 @@
 
         },
         methods: {
+            inPlaceAnnotation(topic) {
+                return {
+                    confidence: 1.0,
+                    end: topic.length,
+                    start: 0,
+                    spot: topic,
+                    title: topic
+                }
+            }
         },
         watch: {
             paper: function (newVal, oldVal) {
