@@ -76,13 +76,11 @@ export const search = {
     },
 
     setZoom(doi){
-        console.log("setting zoom", doi)
         this.setSelectedEntity()
         this.query.zoom = doi
     },
 
     setSelectedEntity(id){
-        console.log("setting entity", id)
         if (this.entities[id]){
             this.selectedEntity = this.entities[id]
         }

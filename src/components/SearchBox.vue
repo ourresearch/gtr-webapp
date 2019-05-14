@@ -1,20 +1,16 @@
 <template>
-    <v-layout class="searchbox">
-            <v-autocomplete
-                    v-model="select"
-                    :loading="loading"
-                    :items="items"
-                    :search-input.sync="searchString"
-                    @input="goSearch"
-                    @keypress.enter="goSearch(searchString)"
-                    class="mx-3"
-                    flat
-                    hide-no-data
-                    hide-details
-                    label="Get the research on..."
-                    solo
-            ></v-autocomplete>
-    </v-layout>
+    <v-autocomplete
+            v-model="select"
+            :loading="loading"
+            :items="items"
+            :search-input.sync="searchString"
+            @input="goSearch"
+            @keypress.enter="goSearch(searchString)"
+            class="mx-3"
+            hide-no-data
+            hide-details
+            solo
+    ></v-autocomplete>
 
 
 </template>
@@ -51,6 +47,7 @@
                     this.items = []
                 }
                 search.setQ(q)
+                this.$emit("submit", q)
 
             },
             fetchSuggestions(v) {
