@@ -58,9 +58,6 @@
                             label="Show annotations"
                     ></v-switch>
                     <v-spacer></v-spacer>
-                    <v-btn small flat :href="apiUrl">
-                        View in API
-                    </v-btn>
                     <v-btn small flat>
                         Create alert
                     </v-btn>
@@ -99,6 +96,9 @@
                       </div>
                     <div class="report text-xs-center pt-2">
                         <a href="mailto:team@impactstory.org">Report inappropriate images</a>
+                    </div>
+                    <div class="text-xs-center pt-2">
+                        <a :href="apiUrl">View page in API</a>
                     </div>
                 </div>
 
@@ -172,9 +172,7 @@
         },
         computed: {
             apiUrl() {
-                let searchTerm = this.$route.params.q
-                let url = "https://gtr-api.herokuapp.com/search/" + searchTerm
-                return url
+                return search.apiQueryUrl()
             },
             zoomedResult(){
                 return search.results.find(r => {
