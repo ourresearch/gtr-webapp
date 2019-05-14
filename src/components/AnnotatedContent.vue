@@ -95,11 +95,19 @@
         white-space: nowrap;
         &.clickable {
             background: rgba(255, 127, 102, .15);
+            background: rgba(255, 255, 0, .15);
+            background: rgba(141, 157, 250, .15);
+
+            /*background: transparent;*/
+            /*color: #0645ad;*/
+
             cursor: pointer;
             padding: 0 3px;
             border-radius: 3px;
+            /*border-bottom: 1px dashed;*/
             &.selected {
                 background: rgba(255, 127, 102, 1);
+                background: #8c9eff;
                 color: #fff;
             }
         }

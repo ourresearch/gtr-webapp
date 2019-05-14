@@ -61,34 +61,30 @@
                     ></v-switch>
                     <v-spacer></v-spacer>
 
-                    <v-dialog v-model="dialog" persistent max-width="600px">
-                        foobar
+                    <v-dialog v-model="dialogs.subscribe.show" persistent max-width="600px">
                         <template v-slot:activator="{ on }">
-                            <v-btn color="primary" dark v-on="on">Open Dialog</v-btn>
+                            <v-btn small color="primary" dark v-on="on">
+                                <i class="far fa-envelope mr-1"></i>
+                                Subscribe to feed
+                            </v-btn>
                         </template>
                         <v-card>
                             <v-card-title>
-                                <span class="headline">User Profile</span>
+                                <span class="headline">Subscribe to feed</span>
                             </v-card-title>
                             <v-card-text>
-                                <v-container grid-list-md>
-                                    <v-layout>
-                                        this is the workds
-                                    </v-layout>
-                                    <v-layout wrap>
-
-                                        <v-flex xs12>
-                                            <v-text-field label="Email" required></v-text-field>
-                                        </v-flex>
-
-
-                                    </v-layout>
-                                </v-container>
+                                <p>
+                                    Get email alerts when new articles are published related to this search.
+                                </p>
+                                <div>
+                                    <v-text-field v-model="dialogs.subscribe.email" label="Email"
+                                                  required></v-text-field>
+                                </div>
                             </v-card-text>
                             <v-card-actions>
                                 <v-spacer></v-spacer>
-                                <v-btn flat @click="dialog = false">Cancel</v-btn>
-                                <v-btn flat @click="foo">Subscribe</v-btn>
+                                <v-btn flat @click="dialogs.subscribe.show = false">Cancel</v-btn>
+                                <v-btn color="primary" @click="subscribe">Subscribe</v-btn>
                             </v-card-actions>
                         </v-card>
                     </v-dialog>
@@ -150,6 +146,10 @@
 
 
             </transition>
+            <v-snackbar top v-model="snackbar.show">
+                {{ snackbar.text }}
+                <v-btn flat color="primary" @click="snackbar.show=false">close</v-btn>
+            </v-snackbar>
 
 
         </div>
@@ -161,6 +161,7 @@
 </template>
 
 <script>
+    import axios from 'axios';
     import ArticleZoom from '../components/ArticleZoom'
     import SearchBox from "../components/SearchBox";
     import {search} from "../search"
@@ -189,7 +190,16 @@
             error: null,
             selectedEntity: null,
             search: search,
-            dialog: false,
+            dialogs: {
+                subscribe: {
+                    show: false,
+                    email: null
+                }
+            },
+            snackbar: {
+                text: "",
+                show: false
+            },
             query: {
                 q: "",
                 oa: false,
@@ -215,8 +225,23 @@
             }
         },
         methods: {
-            foo(){
-                console.log("foo called")
+            subscribe() {
+                this.dialogs.subscribe.show = false
+                console.log("user subscribing with email", this.dialogs.subscribe.email)
+                let url = "https://gtr-api.herokuapp.com/notifications/signup"
+                let data = {
+                    email: this.dialogs.subscribe.email,
+                    query: search.query.q
+                }
+                axios.post(url, data)
+                    .then(r => {
+                        console.log("subscribed!", r)
+                        this.snackbar.text = "You're subscribed!"
+                        this.snackbar.show = true
+                    })
+                    .catch(e => {
+                        alert("sorry, there was a bug! Please let us know at team@impactstory.org")
+                    })
             }
         },
         mounted() {
@@ -272,6 +297,7 @@
 
             .header.headline {
                 background: rgba(255, 127, 102, 1);
+                background: #8c9eff;
                 color: #fff;
                 padding: 5px;
                 border-radius: 3px;
