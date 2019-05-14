@@ -120,7 +120,8 @@
                     <div class="text-xs-center">
                         <v-pagination
                                 v-model="search.query.page"
-                                :length="10"
+                                :length="numResultsPages"
+                                v-show="numResultsPages > 1"
                         ></v-pagination>
                     </div>
                     <div class="report text-xs-center pt-2">
@@ -222,6 +223,10 @@
                 return search.results.find(r => {
                     return r.doi === search.query.zoom
                 })
+            },
+            numResultsPages(){
+                console.log("search.results.length", search.results.length)
+                return Math.ceil(search.totalResultsCount / 10)
             }
         },
         methods: {
@@ -296,8 +301,8 @@
             }
 
             .header.headline {
-                background: rgba(255, 127, 102, 1);
                 background: #8c9eff;
+                background: rgba(255, 127, 102, 1);
                 color: #fff;
                 padding: 5px;
                 border-radius: 3px;

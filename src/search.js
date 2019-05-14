@@ -7,6 +7,7 @@ export const search = {
     results: [],
     entities: [],
     selectedEntity: null,
+    totalResultsCount: 0,
 
     query: {
         q: "",
@@ -41,6 +42,7 @@ export const search = {
                 console.log("got query results back", resp.data)
                 this.results = resp.data.results
                 this.entities = resp.data.annotations
+                this.totalResultsCount = resp.data.total_num_pubs
             })
             .catch(e=> {
                 console.log("search error", e)
