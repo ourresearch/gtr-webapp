@@ -2,7 +2,6 @@
 
 <v-app id="inspire">
 
-  <main-header />
 
   <v-content>
     <v-container fluid fill-height class="pa-0">
