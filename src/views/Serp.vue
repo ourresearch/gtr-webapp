@@ -2,7 +2,7 @@
     <v-flex class="root">
 
 
-        <div class="annotray anno-tray" :class="{full:selectedEntity, 'annotations-active': search.query.annotations}">
+        <div class="annotray anno-tray" :class="{full:selectedEntity, 'annotations-active': search.query.annotations && $vuetify.breakpoint.mdAndUp}">
 
             <div class="anno-empty" v-if="!selectedEntity && search.query.annotations">
                 <div class="content" v-if="false">
@@ -40,15 +40,18 @@
         </div>
 
 
-        <div class="main-col" :class="{'annotations-active': search.query.annotations}">
+        <div class="main-col" :class="{'annotations-active': search.query.annotations && $vuetify.breakpoint.mdAndUp }">
+
+
             <v-container grid class="serp-header pa-0">
                 <v-layout class="pt-5 pl-5 pr-5">
-                    <v-flex xs3 class="text-xs-center">
+                    <v-flex xs3 hidden-xs-only class="text-xs-center">
                         <router-link to="/">
                             <img src="../assets/logo.png" alt="">
                         </router-link>
                     </v-flex>
-                    <v-flex class="pl-4">
+
+                    <v-flex xs12 sm9 class="pl-4">
                         <v-layout>
                             <search-box></search-box>
                         </v-layout>

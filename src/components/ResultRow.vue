@@ -1,6 +1,6 @@
 <template>
     <v-layout class="row">
-        <v-flex xs3 class="image">
+        <v-flex sm3 hidden-xs-only class="image">
             <div class="img-wrapper">
                 <img :src="result.image.image_url" alt="">
             </div>
@@ -9,7 +9,7 @@
             </div>
         </v-flex>
 
-        <v-flex xs9 class="content pr-5 pl-5">
+        <v-flex sm9 class="content pr-5 pl-5">
             <div class="line evidence">
                 <span class="val" v-if="pubType">
                     <annotated-content

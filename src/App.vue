@@ -1,25 +1,25 @@
 <template>
 
-  <v-app id="inspire">
+<v-app id="inspire">
 
-    <main-header />
+  <main-header />
 
-    <v-content>
-      <v-container fluid fill-height class="pa-0">
-        <v-layout
-          justify-center
-        >
+  <v-content>
+    <v-container fluid fill-height class="pa-0">
+      <v-layout
+        justify-center
+      >
 
-          <router-view></router-view>
+        <router-view></router-view>
 
 
-        </v-layout>
-      </v-container>
-    </v-content>
+      </v-layout>
+    </v-container>
+  </v-content>
 
-    <main-footer></main-footer>
+  <main-footer></main-footer>
 
-  </v-app>
+</v-app>
 
 
 
