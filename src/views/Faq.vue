@@ -56,6 +56,17 @@ We recommend these articles for the basics of how to read scientific papers:
 and <a href="https://www.universityaffairs.ca/career-advice/career-advice-article/read-understand-scientific-article/">How
                     to read and understand a scientific article</a>.
                 </p>
+
+
+
+                <h3 class="title pb-2 pt-5">Is this broken on mobile?</h3>
+                <p>
+                    Yes :). For now. We're still improving mobile support...in particular, clicking on highlighted words doesn't show their definitions on mobile.
+
+                </p>
+
+
+
                 <h3 class="title pb-2 pt-5">Who funded Get The Research?</h3>
                 <p>
                     Get The Research was made possible by the support of Arcadia – a charitable fund of Lisbet Rausing and Peter Baldwin.

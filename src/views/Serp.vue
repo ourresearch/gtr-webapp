@@ -55,7 +55,7 @@
                         <v-layout>
                             <search-box></search-box>
                         </v-layout>
-                        <v-layout class="px-2 controls" align-top>
+                        <v-layout hidden-xs-only class="px-2 controls" align-top>
                             <v-flex shrink class="pr-3 pl-2">
                                 <v-switch
                                         color="primary"
@@ -121,7 +121,7 @@
             <!--            </v-container>-->
 
             <v-container>
-                <v-layout class="query-entities" v-if="search.queryEntities.length && search.query.annotations">
+                <v-layout hidden-xs-only class="query-entities" v-if="search.queryEntities.length && search.query.annotations">
                     <v-flex xs3 class="label text-xs-right pt-2">
                         <div class="search-term-label">
                             Search terms:

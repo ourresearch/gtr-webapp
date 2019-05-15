@@ -12,7 +12,7 @@
         <div class="search-input mt-4">
             <search-box @submit="goSearch"></search-box>
         </div>
-        <div class="try">
+        <div class="try pa-2">
             Try: "vaccines and autism," "How safe is bicycling," or "chocolate"
         </div>
 
@@ -61,7 +61,8 @@
         }
 
         .search-input {
-            width: 600px;
+            width: 100%;
+            max-width: 600px;
         }
     }
 
