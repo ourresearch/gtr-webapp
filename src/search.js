@@ -49,7 +49,16 @@ export const search = {
                 this.totalResultsCount = resp.data.total_num_pubs
                 this.queryEntities = resp.data.query_entities
                 if (this.queryEntities.length){
-                    this.selectedEntityId = this.queryEntities[0]
+                    // hack for example query
+                    if (this.queryEntities[1]=="Bicycle") {
+                        this.selectedEntityId = "Bicycle"
+
+                    }
+                    else {
+                        this.selectedEntityId = this.queryEntities[0]
+                    }
+
+
                 }
             })
             .catch(e=> {
