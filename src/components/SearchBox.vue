@@ -24,7 +24,8 @@
             select: "",
             loading: false,
             items: [],
-            searchString: ""
+            searchString: "",
+            search: search
         }),
         computed: {
             displayItems(){

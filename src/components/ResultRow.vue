@@ -3,6 +3,9 @@
         <v-flex sm3 hidden-xs-only class="image">
             <div class="img-wrapper">
                 <img :src="result.image.image_url" alt="">
+<!--                hack to fix autism example -->
+                <img src="https://i.imgur.com/9JwcSuG.png" v-if="result.doi=='10.1586/14760584.3.1.19'" alt="">
+
             </div>
             <div class="label">
                 {{result.image.title}}
