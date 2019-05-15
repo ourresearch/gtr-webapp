@@ -14,9 +14,9 @@
             <a class="mx-2" href="https://github.com/impactstory">
                 <i class="fab fa-github"></i>
             </a>
-            <a class="faq ml-1" href="https://github.com/impactstory">
+            <router-link class="faq ml-1" to="./faq">
                 FAQ
-            </a>
+            </router-link>
 
         </div>
 
