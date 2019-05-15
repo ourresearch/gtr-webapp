@@ -9,7 +9,7 @@
         <h1 class="display-1 ma-3">
             Find and understand peer-reviewed research papers
         </h1>
-        <div class="search-input ma-4">
+        <div class="search-input mt-4">
             <search-box @submit="goSearch"></search-box>
         </div>
         <div class="try">

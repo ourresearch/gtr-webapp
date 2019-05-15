@@ -86,7 +86,10 @@
                 font-weight: normal;
             }
         }
-
     }
+    .v-input__icon--append .v-icon {
+            display: none !important;
+    }
+
 
 </style>
