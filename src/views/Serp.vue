@@ -32,7 +32,7 @@
         </div>
 
 
-        <div class="main-col" :class="{'annotations-active': search.query.annotations && $vuetify.breakpoint.mdAndUp }">
+        <div class="main-col" :class="{'annotations-active': search.query.annotations && $vuetify.breakpoint.smAndUp }">
 
 
             <v-container grid class="serp-header pa-0">
@@ -307,13 +307,13 @@
 
             // changes that require a server refresh
             "search.query.q": function () {
-                search.fetchResults()
+                search.fetchResults(this.$vuetify.breakpoint.smAndUp)
             },
             "search.query.oa": function () {
-                search.fetchResults()
+                search.fetchResults(this.$vuetify.breakpoint.smAndUp)
             },
             "search.query.page": function () {
-                search.fetchResults()
+                search.fetchResults(this.$vuetify.breakpoint.smAndUp)
             }
         }
 

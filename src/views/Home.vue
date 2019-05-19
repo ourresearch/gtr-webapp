@@ -39,7 +39,7 @@
                     path: "search",
                     query: search.getQueryForUrl()
                 })
-                search.fetchResults()
+                search.fetchResults(this.$vuetify.breakpoint.smAndUp)
             }
         }
     }

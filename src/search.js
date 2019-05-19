@@ -36,7 +36,7 @@ export const search = {
 
 
 
-    fetchResults: function(){
+    fetchResults: function(showQueryEntity){
         this.loading = true
         this.results = []
         this.queryEntities = []
@@ -48,7 +48,9 @@ export const search = {
                 this.entities = resp.data.annotations
                 this.totalResultsCount = resp.data.total_num_pubs
                 this.queryEntities = resp.data.query_entities
-                if (this.queryEntities.length){
+
+                console.log("calling fetchREsults", showQueryEntity)
+                if (showQueryEntity && this.queryEntities.length){
                     // hack for example query
                     if (this.queryEntities[1]=="Bicycle") {
                         this.selectedEntityId = "Bicycle"
@@ -106,7 +108,6 @@ export const search = {
     getSelectedEntity(){
 
         if (!this.entities || !this.selectedEntityId){
-            console.log("can't get a selected entity")
             return null
         }
         return this.entities[this.selectedEntityId]
