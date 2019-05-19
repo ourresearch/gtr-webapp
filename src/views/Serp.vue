@@ -448,10 +448,15 @@
         bottom: 0;
         left: 0;
         width: 70%;
+
+
         /*transform: translateX(100%);*/
         background: #fff;
         z-index: 999;
         overflow: scroll;
+        @media screen and (max-width: 600px) {
+            width: 100%;
+        }
     }
 
 
