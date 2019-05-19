@@ -2,20 +2,12 @@
     <v-flex class="root">
 
 
-        <div class="annotray anno-tray" :class="{full:selectedEntity, 'annotations-active': search.query.annotations && $vuetify.breakpoint.mdAndUp}">
+        <div
+                class="annotray anno-tray"
+                v-if="selectedEntity && search.query.annotations"
+                :class="{full:selectedEntity, 'annotations-active': search.query.annotations}">
 
-            <div class="anno-empty" v-if="!selectedEntity && search.query.annotations">
-                <div class="content" v-if="false">
-                    <div class="image">
-                        <i class="far fa-hand-point-left"></i>
-                    </div>
-                    <div class="text">
-                        Click <span class="entity">highlighted words</span> to learn more!
-                    </div>
-                </div>
-            </div>
-
-            <div class="anno-full" v-if="selectedEntity && search.query.annotations">
+            <div class="anno-full">
                 <v-layout class="header headline pl-5 pr-4 font-weight-bold">
                     <v-flex class="term">
                         {{selectedEntity.title}}
@@ -354,6 +346,11 @@
             right: 0;
             width: 30%;
 
+            z-index: 9999;
+            @media screen and (max-width: 600px){
+                width: 100%;
+            }
+
             &.annotations-active {
                 display: block;
             }
@@ -448,11 +445,11 @@
         bottom: 0;
         left: 0;
         width: 70%;
-
+        border-right: 1px solid #333;
 
         /*transform: translateX(100%);*/
         background: #fff;
-        z-index: 999;
+        z-index: 9;
         overflow: scroll;
         @media screen and (max-width: 600px) {
             width: 100%;

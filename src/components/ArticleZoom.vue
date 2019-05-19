@@ -1,11 +1,11 @@
 <template>
     <div class="root"  v-if="result">
         <v-toolbar dark>
-            <v-layout justify-end>
+            <v-layout >
                 <v-flex shrink>
                     <v-btn  dark  depressed class="close-button" @click="$emit('close')">
                         <span>
-                            <i class="fas fa-times"></i> close
+                            <i class="fas fa-arrow-left"></i> back to results
 
                         </span>
                     </v-btn>
@@ -41,15 +41,6 @@
                         </div>
                     </div>
 
-                </v-flex>
-                <v-spacer></v-spacer>
-                <v-flex shrink hidden-xs-only>
-                    <v-btn  dark  color="primary" class="close-button" @click="$emit('close')">
-                        <span>
-                            <i class="fas fa-times"></i> close
-
-                        </span>
-                    </v-btn>
                 </v-flex>
 
             </v-layout>

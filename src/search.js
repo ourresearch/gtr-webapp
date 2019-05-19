@@ -95,7 +95,7 @@ export const search = {
     },
 
     setZoom(doi){
-        this.setSelectedEntity()
+        // this.setSelectedEntity()
         this.query.zoom = doi
     },
 
