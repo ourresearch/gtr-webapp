@@ -1,7 +1,7 @@
 <template>
 
     <form class="main-search" @submit.prevent="goSearch(searchString)">
-        <v-autocomplete
+        <v-combobox
                 v-model="select"
                 :items="items"
                 :search-input.sync="searchString"
@@ -10,7 +10,7 @@
                 hide-no-data
                 hide-detailsf
                 solo
-        ></v-autocomplete>
+        ></v-combobox>
 
     </form>
 
