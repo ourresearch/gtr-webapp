@@ -133,7 +133,7 @@
                 </v-layout>
 
                 <div class="results-list" v-if="!search.loading">
-                    <div class="no-results" v-if="query.q && !search.results.length">
+                    <div class="no-results text-xs-center" v-if="search.query.q && !search.results.length">
                         <em>Sorry, there were no results for that search.</em>
                     </div>
                     <template v-for="(result, index) of search.results">
