@@ -15,7 +15,7 @@
     </form>
 
 
-</template>
+</template>s
 
 <script>
     import axios from 'axios'
@@ -37,7 +37,6 @@
         },
         methods: {
             goSearch(q) {
-                console.log("searching!", q)
                 // this.items = this.items.filter(x=>{
                 //     let suggestion = (x || "").toLowerCase()
                 //     let myQ = (q || "").toLowerCase()
@@ -50,6 +49,7 @@
                     this.items = []
                 }
                 search.setQ(q)
+                search.query.page = 1
                 this.$emit("submit", q)
 
             },
