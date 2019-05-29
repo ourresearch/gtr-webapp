@@ -2,7 +2,7 @@
 
     <form class="main-search" @submit.prevent="goSearch(searchString)">
         <v-combobox
-                v-model="select"
+                v-model="search.query.q"
                 :items="items"
                 :search-input.sync="searchString"
                 @input="goSearch"
@@ -24,7 +24,7 @@
     export default {
         name: "SearchBox",
         data: () => ({
-            select: "",
+            select: search.query.q,
             loading: false,
             items: [],
             searchString: "",
