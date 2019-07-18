@@ -36,7 +36,8 @@ export const search = {
 
 
 
-    fetchResults: function(){
+
+    fetchResults: function(showQueryEntity){
         this.loading = true
         this.results = []
         this.queryEntities = []
@@ -48,7 +49,8 @@ export const search = {
                 this.entities = resp.data.annotations
                 this.totalResultsCount = resp.data.total_num_pubs
                 this.queryEntities = resp.data.query_entities
-                if (this.queryEntities.length){
+
+                if (showQueryEntity && this.queryEntities.length){
                     // hack for example query
                     if (this.queryEntities[1]=="Bicycle") {
                         this.selectedEntityId = "Bicycle"
@@ -75,6 +77,10 @@ export const search = {
             let newVal = queryObj[k]
             if (newVal === "false") newVal = false
 
+            if (typeof newVal === "string") {
+                newVal = newVal.replace(/_/g, " ")
+            }
+
             if (typeof newVal === "undefined") {
                 this.query[k] = this.queryDefaults[k]
             }
@@ -87,7 +93,9 @@ export const search = {
     },
 
     setQ(q){
-        this.query.q = _.snakeCase(q.toLowerCase())
+        if (q) q = q.replace(/_/g, " ")
+
+        this.query.q = q
 
         // doing a new search should clear entity and zoom
         this.setZoom()
@@ -95,31 +103,34 @@ export const search = {
     },
 
     setZoom(doi){
-        this.setSelectedEntity()
+        // this.setSelectedEntity()
         this.query.zoom = doi
     },
 
     setSelectedEntity(id){
         this.selectedEntityId = id
-        console.log("setting entity id", id)
     },
     getSelectedEntity(){
 
         if (!this.entities || !this.selectedEntityId){
-            console.log("can't get a selected entity")
             return null
         }
         return this.entities[this.selectedEntityId]
     },
 
     getQueryForUrl(){
-        let newUrlQueryObj = {}
+        let ret = {}
         Object.keys(this.queryDefaults).forEach(k => {
             if (this.query[k] !== this.queryDefaults[k]) {
-                newUrlQueryObj[k] = this.query[k]
+                ret[k] = this.query[k]
+                let newVal = this.query[k]
             }
         })
-        return newUrlQueryObj
+
+        if (ret.q) {
+            ret.q = _.snakeCase(ret.q.toLowerCase())
+        }
+        return ret
     }
 
 

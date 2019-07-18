@@ -1,18 +1,21 @@
 <template>
-    <v-autocomplete
-            v-model="select"
-            :items="items"
-            :search-input.sync="searchString"
-            @input="goSearch"
-            @keypress.enter="goSearch(searchString)"
-            class="mx-3"
-            hide-no-data
-            hide-detailsf
-            solo
-    ></v-autocomplete>
+
+    <form class="main-search" @submit.prevent="goSearch(searchString)">
+        <v-combobox
+                v-model="search.query.q"
+                :items="items"
+                :search-input.sync="searchString"
+                @input="goSearch"
+                class="mx-3"
+                hide-no-data
+                hide-detailsf
+                solo
+        ></v-combobox>
+
+    </form>
 
 
-</template>
+</template>s
 
 <script>
     import axios from 'axios'
@@ -21,7 +24,7 @@
     export default {
         name: "SearchBox",
         data: () => ({
-            select: "",
+            select: search.query.q,
             loading: false,
             items: [],
             searchString: "",
@@ -34,7 +37,6 @@
         },
         methods: {
             goSearch(q) {
-                console.log("searching!", q)
                 // this.items = this.items.filter(x=>{
                 //     let suggestion = (x || "").toLowerCase()
                 //     let myQ = (q || "").toLowerCase()
@@ -47,6 +49,7 @@
                     this.items = []
                 }
                 search.setQ(q)
+                search.query.page = 1
                 this.$emit("submit", q)
 
             },
@@ -70,6 +73,9 @@
 </script>
 
 <style lang="scss">
+    form.main-search {
+        width: 100%;
+    }
     .v-autocomplete__content {
         .v-list__tile {
             height: auto;

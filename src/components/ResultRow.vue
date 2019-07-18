@@ -12,7 +12,7 @@
             </div>
         </v-flex>
 
-        <v-flex sm9 class="content pr-5 pl-5">
+        <v-flex sm9 class="content" :class="{'px-5': $vuetify.breakpoint.mdAndUp}">
             <div class="line evidence">
                 <span class="val" v-if="pubType">
                     <annotated-content

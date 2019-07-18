@@ -2,20 +2,12 @@
     <v-flex class="root">
 
 
-        <div class="annotray anno-tray" :class="{full:selectedEntity, 'annotations-active': search.query.annotations && $vuetify.breakpoint.mdAndUp}">
+        <div
+                class="annotray anno-tray"
+                v-if="selectedEntity && search.query.annotations"
+                :class="{full:selectedEntity, 'annotations-active': search.query.annotations}">
 
-            <div class="anno-empty" v-if="!selectedEntity && search.query.annotations">
-                <div class="content" v-if="false">
-                    <div class="image">
-                        <i class="far fa-hand-point-left"></i>
-                    </div>
-                    <div class="text">
-                        Click <span class="entity">highlighted words</span> to learn more!
-                    </div>
-                </div>
-            </div>
-
-            <div class="anno-full" v-if="selectedEntity && search.query.annotations">
+            <div class="anno-full">
                 <v-layout class="header headline pl-5 pr-4 font-weight-bold">
                     <v-flex class="term">
                         {{selectedEntity.title}}
@@ -40,7 +32,7 @@
         </div>
 
 
-        <div class="main-col" :class="{'annotations-active': search.query.annotations && $vuetify.breakpoint.mdAndUp }">
+        <div class="main-col" :class="{'annotations-active': search.query.annotations && $vuetify.breakpoint.smAndUp }">
 
 
             <v-container grid class="serp-header pa-0">
@@ -141,7 +133,7 @@
                 </v-layout>
 
                 <div class="results-list" v-if="!search.loading">
-                    <div class="no-results" v-if="query.q && !search.results.length">
+                    <div class="no-results text-xs-center" v-if="search.query.q && !search.results.length">
                         <em>Sorry, there were no results for that search.</em>
                     </div>
                     <template v-for="(result, index) of search.results">
@@ -315,13 +307,13 @@
 
             // changes that require a server refresh
             "search.query.q": function () {
-                search.fetchResults()
+                search.fetchResults(this.$vuetify.breakpoint.smAndUp)
             },
             "search.query.oa": function () {
-                search.fetchResults()
+                search.fetchResults(this.$vuetify.breakpoint.smAndUp)
             },
             "search.query.page": function () {
-                search.fetchResults()
+                search.fetchResults(this.$vuetify.breakpoint.smAndUp)
             }
         }
 
@@ -353,6 +345,11 @@
             bottom: 0;
             right: 0;
             width: 30%;
+
+            z-index: 9999;
+            @media screen and (max-width: 600px){
+                width: 100%;
+            }
 
             &.annotations-active {
                 display: block;
@@ -448,10 +445,15 @@
         bottom: 0;
         left: 0;
         width: 70%;
+        border-right: 1px solid #333;
+
         /*transform: translateX(100%);*/
         background: #fff;
-        z-index: 999;
+        z-index: 9;
         overflow: scroll;
+        @media screen and (max-width: 600px) {
+            width: 100%;
+        }
     }
 
 
