@@ -32,6 +32,7 @@ export const search = {
         return this.apiBaseUrl + this.query.q
             + "?page=" + this.query.page
             + "&oa=" + this.query.oa
+        //     + "&nocache=true"
     },
 
 
@@ -128,7 +129,11 @@ export const search = {
         })
 
         if (ret.q) {
-            ret.q = _.snakeCase(ret.q.toLowerCase())
+            let cleanQuery = ret.q.toLowerCase()
+            if (!ret.q.startsWith("10.")) {
+              cleanQuery = _.snakeCase(cleanQuery)
+            }
+            ret.q = cleanQuery
         }
         return ret
     }

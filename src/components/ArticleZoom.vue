@@ -138,7 +138,11 @@
         methods: {
             searchTopic(topic){
                 console.log("search topic", topic)
-                search.setQ(_.snakeCase(topic))
+                let cleanQuery = topic
+                if (!topic.startsWith("10.")) {
+                  cleanQuery = _.snakeCase(cleanQuery)
+                }
+                search.setQ(cleanTopic)
             }
         },
         watch: {}
