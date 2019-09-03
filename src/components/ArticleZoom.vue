@@ -91,7 +91,7 @@
                 <small>
                     <a :href="apiUrl" class="grey--text">View this page in API</a>
                     |
-                    <a class="grey--text" href="mailto:team@impactstory.org">Report issue</a>
+                    <a class="grey--text" href="mailto:team@ourresearch.org">Report issue</a>
                 </small>
             </div>
         </v-container>

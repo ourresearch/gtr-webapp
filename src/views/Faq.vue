@@ -20,7 +20,7 @@
 
                 <h3 class="title pb-2 pt-5">I found an offensive picture!</h3>
                 <p>
-                    We're very sorry!  The pictures are assigned automatically, using AI to find the best choice for topic and interest, based on pictures in Wikipedia.  We've tried to make sure we aren't displaying any offensive ones. If you see one though, please report it to team@impactstory.org and we'll fix it ASAP.
+                    We're very sorry!  The pictures are assigned automatically, using AI to find the best choice for topic and interest, based on pictures in Wikipedia.  We've tried to make sure we aren't displaying any offensive ones. If you see one though, please report it to team@ourresearch.org and we'll fix it ASAP.
                 </p>
 
                 <h3 class="title pb-2 pt-5">What areas of research does this site include?
@@ -74,7 +74,7 @@ and <a href="https://www.universityaffairs.ca/career-advice/career-advice-articl
 
                 <h3 class="title pb-2 pt-5">I have other feedback! And questions!</h3>
                 <p>
-We'd love to hear from you!  This is a very early release, and so feedback is really valuable. Drop us a line at team@impactstory.org
+We'd love to hear from you!  This is a very early release, and so feedback is really valuable. Drop us a line at team@ourresearch.org
                 </p>
 
 

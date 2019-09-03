@@ -155,7 +155,7 @@
                         ></v-pagination>
                     </div>
                     <div class="report text-xs-center pt-2">
-                        <a href="mailto:team@impactstory.org">Report inappropriate images</a>
+                        <a href="mailto:team@ourresearch.org">Report inappropriate images</a>
                     </div>
                     <div class="text-xs-center pt-2">
                         <a :href="apiUrl">View page in API</a>
@@ -278,7 +278,7 @@
                         this.snackbar.show = true
                     })
                     .catch(e => {
-                        alert("sorry, there was a bug! Please let us know at team@impactstory.org")
+                        alert("sorry, there was a bug! Please let us know at team@ourresearch.org")
                     })
             },
             inPlaceAnnotation(topic) {

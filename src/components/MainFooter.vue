@@ -8,7 +8,7 @@
             <a class="mr-2" href="https://twitter.com/gettheresearch">
                 <i class="fab fa-twitter"></i>
             </a>
-            <a class="mx-2" href="mailto:team@impactstory.org">
+            <a class="mx-2" href="mailto:team@ourresearch.org">
                 <i class="far fa-envelope"></i>
             </a>
             <a class="mx-2" href="https://github.com/impactstory">
