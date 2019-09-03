@@ -24,7 +24,7 @@
 
 
         <div>
-            Built with <i class="far fa-heart"></i> at <a href="http://impactstory.org">Impactstory.</a>
+            Built with <i class="far fa-heart"></i> at <a href="http://ourresearch.org">Our Research.</a>
         </div>
 
         <div>
