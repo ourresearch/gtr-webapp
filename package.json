@@ -23,7 +23,7 @@
     "vue-cropperjs": "^3.0.0",
     "vue-flag-icon": "^1.0.6",
     "vue-meta": "^1.6.0",
-    "vue-moment": "^3.2.0",
+    "vue-moment": "^4.1.0",
     "vue-recaptcha": "^1.1.1",
     "vue-router": "^3.0.6",
     "vue-scrollto": "^2.15.0",
