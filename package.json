@@ -16,7 +16,7 @@
     "axios": "^0.18.0",
     "body-scroll-lock": "^2.6.1",
     "express": "^4.16.4",
-    "lodash": "^4.17.11",
+    "lodash": "^4.17.21",
     "smartcrop": "^2.0.3",
     "vue": "^2.6.10",
     "vue-analytics": "^5.16.4",
