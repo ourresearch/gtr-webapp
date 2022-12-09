@@ -15,7 +15,7 @@
   "dependencies": {
     "axios": "^0.18.0",
     "body-scroll-lock": "^2.6.1",
-    "express": "^4.16.4",
+    "express": "^4.18.2",
     "lodash": "^4.17.11",
     "smartcrop": "^2.0.3",
     "vue": "^2.6.10",
