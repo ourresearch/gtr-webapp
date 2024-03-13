@@ -28,7 +28,7 @@
         </div>
 
         <div>
-            Made possible by the support of <a href="https://www.arcadiafund.org.uk/">Arcadia</a> – a charitable fund of Lisbet Rausing and Peter Baldwin.
+            Made possible by the support of <a href="https://www.arcadiafund.org.uk/">Arcadia</a>
 
         </div>
 

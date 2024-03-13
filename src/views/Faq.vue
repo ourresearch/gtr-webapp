@@ -69,7 +69,7 @@ and <a href="https://www.universityaffairs.ca/career-advice/career-advice-articl
 
                 <h3 class="title pb-2 pt-5">Who funded Get The Research?</h3>
                 <p>
-                    Get The Research was made possible by the support of Arcadia – a charitable fund of Lisbet Rausing and Peter Baldwin.
+                    Get The Research was made possible by the support of Arcadia
                 </p>
 
                 <h3 class="title pb-2 pt-5">I have other feedback! And questions!</h3>
